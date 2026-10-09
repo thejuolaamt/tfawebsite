@@ -56,3 +56,14 @@ section > div {
   animation: soft-rise 1.2s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms) both;
 }
 
+
+/* Gentle drift for hero shapes */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .float-slow { animation: float-slow 9s ease-in-out infinite; }
+  .float-delay { animation-delay: -4s; }
+}

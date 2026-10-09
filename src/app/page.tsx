@@ -1,4 +1,5 @@
 ﻿import Navbar from "@/components/Navbar";
+import ScrollReveal from "@/components/ScrollReveal";
 import About from "@/components/About";
 import MissionVision from "@/components/MissionVision";
 
@@ -6,6 +7,7 @@ export default function Home() {
   return (
     <>
       <Navbar />
+      <ScrollReveal />
       <main className="bg-[#0a0a0a] text-white">
         {/* Hero */}
         <section className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
@@ -25,5 +27,6 @@ export default function Home() {
     </>
   );
 }
+
 
 

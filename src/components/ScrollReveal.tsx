@@ -11,12 +11,12 @@ export default function ScrollReveal() {
     const sections = document.querySelectorAll("section");
 
     sections.forEach((section) => {
-      const items = section.querySelectorAll("h1, h2, p, .grid > *");
+      const items = section.querySelectorAll("h1, h2, p, [data-stagger] > *");
       let index = 0;
       items.forEach((el) => {
-        const insideGrid = el.closest(".grid");
-        const isGridChild = el.parentElement?.classList.contains("grid");
-        if (insideGrid && !isGridChild) return;
+        const group = el.closest("[data-stagger]");
+        const isGroupChild = el.parentElement?.hasAttribute("data-stagger");
+        if (group && !isGroupChild) return;
         el.setAttribute("data-reveal", "");
         (el as HTMLElement).style.setProperty("--d", `${index * 130}ms`);
         index++;

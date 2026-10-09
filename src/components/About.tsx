@@ -19,29 +19,32 @@
 
 export default function About() {
   return (
-    <section id="about" className="bg-cream px-6 py-24 text-ink">
+    <section id="about" className="bg-cream px-6 py-16 text-ink md:py-24">
       <div className="mx-auto max-w-6xl">
-        <p className="mb-4 text-sm font-medium uppercase tracking-[0.3em] text-crimson">
+        <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-crimson md:mb-4 md:text-sm">
           About TFA
         </p>
-        <h2 className="max-w-3xl text-3xl font-bold md:text-5xl">
+        <h2 className="max-w-3xl text-2xl font-bold sm:text-3xl md:text-5xl">
           A community that gives artists a place to belong, work, and grow.
         </h2>
-        <p className="mt-6 max-w-2xl text-lg text-muted">
+        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted md:mt-6 md:text-lg">
           The Fine Artist Community (TFA) exists so that talent is never held
           back by a lack of space, materials, or exposure. We bring artists
           together, support them practically, and show their work to the world.
         </p>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div
+          data-stagger
+          className="-mx-6 mt-8 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-14 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4"
+        >
           {pillars.map((item) => (
             <div
               key={item.title}
-              className="rounded-2xl border border-line bg-paper p-6 transition hover:-translate-y-1 hover:border-crimson"
+              className="min-w-[78%] shrink-0 snap-center rounded-2xl border border-line bg-paper p-5 transition hover:border-crimson md:min-w-0 md:p-6 md:hover:-translate-y-1"
             >
-              <div className="mb-4 h-1 w-10 bg-crimson" />
-              <h3 className="text-lg font-semibold">{item.title}</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
+              <div className="mb-3 h-1 w-10 bg-crimson md:mb-4" />
+              <h3 className="text-base font-semibold md:text-lg">{item.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted md:mt-3">
                 {item.text}
               </p>
             </div>

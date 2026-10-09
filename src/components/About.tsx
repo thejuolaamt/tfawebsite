@@ -33,6 +33,31 @@ export default function About() {
           together, support them practically, and show their work to the world.
         </p>
 
+        <div className="mt-10 flex w-full justify-center px-6 md:mt-16" aria-hidden="true">
+          <svg
+            className="h-auto w-full max-w-4xl text-crimson opacity-40"
+            viewBox="0 0 800 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              className="about-wave-draw"
+              d="M0 20C150 5 250 35 400 20C550 5 650 35 800 20"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+            <path
+              className="about-wave-flow"
+              d="M10 28C160 13 240 43 390 28C540 13 660 43 790 28"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeDasharray="4 4"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
+
         <div
           data-stagger
           className="-mx-6 mt-8 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-14 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4"

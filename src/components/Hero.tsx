@@ -109,7 +109,7 @@ export default function Hero() {
           The Fine Artist Community
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-base text-cream/85 md:mt-8 md:text-xl">
-          A home for artists to create, exhibit, and grow together.
+          Home of creative inclusiveness.
         </p>
         <div
           data-reveal

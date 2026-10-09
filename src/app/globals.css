@@ -1,0 +1,20 @@
+﻿@import "tailwindcss";
+
+@theme {
+  --color-crimson: #9C0001;
+  --color-crimson-deep: #6E0001;
+  --color-cream: #F8F6DF;
+  --color-paper: #FFFDF6;
+  --color-ink: #1C1412;
+  --color-muted: #6B5F57;
+  --color-line: #E4DFC2;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+}

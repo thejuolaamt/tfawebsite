@@ -25,10 +25,10 @@ export default function About() {
           About TFA
         </p>
         <h2 className="max-w-3xl text-2xl font-bold sm:text-3xl md:text-5xl">
-          A community that gives artists a place to belong, work, and grow.
+          We are your creative safe space.
         </h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted md:mt-6 md:text-lg">
-          The Fine Artist Community (TFA) exists so that talent is never held
+          The Fine Artist Community (TFA) exists so that artists are never held
           back by a lack of space, materials, or exposure. We bring artists
           together, support them practically, and show their work to the world.
         </p>

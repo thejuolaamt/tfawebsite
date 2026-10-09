@@ -11,8 +11,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
-}
+  }
 
 body {
   background: var(--color-cream);
@@ -22,13 +21,12 @@ body {
 /* Screen-by-screen scrolling */
 html {
   scroll-snap-type: y mandatory;
-  overscroll-behavior-y: none;
-}
+  }
 
 section {
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100dvh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -43,12 +41,10 @@ section > div {
   from {
     opacity: 0;
     transform: translateY(32px);
-    filter: blur(8px);
   }
   to {
     opacity: 1;
     transform: none;
-    filter: blur(0);
   }
 }
 
@@ -59,3 +55,4 @@ section > div {
 .js-reveal section.in-view [data-reveal] {
   animation: soft-rise 1.2s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms) both;
 }
+

@@ -40,7 +40,7 @@ export default function About() {
           {pillars.map((item) => (
             <div
               key={item.title}
-              className="min-w-[78%] shrink-0 snap-center rounded-2xl border border-line bg-paper p-5 transition hover:border-crimson md:min-w-0 md:p-6 md:hover:-translate-y-1"
+              className="w-[78%] shrink-0 snap-center md:w-auto rounded-2xl border border-line bg-paper p-5 transition hover:border-crimson md:min-w-0 md:p-6 md:hover:-translate-y-1"
             >
               <div className="mb-3 h-1 w-10 bg-crimson md:mb-4" />
               <h3 className="text-base font-semibold md:text-lg">{item.title}</h3>
@@ -54,3 +54,4 @@ export default function About() {
     </section>
   );
 }
+

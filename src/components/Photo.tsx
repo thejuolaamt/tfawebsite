@@ -9,6 +9,7 @@ type Props = {
   tone?: "light" | "dark";
   sizes?: string;
   className?: string;
+  loading?: "lazy" | "eager";
 };
 
 export default function Photo({
@@ -18,11 +19,19 @@ export default function Photo({
   tone = "light",
   sizes = "(min-width: 768px) 40vw, 90vw",
   className = "",
+  loading = "lazy",
 }: Props) {
   if (src) {
     return (
       <div className={`relative overflow-hidden ${className}`}>
-        <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          sizes={sizes}
+          className="object-cover"
+          loading={loading}
+        />
       </div>
     );
   }

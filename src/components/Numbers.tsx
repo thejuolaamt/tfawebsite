@@ -51,7 +51,7 @@ export default function Numbers() {
           {/* Community leaders */}
           <div className="flex items-center justify-between gap-5 rounded-[32px] bg-crimson-deep p-6 text-cream md:col-span-2 md:gap-8 md:p-10">
             <div className="font-display text-[clamp(88px,30vw,128px)] font-extrabold leading-[0.9] tracking-[-0.03em] md:text-[clamp(128px,12vw,176px)]">
-              6
+              7
             </div>
             <div className="flex flex-col items-end text-right md:items-start md:text-left">
               <div className="text-lg font-bold leading-tight md:text-2xl">

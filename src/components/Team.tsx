@@ -8,42 +8,50 @@ const team: {
   text: string;
   label: string;
   image?: string;
+  loading?: "lazy" | "eager";
 }[] = [
   {
     role: "Founder",
-    name: "Olayinka Judah Olufohun",
+    name: "Olayinka Judah",
     text: "Art historian, curator and founder of TFA. He is passionate about making art accessible to all.",
     label: "Photo: founder",
+    image: "/images/team/Olayinka Judah.jpeg",
+    loading: "eager",
   },
   {
     role: "Team Lead II",
     name: "Oyinloluwa Akindele",
     text: "Professional Sculptor, design expert and Teacher",
     label: "Photo: co-founder",
+    image: "/images/team/Akindele Oyinloluwa.jpeg",
   },
   {
     role: "Workshop facilitator",
     name: "Emmanuel Okolieze",
-    text: "Professional Pencil \portrait artist, and workshop facilitator",
+    text: "Professional Pencil portrait artist, and workshop facilitator",
     label: "Photo: creative lead",
+    image: "/images/team/Emmanuel Okolieze.jpeg",
   },
   {
     role: "Moderator Lead II",
     name: "Promise Oloruntobi",
-    text: "Professional artsist and moderator.",
+    text: "Professional artist and moderator.",
     label: "Photo: community manager",
+    image: "/images/team/Promise Oloruntobi.jpeg",
   },
   {
-    role: "Community Expert II",
-    name: "Valeria Ximena Lopez",
-    text: " Professional Sculptor and community expert",
-    label: "Photo: events",
+    role: "Content Editor",
+    name: "Taiwo Oladele",
+    text: "Community storyteller and editorial lead, shaping the voice and message behind TFA.",
+    label: "Photo: content editor",
+    image: "/images/team/Taiwo Oladele.jpeg",
   },
   {
     role: "Content Manager II",
     name: "Pamilerin Oluwasanmi",
     text: "Creative content manager and social media expert",
     label: "Photo: art store",
+    image: "/images/team/Pamilerin Oluwasanmi.jpeg",
   },
 ];
 
@@ -55,7 +63,7 @@ export default function Team() {
       <div className="mx-auto max-w-6xl px-0 sm:px-6">
         <p className="eyebrow text-crimson">Our team</p>
         <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
-          The people behind TFA.
+          Community Leaders.
         </h2>
 
         <div className="milestone-carousel mt-7 overflow-hidden sm:mt-8 md:mt-12">
@@ -70,6 +78,7 @@ export default function Team() {
                   alt={`${m.name}, ${m.role}`}
                   label={m.label}
                   tone="dark"
+                  loading={m.loading ?? "lazy"}
                   className="h-[260px] w-full !rounded-none !border-0 sm:h-[280px] md:h-56"
                 />
                 <div className="p-5">

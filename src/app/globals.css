@@ -89,7 +89,28 @@ section {
   animation-play-state: paused;
 }
 
+.about-carousel {
+  position: relative;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.about-track {
+  width: max-content;
+  animation: about-marquee 36s linear infinite;
+  will-change: transform;
+}
+
+.about-carousel:hover .about-track {
+  animation-play-state: paused;
+}
+
 @keyframes milestone-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes about-marquee {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }

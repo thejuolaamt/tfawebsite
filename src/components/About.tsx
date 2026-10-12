@@ -33,29 +33,28 @@ export default function About() {
           Your creative safe space.
         </h2>
 
-        <div
-          data-stagger
-          className="mt-7 grid gap-4 sm:-mx-0 sm:mt-8 md:-mx-6 md:mt-12 md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4"
-        >
-          {pillars.map((item) => (
-            <div
-              key={item.title}
-              className="overflow-hidden rounded-[24px] border border-line bg-paper shadow-sm md:w-auto md:rounded-[28px]"
-            >
-              <Photo
-                src={item.image}
-                alt={item.title}
-                label={item.label}
-                className="h-[200px] w-full !rounded-none !border-0 border-b-[1.5px] !border-b-crimson/40"
-              />
-              <div className="p-5">
-                <h3 className="text-[22px] font-bold leading-tight">{item.title}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-muted">
-                  {item.text}
-                </p>
+        <div className="about-carousel mt-7 overflow-hidden sm:mt-8 md:mt-12">
+          <div className="about-track flex min-w-max gap-4 md:gap-6">
+            {[...pillars, ...pillars].map((item, i) => (
+              <div
+                key={`${item.title}-${i}`}
+                className="w-[280px] shrink-0 overflow-hidden rounded-[24px] border border-line bg-paper shadow-sm sm:w-[320px] md:w-[360px] md:rounded-[28px]"
+              >
+                <Photo
+                  src={item.image}
+                  alt={item.title}
+                  label={item.label}
+                  className="h-[200px] w-full !rounded-none !border-0 border-b-[1.5px] !border-b-crimson/40 sm:h-[220px] md:h-[220px]"
+                />
+                <div className="p-5">
+                  <h3 className="text-[22px] font-bold leading-tight">{item.title}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-muted">
+                    {item.text}
+                  </p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>

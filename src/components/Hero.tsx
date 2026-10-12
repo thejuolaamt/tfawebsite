@@ -105,7 +105,7 @@ export default function Hero() {
         <p className="mb-4 text-[10px] uppercase tracking-[0.32em] text-cream/70 sm:text-xs md:mb-5 md:text-sm">
           Welcome to
         </p>
-        <h1 className="text-[2.5rem] font-bold tracking-[-0.06em] sm:text-5xl md:text-7xl">
+        <h1 className="text-[2.5rem] font-bold leading-[0.9] tracking-[-0.06em] sm:text-5xl sm:leading-[0.94] md:text-7xl md:leading-[0.9]">
           The Fine Artist Community
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-sm text-cream/85 sm:text-base md:mt-8 md:text-xl">
@@ -120,7 +120,7 @@ export default function Hero() {
             href="#about"
             className="inline-block rounded-full bg-cream px-6 py-3 text-sm font-medium text-crimson transition hover:bg-paper sm:px-7"
           >
-            Discover TFA
+            Become a Member
           </a>
         </div>
       </div>

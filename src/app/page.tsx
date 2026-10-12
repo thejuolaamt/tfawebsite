@@ -9,6 +9,7 @@ import Team from "@/components/Team";
 import Milestones from "@/components/Milestones";
 import Upcoming from "@/components/Upcoming";
 import JoinCta from "@/components/JoinCta";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -26,6 +27,7 @@ export default function Home() {
         <Upcoming />
         <JoinCta />
       </main>
+      <Footer />
     </>
   );
 }

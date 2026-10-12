@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 const links = [
   { label: "Our Story", href: "#story" },
@@ -15,11 +16,15 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 z-50 w-full border-b border-line bg-cream/90 backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a
-          href="#"
-          className="font-display text-[26px] font-extrabold tracking-tight text-crimson"
-        >
-          TFA
+        <a href="#" aria-label="The Fine Artist Community, back to top" className="flex items-center">
+          <Image
+            src="/images/tfa-logo-mark.png"
+            alt="The Fine Artist Community logo"
+            width={240}
+            height={133}
+            priority
+            className="h-9 w-auto"
+          />
         </a>
 
         {/* Desktop links */}
@@ -87,4 +92,5 @@ export default function Navbar() {
     </header>
   );
 }
+
 

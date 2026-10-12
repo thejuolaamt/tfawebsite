@@ -75,8 +75,6 @@ section {
 
 .milestone-carousel {
   position: relative;
-  scroll-snap-type: x proximity;
-  -webkit-overflow-scrolling: touch;
 }
 
 .milestone-track {
@@ -91,8 +89,6 @@ section {
 
 .about-carousel {
   position: relative;
-  scroll-snap-type: x proximity;
-  -webkit-overflow-scrolling: touch;
 }
 
 .about-track {
@@ -211,4 +207,11 @@ section {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+}
+
+
+/* Vertical swipes over the carousels always scroll the page */
+.milestone-carousel,
+.about-carousel {
+  touch-action: pan-y;
 }

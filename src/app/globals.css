@@ -172,3 +172,25 @@ section > div {
   .float-slow { animation: float-slow 9s ease-in-out infinite; }
   .float-delay { animation-delay: -4s; }
 }
+/* ===== Scroll fix: keep sections one real screen tall and clear of the navbar ===== */
+:root {
+  --nav-h: 65px; /* navbar h-16 (64px) + 1px border */
+}
+
+/* "clip" stops sideways overflow without turning main/body into scroll containers */
+body,
+main {
+  overflow-x: clip;
+}
+
+/* One consistent screen height everywhere (dvh follows the phone's address bar) */
+section,
+#home {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Content never hides under the fixed navbar */
+main > section:not(#home) {
+  padding-top: calc(var(--nav-h) + 1rem);
+}

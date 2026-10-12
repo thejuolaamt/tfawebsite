@@ -6,7 +6,7 @@ export default function Numbers() {
       <div className="mx-auto max-w-6xl">
         <p className="eyebrow text-crimson">TFA in numbers</p>
         <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
-          A community that keeps growing.
+          Artists we have reached.
         </h2>
 
         <div
@@ -17,9 +17,9 @@ export default function Numbers() {
           <div className="rounded-[32px] bg-crimson p-6 text-cream md:col-span-2 md:row-span-2 md:flex md:flex-col md:justify-between md:p-10">
             <div>
               <div className="font-display text-[clamp(88px,30vw,128px)] font-extrabold leading-[0.9] tracking-[-0.03em] md:text-[clamp(128px,14vw,200px)]">
-                235+
+                230+
               </div>
-              <div className="mt-2 font-bold md:text-xl">artists online</div>
+              <div className="mt-2 font-bold md:text-xl">Members in our group</div>
             </div>
             <div className="mt-5 flex md:mt-10" aria-hidden="true">
               {[0, 1, 2, 3].map((i) => (

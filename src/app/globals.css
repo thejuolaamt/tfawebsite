@@ -18,7 +18,7 @@
 }
 
 html {
-  /* Full-page vertical snap so each scroll lands on one complete viewport */
+  /* One full viewport per scroll, with no random jumps between sections */
   scroll-behavior: smooth;
   scroll-padding-top: 4rem;
   scroll-snap-type: y mandatory;

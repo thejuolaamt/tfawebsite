@@ -48,12 +48,20 @@ export default function Numbers() {
             </div>
           </div>
 
-          <div className="flex items-center gap-5 rounded-[32px] bg-crimson-deep p-6 text-cream md:col-span-2 md:p-8">
-            <div className="font-display text-[96px] font-extrabold leading-[0.9] tracking-[-0.03em] md:text-[120px]">
-              6
+          <div className="flex items-center gap-3 rounded-[32px] bg-crimson-deep p-5 text-cream md:col-span-2 md:gap-5 md:p-8">
+            <div className="font-display leading-none tracking-[-0.06em] text-[clamp(72px,18vw,160px)] font-extrabold md:text-[160px]">
+              ^
             </div>
-            <div className="font-bold md:text-xl">
-              community leaders keeping TFA moving
+            <div className="flex flex-col justify-center leading-[0.8]">
+              <span className="font-display text-[clamp(28px,7vw,80px)] font-extrabold tracking-[-0.06em] uppercase md:text-[82px]">
+                6
+              </span>
+              <span className="mt-1 font-black uppercase tracking-[0.08em] text-[10px] text-cream/80 md:text-[11px]">
+                COMMUNITY
+              </span>
+              <span className="font-black uppercase tracking-[0.08em] text-[10px] text-cream/80 md:text-[11px]">
+                LEADERS
+              </span>
             </div>
           </div>
         </div>

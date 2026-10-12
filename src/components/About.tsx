@@ -1,77 +1,59 @@
-﻿const pillars = [
+﻿import Photo from "./Photo";
+
+// To add a real photo to a card, add:  image: "/images/about/your-file.jpg"
+const pillars: { title: string; text: string; label: string; image?: string }[] = [
   {
-    title: "Belonging & a Free Studio",
+    title: "Belonging & a free studio",
     text: "A place for every artist to feel included, with a studio to work in so creativity never depends on what you can afford.",
+    label: "Photo: shared studio",
   },
   {
-    title: "Affordable Materials",
+    title: "Affordable materials",
     text: "Art materials made cheaper, and sometimes free, so artists can focus on making the work.",
+    label: "Photo: paints and brushes",
   },
   {
-    title: "Public Exhibitions",
+    title: "Public exhibitions",
     text: "The TFA Art Presentation Exhibition: a launch-style showcase for artwork, open to the public and art lovers.",
+    label: "Photo: exhibition",
   },
   {
-    title: "School Outreach",
+    title: "School outreach",
     text: "Career guidance and counselling for art-inclined secondary school students, through annual workshops and an art convention.",
+    label: "Photo: school seminar",
   },
 ];
 
 export default function About() {
   return (
-    <section id="about" className="bg-cream px-6 py-16 text-ink md:py-24">
-      <div className="mx-auto max-w-6xl">
-        <p className="mb-3 text-xs font-medium uppercase tracking-[0.3em] text-crimson md:mb-4 md:text-sm">
-          About TFA
-        </p>
-        <h2 className="max-w-3xl text-2xl font-bold sm:text-3xl md:text-5xl">
-          We are your creative safe space.
+    <section id="about" className="bg-paper py-14 text-ink md:py-24">
+      <div className="mx-auto max-w-6xl px-0 sm:px-6">
+        <p className="eyebrow text-crimson">What we give</p>
+        <h2 className="mt-3 text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
+          Your creative safe space.
         </h2>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted md:mt-6 md:text-lg">
-          The Fine Artist Community (TFA) exists so that artists are never held
-          back by a lack of space, materials, or exposure. We bring artists
-          together, support them practically, and show their work to the world.
-        </p>
-
-        <div className="mt-10 flex w-full justify-center px-6 md:mt-16" aria-hidden="true">
-          <svg
-            className="h-auto w-full max-w-4xl text-crimson opacity-40"
-            viewBox="0 0 800 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              className="about-wave-draw"
-              d="M0 20C150 5 250 35 400 20C550 5 650 35 800 20"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <path
-              className="about-wave-flow"
-              d="M10 28C160 13 240 43 390 28C540 13 660 43 790 28"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeDasharray="4 4"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
 
         <div
           data-stagger
-          className="-mx-6 mt-8 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden md:mx-0 md:mt-14 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4"
+          className="mt-7 grid gap-4 sm:-mx-0 sm:mt-8 md:-mx-6 md:mt-12 md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4"
         >
           {pillars.map((item) => (
             <div
               key={item.title}
-              className="w-[78%] shrink-0 snap-center md:w-auto rounded-2xl border border-line bg-paper p-5 transition hover:border-crimson md:min-w-0 md:p-6 md:hover:-translate-y-1"
+              className="overflow-hidden rounded-[24px] border border-line bg-paper shadow-sm md:w-auto md:rounded-[28px]"
             >
-              <div className="mb-3 h-1 w-10 bg-crimson md:mb-4" />
-              <h3 className="text-base font-semibold md:text-lg">{item.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted md:mt-3">
-                {item.text}
-              </p>
+              <Photo
+                src={item.image}
+                alt={item.title}
+                label={item.label}
+                className="h-[200px] w-full !rounded-none !border-0 border-b-[1.5px] !border-b-crimson/40"
+              />
+              <div className="p-5">
+                <h3 className="text-[22px] font-bold leading-tight">{item.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-muted">
+                  {item.text}
+                </p>
+              </div>
             </div>
           ))}
         </div>
@@ -79,4 +61,3 @@ export default function About() {
     </section>
   );
 }
-

@@ -1,11 +1,11 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 
 const links = [
+  { label: "Our Story", href: "#story" },
   { label: "About", href: "#about" },
   { label: "Mission", href: "#mission" },
-  { label: "Our Story", href: "#story" },
   { label: "Team", href: "#team" },
 ];
 
@@ -14,8 +14,11 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 z-50 w-full border-b border-line bg-cream/90 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#" className="text-lg font-bold tracking-wide text-crimson">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+        <a
+          href="#"
+          className="font-display text-[26px] font-extrabold tracking-tight text-crimson"
+        >
           TFA
         </a>
 
@@ -25,7 +28,7 @@ export default function Navbar() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="text-sm text-muted transition hover:text-crimson"
+                className="text-sm font-medium text-muted transition hover:text-crimson"
               >
                 {link.label}
               </a>
@@ -34,7 +37,7 @@ export default function Navbar() {
           <li>
             <a
               href="#join"
-              className="rounded-full bg-crimson px-5 py-2 text-sm font-medium text-cream transition hover:bg-crimson-deep"
+              className="rounded-full bg-crimson px-5 py-2.5 text-sm font-bold text-cream transition hover:bg-crimson-deep"
             >
               Become a Member
             </a>
@@ -44,8 +47,9 @@ export default function Navbar() {
         {/* Mobile toggle */}
         <button
           onClick={() => setOpen(!open)}
-          className="text-sm font-medium text-ink md:hidden"
+          className="min-h-11 rounded-full border-[1.5px] border-ink px-5 text-[15px] font-bold text-ink md:hidden"
           aria-label="Toggle menu"
+          aria-expanded={open}
         >
           {open ? "Close" : "Menu"}
         </button>
@@ -53,23 +57,23 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {open && (
-        <ul className="flex flex-col gap-4 border-t border-line bg-cream px-6 py-4 md:hidden">
+        <ul className="flex flex-col border-t border-line bg-cream px-6 pb-6 pt-2 md:hidden">
           {links.map((link) => (
-            <li key={link.href}>
+            <li key={link.href} className="border-b border-line">
               <a
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="text-ink hover:text-crimson"
+                className="block py-4 font-display text-2xl font-bold tracking-tight text-ink"
               >
                 {link.label}
               </a>
             </li>
           ))}
-          <li>
+          <li className="pt-5">
             <a
               href="#join"
               onClick={() => setOpen(false)}
-              className="font-medium text-crimson"
+              className="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-crimson text-base font-bold text-cream"
             >
               Become a Member
             </a>
@@ -79,4 +83,3 @@ export default function Navbar() {
     </header>
   );
 }
-

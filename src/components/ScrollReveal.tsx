@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useLayoutEffect } from "react";
 
@@ -23,17 +23,19 @@ export default function ScrollReveal() {
       });
     });
 
+    // Reveal as soon as any part of a section is on screen, so tall
+    // sections (which can never be 20% visible) still appear.
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.intersectionRatio >= 0.2) {
+          if (entry.isIntersecting) {
             entry.target.classList.add("in-view");
-          } else if (!entry.isIntersecting) {
+          } else {
             entry.target.classList.remove("in-view");
           }
         });
       },
-      { threshold: [0, 0.2] }
+      { rootMargin: "0px 0px -12% 0px" }
     );
 
     sections.forEach((section) => observer.observe(section));

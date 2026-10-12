@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 @theme {
   --color-crimson: #9C0001;
@@ -8,32 +8,92 @@
   --color-ink: #1C1412;
   --color-muted: #6B5F57;
   --color-line: #E4DFC2;
+  --color-blush: #F2C9B8;
+}
+
+/* Fonts come from next/font in layout.tsx */
+@theme inline {
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
 }
 
 html {
-  }
+  /* Full-page vertical snap so each scroll lands on one complete viewport */
+  scroll-behavior: smooth;
+  scroll-padding-top: 4rem;
+  scroll-snap-type: y mandatory;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   background: var(--color-cream);
   color: var(--color-ink);
+  font-family: var(--font-sans);
+  overscroll-behavior-y: contain;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
 }
 
-/* Screen-by-screen scrolling */
-html {
-  scroll-snap-type: y mandatory;
+main {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.03em;
+}
+
+@layer components {
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
   }
+}
 
 section {
+  min-height: 100svh;
   scroll-snap-align: start;
   scroll-snap-stop: always;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+.milestone-carousel {
+  position: relative;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+.milestone-track {
+  width: max-content;
+  animation: milestone-marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.milestone-carousel:hover .milestone-track {
+  animation-play-state: paused;
+}
+
+@keyframes milestone-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 section > div {
   width: 100%;
+}
+
+/* The welcome screen stays a full screen */
+#home {
+  min-height: 100svh;
 }
 
 /* Soft reveal */
@@ -56,28 +116,35 @@ section > div {
   animation: soft-rise 1.2s cubic-bezier(0.22, 1, 0.36, 1) var(--d, 0ms) both;
 }
 
-
 /* Gentle drift for hero shapes */
 @keyframes float-slow {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-12px); }
 }
 
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 4.5rem;
+  }
+
+  body {
+    font-size: 15px;
+  }
+
+  section {
+    min-height: 100dvh;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.04em;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .float-slow { animation: float-slow 9s ease-in-out infinite; }
   .float-delay { animation-delay: -4s; }
-  .about-wave-draw {
-    stroke-dasharray: 1000;
-    animation: about-wave-draw 2.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-  .about-wave-flow { animation: about-wave-flow 8s linear infinite; }
-}
-
-@keyframes about-wave-draw {
-  from { stroke-dashoffset: 1000; }
-  to { stroke-dashoffset: 0; }
-}
-
-@keyframes about-wave-flow {
-  to { stroke-dashoffset: -16; }
 }

@@ -97,28 +97,28 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden bg-crimson px-6 text-center text-cream"
+      className="relative overflow-hidden bg-crimson px-4 pb-16 pt-24 text-center text-cream sm:px-6 md:px-6 md:pt-20"
     >
       <Shapes />
 
       <div className="relative z-10 mx-auto max-w-4xl">
-        <p className="mb-5 text-xs uppercase tracking-[0.35em] text-cream/70 md:text-sm">
+        <p className="mb-4 text-[10px] uppercase tracking-[0.32em] text-cream/70 sm:text-xs md:mb-5 md:text-sm">
           Welcome to
         </p>
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-7xl">
+        <h1 className="text-[2.5rem] font-bold tracking-[-0.06em] sm:text-5xl md:text-7xl">
           The Fine Artist Community
         </h1>
-        <p className="mx-auto mt-6 max-w-xl text-base text-cream/85 md:mt-8 md:text-xl">
+        <p className="mx-auto mt-5 max-w-xl text-sm text-cream/85 sm:text-base md:mt-8 md:text-xl">
           Home of creative inclusiveness.
         </p>
         <div
           data-reveal
           style={{ "--d": "520ms" } as CSSProperties}
-          className="mt-10"
+          className="mt-8 md:mt-10"
         >
           <a
             href="#about"
-            className="inline-block rounded-full bg-cream px-7 py-3 text-sm font-medium text-crimson transition hover:bg-paper"
+            className="inline-block rounded-full bg-cream px-6 py-3 text-sm font-medium text-crimson transition hover:bg-paper sm:px-7"
           >
             Discover TFA
           </a>

@@ -1,5 +1,5 @@
-// Where "Join TFA" should lead (a WhatsApp group, Facebook group, sign-up form...)
-const JOIN_URL = "#";
+﻿// Where "Join TFA" should lead (a WhatsApp group, Facebook group, sign-up form...)
+const JOIN_URL = "https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q";
 
 export default function JoinCta() {
   return (
@@ -10,6 +10,8 @@ export default function JoinCta() {
         </h2>
         <a
           href={JOIN_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="mt-7 inline-flex min-h-13 items-center justify-center rounded-full bg-crimson px-7 text-base font-bold text-cream transition hover:bg-crimson-deep"
         >
           Become a member
@@ -22,3 +24,4 @@ export default function JoinCta() {
     </section>
   );
 }
+

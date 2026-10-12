@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
@@ -36,7 +36,9 @@ export default function Navbar() {
           ))}
           <li>
             <a
-              href="#join"
+              href="https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q"
+              target="_blank"
+              rel="noopener noreferrer"
               className="rounded-full bg-crimson px-5 py-2.5 text-sm font-bold text-cream transition hover:bg-crimson-deep"
             >
               Become a Member
@@ -71,7 +73,9 @@ export default function Navbar() {
           ))}
           <li className="pt-5">
             <a
-              href="#join"
+              href="https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-crimson text-base font-bold text-cream"
             >
@@ -83,3 +87,4 @@ export default function Navbar() {
     </header>
   );
 }
+

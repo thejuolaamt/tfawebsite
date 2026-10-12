@@ -117,7 +117,9 @@ export default function Hero() {
           className="mt-8 md:mt-10"
         >
           <a
-            href="#about"
+            href="https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block rounded-full bg-cream px-6 py-3 text-sm font-medium text-crimson transition hover:bg-paper sm:px-7"
           >
             Become a Member
@@ -127,3 +129,4 @@ export default function Hero() {
     </section>
   );
 }
+

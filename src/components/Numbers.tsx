@@ -48,20 +48,27 @@ export default function Numbers() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3 rounded-[32px] bg-crimson-deep p-5 text-cream md:col-span-2 md:gap-5 md:p-8">
-            <div className="font-display leading-none tracking-[-0.06em] text-[clamp(72px,18vw,160px)] font-extrabold md:text-[160px]">
-              ^
+          {/* Community leaders */}
+          <div className="flex items-center justify-between gap-5 rounded-[32px] bg-crimson-deep p-6 text-cream md:col-span-2 md:gap-8 md:p-10">
+            <div className="font-display text-[clamp(88px,30vw,128px)] font-extrabold leading-[0.9] tracking-[-0.03em] md:text-[clamp(128px,12vw,176px)]">
+              6
             </div>
-            <div className="flex flex-col justify-center leading-[0.8]">
-              <span className="font-display text-[clamp(28px,7vw,80px)] font-extrabold tracking-[-0.06em] uppercase md:text-[82px]">
-                6
-              </span>
-              <span className="mt-1 font-black uppercase tracking-[0.08em] text-[10px] text-cream/80 md:text-[11px]">
-                COMMUNITY
-              </span>
-              <span className="font-black uppercase tracking-[0.08em] text-[10px] text-cream/80 md:text-[11px]">
-                LEADERS
-              </span>
+            <div className="flex flex-col items-end text-right md:items-start md:text-left">
+              <div className="text-lg font-bold leading-tight md:text-2xl">
+                community
+                <br />
+                leaders
+              </div>
+              <div className="mt-4 flex md:mt-5" aria-hidden="true">
+                {[0, 1, 2, 3, 4, 5].map((i) => (
+                  <Photo
+                    key={i}
+                    alt=""
+                    tone="dark"
+                    className={`size-9 rounded-full !p-0 md:size-11 ${i > 0 ? "-ml-2.5" : ""}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>

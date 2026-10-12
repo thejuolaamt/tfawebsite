@@ -1,0 +1,91 @@
+import Photo from "./Photo";
+
+// PLACEHOLDERS: replace names, roles, and bios with the real team.
+// To add a real photo to a card, add:  image: "/images/story/your-file.jpg"
+const team: {
+  role: string;
+  name: string;
+  text: string;
+  label: string;
+  image?: string;
+}[] = [
+  {
+    role: "Founder",
+    name: "Team member name",
+    text: "A short line about who they are and what they do for TFA.",
+    label: "Photo: founder",
+  },
+  {
+    role: "Co-founder",
+    name: "Team member name",
+    text: "A short line about who they are and what they do for TFA.",
+    label: "Photo: co-founder",
+  },
+  {
+    role: "Creative lead",
+    name: "Team member name",
+    text: "A short line about who they are and what they do for TFA.",
+    label: "Photo: creative lead",
+  },
+  {
+    role: "Community manager",
+    name: "Team member name",
+    text: "A short line about who they are and what they do for TFA.",
+    label: "Photo: community manager",
+  },
+  {
+    role: "Events",
+    name: "Team member name",
+    text: "A short line about who they are and what they do for TFA.",
+    label: "Photo: events",
+  },
+  {
+    role: "Art store",
+    name: "Team member name",
+    text: "A short line about who they are and what they do for TFA.",
+    label: "Photo: art store",
+  },
+];
+
+const tones = ["bg-crimson", "bg-ink", "bg-crimson-deep"];
+
+export default function Team() {
+  return (
+    <section id="team" className="bg-paper py-14 text-ink md:py-24">
+      <div className="mx-auto max-w-6xl px-0 sm:px-6">
+        <p className="eyebrow text-crimson">Our team</p>
+        <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
+          The people behind TFA.
+        </h2>
+
+        <div className="milestone-carousel mt-7 overflow-hidden sm:mt-8 md:mt-12">
+          <div className="milestone-track flex min-w-max gap-4 md:gap-5">
+            {[...team, ...team].map((m, i) => (
+              <div
+                key={`${m.role}-${i}`}
+                className={`w-[280px] shrink-0 overflow-hidden rounded-[24px] text-cream shadow-sm sm:w-[320px] md:w-[340px] md:rounded-[28px] ${tones[i % tones.length]}`}
+              >
+                <Photo
+                  src={m.image}
+                  alt={`${m.name}, ${m.role}`}
+                  label={m.label}
+                  tone="dark"
+                  className="h-[260px] w-full !rounded-none !border-0 sm:h-[280px] md:h-56"
+                />
+                <div className="p-5">
+                  <p className="eyebrow text-blush">{m.role}</p>
+                  <h3 className="mt-2 text-xl font-bold leading-tight sm:text-2xl">
+                    {m.name}
+                  </h3>
+                  <p className="mt-2 text-[14px] leading-relaxed text-cream/80 sm:text-[15px]">
+                    {m.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

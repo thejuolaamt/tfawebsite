@@ -75,6 +75,9 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     images: ["/images/tfa-logo-mark.png"],
   },
+  verification: {
+    google: "7BqoOK2Xr0RgDM6O5szJ1POJ3s16Dqw9bM4LQgrkIrE",
+  },
 };
 
 export const viewport: Viewport = {

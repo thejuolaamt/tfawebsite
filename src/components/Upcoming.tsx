@@ -1,8 +1,9 @@
 import Photo from "./Photo";
+import { WORKSHOP_URL } from "@/lib/links";
 
 // To add a real photo to a row, add:  image: "/images/story/your-file.jpg"
-const upcoming: { tag: string; title: string; text: string; image?: string }[] = [
-  { tag: "2026", title: "Online practical workshop", text: "Another hands-on session for our members." },
+const upcoming: { tag: string; title: string; text: string; image?: string; href?: string }[] = [
+  { tag: "2026", title: "Online practical workshop", text: "Another hands-on session for our members.", href: WORKSHOP_URL },
   { tag: "Planned", title: "Free art studio", text: "A free place to work for artists in Ondo." },
   { tag: "Members", title: "Cheaper art materials", text: "Art materials at lower prices for TFA members." },
   { tag: "2027", title: "Artist meets", text: "In-person gatherings for artists to connect." },
@@ -35,6 +36,16 @@ export default function Upcoming() {
                 <p className="eyebrow text-blush">{u.tag}</p>
                 <h3 className="mt-1 text-xl font-bold leading-tight">{u.title}</h3>
                 <p className="mt-1 text-sm text-cream/75">{u.text}</p>
+                {u.href && (
+                  <a
+                    href={u.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-block text-sm font-bold text-cream underline underline-offset-4 hover:text-paper"
+                  >
+                    Register now
+                  </a>
+                )}
               </div>
             </li>
           ))}

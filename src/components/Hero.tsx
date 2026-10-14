@@ -1,4 +1,5 @@
 ﻿import type { CSSProperties } from "react";
+import { WORKSHOP_URL } from "@/lib/links";
 
 const CREAM = "#F8F6DF";
 
@@ -114,7 +115,7 @@ export default function Hero() {
         <div
           data-reveal
           style={{ "--d": "520ms" } as CSSProperties}
-          className="mt-8 md:mt-10"
+          className="mt-8 flex flex-wrap items-center justify-center gap-3 md:mt-10"
         >
           <a
             href="https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q"
@@ -124,9 +125,16 @@ export default function Hero() {
           >
             Become a Member
           </a>
+          <a
+            href={WORKSHOP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-full border-[1.5px] border-cream px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream hover:text-crimson sm:px-7"
+          >
+            Register for Workshop
+          </a>
         </div>
       </div>
     </section>
   );
 }
-

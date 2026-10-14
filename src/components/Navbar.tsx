@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { WORKSHOP_URL } from "@/lib/links";
 
 const links = [
   { label: "Our Story", href: "#story" },
@@ -41,6 +42,16 @@ export default function Navbar() {
           ))}
           <li>
             <a
+              href={WORKSHOP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-full border-[1.5px] border-crimson px-5 py-2.5 text-sm font-bold text-crimson transition hover:bg-crimson hover:text-cream"
+            >
+              Register for Workshop
+            </a>
+          </li>
+          <li>
+            <a
               href="https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q"
               target="_blank"
               rel="noopener noreferrer"
@@ -76,7 +87,16 @@ export default function Navbar() {
               </a>
             </li>
           ))}
-          <li className="pt-5">
+          <li className="flex flex-col gap-3 pt-5">
+            <a
+              href={WORKSHOP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="inline-flex min-h-13 w-full items-center justify-center rounded-full border-[1.5px] border-crimson text-base font-bold text-crimson"
+            >
+              Register for Workshop
+            </a>
             <a
               href="https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q"
               target="_blank"
@@ -92,5 +112,3 @@ export default function Navbar() {
     </header>
   );
 }
-
-

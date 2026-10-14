@@ -40,13 +40,15 @@ export default function About() {
               key={item.title}
               className="w-[280px] shrink-0 overflow-hidden rounded-[24px] border border-line bg-paper shadow-sm sm:w-[320px] md:w-[360px] md:rounded-[28px]"
             >
-              <Photo
-                src={item.image}
-                alt={item.title}
-                label={item.label}
-                sizes="(min-width: 768px) 360px, 320px"
-                className="h-[200px] w-full !rounded-none !border-0 border-b-[1.5px] !border-b-crimson/40 sm:h-[220px] md:h-[220px]"
-              />
+              {item.image && (
+                <Photo
+                  src={item.image}
+                  alt={item.title}
+                  label={item.label}
+                  sizes="(min-width: 768px) 360px, 320px"
+                  className="h-[200px] w-full !rounded-none !border-0 border-b-[1.5px] !border-b-crimson/40 sm:h-[220px] md:h-[220px]"
+                />
+              )}
               <div className="p-5">
                 <h3 className="text-[22px] font-bold leading-tight">{item.title}</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-muted">

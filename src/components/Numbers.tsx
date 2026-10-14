@@ -1,5 +1,14 @@
 import Photo from "./Photo";
 
+const AVATARS = [
+  "/images/team/olayinka-judah.jpeg",
+  "/images/team/oyinloluwa-akindele.jpeg",
+  "/images/team/emmanuel-okolieze.jpeg",
+  "/images/team/promise-oloruntobi.jpeg",
+  "/images/team/taiwo-oladele.jpeg",
+  "/images/team/pamilerin-oluwasanmi.jpeg",
+];
+
 export default function Numbers() {
   return (
     <section id="numbers" className="bg-cream px-4 py-14 text-ink sm:px-6 md:py-24">
@@ -22,12 +31,14 @@ export default function Numbers() {
               <div className="mt-2 font-bold md:text-xl">Members in our group</div>
             </div>
             <div className="mt-5 flex md:mt-10" aria-hidden="true">
-              {[0, 1, 2, 3].map((i) => (
+              {AVATARS.slice(0, 4).map((src, index) => (
                 <Photo
-                  key={i}
+                  key={src}
+                  src={src}
                   alt=""
                   tone="dark"
-                  className={`size-12 rounded-full !p-0 ${i > 0 ? "-ml-3" : ""}`}
+                  sizes="48px"
+                  className={`size-12 rounded-full !p-0 ${index > 0 ? "-ml-3" : ""}`}
                 />
               ))}
             </div>
@@ -51,7 +62,7 @@ export default function Numbers() {
           {/* Community leaders */}
           <div className="flex items-center justify-between gap-5 rounded-[32px] bg-crimson-deep p-6 text-cream md:col-span-2 md:gap-8 md:p-10">
             <div className="font-display text-[clamp(88px,30vw,128px)] font-extrabold leading-[0.9] tracking-[-0.03em] md:text-[clamp(128px,12vw,176px)]">
-              7
+                6
             </div>
             <div className="flex flex-col items-end text-right md:items-start md:text-left">
               <div className="text-lg font-bold leading-tight md:text-2xl">
@@ -60,12 +71,14 @@ export default function Numbers() {
                 leaders
               </div>
               <div className="mt-4 flex md:mt-5" aria-hidden="true">
-                {[0, 1, 2, 3, 4, 5].map((i) => (
+                {AVATARS.map((src, index) => (
                   <Photo
-                    key={i}
+                    key={src}
+                    src={src}
                     alt=""
                     tone="dark"
-                    className={`size-9 rounded-full !p-0 md:size-11 ${i > 0 ? "-ml-2.5" : ""}`}
+                    sizes="44px"
+                    className={`size-9 rounded-full !p-0 md:size-11 ${index > 0 ? "-ml-2.5" : ""}`}
                   />
                 ))}
               </div>

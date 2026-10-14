@@ -2,6 +2,7 @@
 import ScrollReveal from "@/components/ScrollReveal";
 import Hero from "@/components/Hero";
 import Numbers from "@/components/Numbers";
+import Workshop from "@/components/Workshop";
 import OurStory from "@/components/OurStory";
 import About from "@/components/About";
 import MissionVision from "@/components/MissionVision";
@@ -21,6 +22,7 @@ export default function Home() {
         <JsonLd /> {/* This is the one-line layout edit */}
         <Hero />
         <Numbers />
+        <Workshop />
         <OurStory />
         <About />
         <MissionVision />

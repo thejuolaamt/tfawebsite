@@ -1,6 +1,5 @@
 ﻿import Image from "next/image";
-
-const JOIN_URL = "https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q";
+import { JOIN_URL } from "@/lib/links";
 
 // Fill in a link to show it in the footer. Leave "" to hide it.
 const SOCIALS = [
@@ -15,6 +14,7 @@ const LINKS = [
   { label: "About", href: "#about" },
   { label: "Mission", href: "#mission" },
   { label: "Team", href: "#team" },
+  { label: "Workshop", href: "#workshop" },
 ];
 
 export default function Footer() {
@@ -43,7 +43,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-crimson px-6 text-sm font-bold text-cream transition hover:bg-crimson-deep"
             >
-              Become a member
+              Become a Member
             </a>
           </div>
 

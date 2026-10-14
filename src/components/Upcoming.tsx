@@ -7,7 +7,7 @@ const upcoming: { tag: string; title: string; text: string; image?: string; href
   { tag: "Planned", title: "Free art studio", text: "A free place to work for artists in Ondo." },
   { tag: "Members", title: "Cheaper art materials", text: "Art materials at lower prices for TFA members." },
   { tag: "2027", title: "Artist meets", text: "In-person gatherings for artists to connect." },
-  { tag: "2027", title: "TFA exhibition", text: "A public showcase of our members work." },
+  { tag: "2027", title: "TFA exhibition", text: "A public showcase of our members' work." },
 ];
 
 export default function Upcoming() {
@@ -25,13 +25,15 @@ export default function Upcoming() {
               key={u.title}
               className="flex items-center gap-4 border-b border-paper/25 py-4"
             >
-              <Photo
-                src={u.image}
-                alt={u.title}
-                tone="dark"
-                sizes="72px"
-                className="size-[72px] shrink-0 rounded-[20px] !p-0"
-              />
+              {u.image && (
+                <Photo
+                  src={u.image}
+                  alt={u.title}
+                  tone="dark"
+                  sizes="72px"
+                  className="size-[72px] shrink-0 rounded-[20px] !p-0"
+                />
+              )}
               <div>
                 <p className="eyebrow text-blush">{u.tag}</p>
                 <h3 className="mt-1 text-xl font-bold leading-tight">{u.title}</h3>

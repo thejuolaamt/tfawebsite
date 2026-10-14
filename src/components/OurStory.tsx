@@ -19,7 +19,7 @@ export default function OurStory() {
             We wanted a space for all artists.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-muted md:mt-6 md:text-lg">
-            The community was founded by Olayinka Judah; a Nigerian artist and art educator, 
+            The community was founded by Olayinka Judah, a Nigerian artist and art educator, 
             who wanted to create a safe space for artists to connect, learn, and grow 
             together. The Fine Artist Community is a place where artists of all levels can 
             come together to share their work, learn from each other, and support one 

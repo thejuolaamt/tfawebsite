@@ -1,4 +1,5 @@
 import Photo from "./Photo";
+import Carousel from "./Carousel";
 
 // To add a real photo to a card, add:  image: "/images/story/your-file.jpg"
 const milestones: {
@@ -57,33 +58,32 @@ export default function Milestones() {
           Built by artists, one step at a time.
         </h2>
 
-        <div className="milestone-carousel mt-7 overflow-hidden sm:mt-8 md:mt-12">
-          <div className="milestone-track flex min-w-max gap-4 md:gap-5">
-            {[...milestones, ...milestones].map((m, i) => (
-              <div
-                key={`${m.title}-${i}`}
-                className={`w-[280px] shrink-0 overflow-hidden rounded-[24px] text-cream shadow-sm sm:w-[320px] md:w-[340px] md:rounded-[28px] ${tones[i % tones.length]}`}
-              >
-                <Photo
-                  src={m.image}
-                  alt={m.title}
-                  label={m.label}
-                  tone="dark"
-                  className="h-[260px] w-full !rounded-none !border-0 sm:h-[280px] md:h-56"
-                />
-                <div className="p-5">
-                  <p className="eyebrow text-blush">{m.tag}</p>
-                  <h3 className="mt-2 text-xl font-bold leading-tight sm:text-2xl">
-                    {m.title}
-                  </h3>
-                  <p className="mt-2 text-[14px] leading-relaxed text-cream/80 sm:text-[15px]">
-                    {m.text}
-                  </p>
-                </div>
+        <Carousel label="What TFA has done so far">
+          {milestones.map((m, i) => (
+            <div
+              key={m.title}
+              className={`w-[280px] shrink-0 overflow-hidden rounded-[24px] text-cream shadow-sm sm:w-[320px] md:w-[340px] md:rounded-[28px] ${tones[i % tones.length]}`}
+            >
+              <Photo
+                src={m.image}
+                alt={m.title}
+                label={m.label}
+                tone="dark"
+                sizes="(min-width: 768px) 340px, 320px"
+                className="h-[260px] w-full !rounded-none !border-0 sm:h-[280px] md:h-56"
+              />
+              <div className="p-5">
+                <p className="eyebrow text-blush">{m.tag}</p>
+                <h3 className="mt-2 text-xl font-bold leading-tight sm:text-2xl">
+                  {m.title}
+                </h3>
+                <p className="mt-2 text-[14px] leading-relaxed text-cream/80 sm:text-[15px]">
+                  {m.text}
+                </p>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          ))}
+        </Carousel>
       </div>
     </section>
   );

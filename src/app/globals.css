@@ -1,4 +1,4 @@
-﻿@import "tailwindcss";
+@import "tailwindcss";
 
 @theme {
   --color-crimson: #9C0001;
@@ -71,44 +71,6 @@ section {
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-.milestone-carousel {
-  position: relative;
-}
-
-.milestone-track {
-  width: max-content;
-  animation: milestone-marquee 28s linear infinite;
-  will-change: transform;
-}
-
-.milestone-carousel:hover .milestone-track {
-  animation-play-state: paused;
-}
-
-.about-carousel {
-  position: relative;
-}
-
-.about-track {
-  width: max-content;
-  animation: about-marquee 36s linear infinite;
-  will-change: transform;
-}
-
-.about-carousel:hover .about-track {
-  animation-play-state: paused;
-}
-
-@keyframes milestone-marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-@keyframes about-marquee {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
 }
 
 section > div {
@@ -210,8 +172,3 @@ section {
 }
 
 
-/* Vertical swipes over the carousels always scroll the page */
-.milestone-carousel,
-.about-carousel {
-  touch-action: pan-y;
-}

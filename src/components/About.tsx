@@ -1,4 +1,5 @@
-﻿import Photo from "./Photo";
+import Photo from "./Photo";
+import Carousel from "./Carousel";
 
 // To add a real photo to a card, add:  image: "/images/about/your-file.jpg"
 const pillars: { title: string; text: string; label: string; image?: string }[] = [
@@ -33,29 +34,28 @@ export default function About() {
           Your creative safe space.
         </h2>
 
-        <div className="about-carousel mt-7 overflow-hidden sm:mt-8 md:mt-12">
-          <div className="about-track flex min-w-max gap-4 md:gap-6">
-            {[...pillars, ...pillars].map((item, i) => (
-              <div
-                key={`${item.title}-${i}`}
-                className="w-[280px] shrink-0 overflow-hidden rounded-[24px] border border-line bg-paper shadow-sm sm:w-[320px] md:w-[360px] md:rounded-[28px]"
-              >
-                <Photo
-                  src={item.image}
-                  alt={item.title}
-                  label={item.label}
-                  className="h-[200px] w-full !rounded-none !border-0 border-b-[1.5px] !border-b-crimson/40 sm:h-[220px] md:h-[220px]"
-                />
-                <div className="p-5">
-                  <h3 className="text-[22px] font-bold leading-tight">{item.title}</h3>
-                  <p className="mt-2 text-[15px] leading-relaxed text-muted">
-                    {item.text}
-                  </p>
-                </div>
+        <Carousel label="What TFA gives its members" gapClass="gap-4 md:gap-6">
+          {pillars.map((item) => (
+            <div
+              key={item.title}
+              className="w-[280px] shrink-0 overflow-hidden rounded-[24px] border border-line bg-paper shadow-sm sm:w-[320px] md:w-[360px] md:rounded-[28px]"
+            >
+              <Photo
+                src={item.image}
+                alt={item.title}
+                label={item.label}
+                sizes="(min-width: 768px) 360px, 320px"
+                className="h-[200px] w-full !rounded-none !border-0 border-b-[1.5px] !border-b-crimson/40 sm:h-[220px] md:h-[220px]"
+              />
+              <div className="p-5">
+                <h3 className="text-[22px] font-bold leading-tight">{item.title}</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-muted">
+                  {item.text}
+                </p>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          ))}
+        </Carousel>
       </div>
     </section>
   );

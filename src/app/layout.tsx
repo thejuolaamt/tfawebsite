@@ -57,6 +57,7 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  // Sharing images come from src/app/opengraph-image.png and twitter-image.png
   openGraph: {
     title: TITLE,
     description: DESCRIPTION,
@@ -64,18 +65,11 @@ export const metadata: Metadata = {
     siteName: "The Fine Artist Community",
     type: "website",
     locale: "en_NG",
-    images: [
-      {
-        url: "/images/tfa-logo-mark.png",
-        alt: "The Fine Artist Community (TFA) logo",
-      },
-    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: TITLE,
     description: DESCRIPTION,
-    images: ["/images/tfa-logo-mark.png"],
   },
   verification: {
     google: "7BqoOK2Xr0RgDM6O5szJ1POJ3s16Dqw9bM4LQgrkIrE",
@@ -99,4 +93,3 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     </html>
   );
 }
-

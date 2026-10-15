@@ -1,11 +1,8 @@
-import type { MetadataRoute } from "next";
-
-const SITE_URL = "https://www.thefineartist.org";
+﻿import type { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/" },
-    sitemap: `${SITE_URL}/sitemap.xml`,
-    host: SITE_URL,
+    rules: { userAgent: "*", allow: "/", disallow: ["/account"] },
+    sitemap: "https://www.thefineartist.org/sitemap.xml",
   };
 }

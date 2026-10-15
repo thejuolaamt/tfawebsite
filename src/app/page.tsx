@@ -1,4 +1,5 @@
-﻿import Navbar from "@/components/Navbar";
+﻿import type { Metadata } from "next";
+import Navbar from "@/components/Navbar";
 import ScrollReveal from "@/components/ScrollReveal";
 import Hero from "@/components/Hero";
 import Numbers from "@/components/Numbers";
@@ -11,7 +12,11 @@ import Milestones from "@/components/Milestones";
 import Upcoming from "@/components/Upcoming";
 import JoinCta from "@/components/JoinCta";
 import Footer from "@/components/Footer";
-import JsonLd from "@/components/JsonLd"; // Add this line here
+import JsonLd from "@/components/JsonLd";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function Home() {
   return (
@@ -19,7 +24,7 @@ export default function Home() {
       <Navbar />
       <ScrollReveal />
       <main>
-        <JsonLd /> {/* This is the one-line layout edit */}
+        <JsonLd />
         <Hero />
         <Numbers />
         <Workshop />

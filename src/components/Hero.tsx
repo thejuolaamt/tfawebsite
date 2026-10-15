@@ -113,6 +113,7 @@ export default function Hero() {
         <p className="mx-auto mt-5 max-w-xl text-sm text-cream/85 sm:text-base md:mt-8 md:text-xl">
           Home of creative inclusiveness.
         </p>
+        <p className="mx-auto mt-3 max-w-xl text-xs text-cream/70 sm:text-sm md:text-base">An art community in Nigeria where artists of every level belong, learn, exhibit and grow together.</p>
         <div
           data-reveal
           style={{ "--d": "520ms" } as CSSProperties}
@@ -137,3 +138,4 @@ export default function Hero() {
     </section>
   );
 }
+

@@ -2,7 +2,7 @@
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: ["/account"] },
+    rules: { userAgent: "*", allow: "/", disallow: ["/account", "/login", "/api/"] },
     sitemap: "https://www.thefineartist.org/sitemap.xml",
   };
 }

@@ -1,6 +1,7 @@
 ﻿import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, DM_Sans } from "next/font/google";
 import "./globals.css";
+
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -46,7 +47,6 @@ export const metadata: Metadata = {
   authors: [{ name: "The Fine Artist Community" }],
   creator: "The Fine Artist Community",
   publisher: "The Fine Artist Community",
-  alternates: { canonical: "/" },
   robots: {
     index: true,
     follow: true,
@@ -93,3 +93,5 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     </html>
   );
 }
+
+

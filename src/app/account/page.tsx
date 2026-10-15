@@ -1,310 +1,259 @@
 ﻿"use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import { WHATSAPP_URL } from "@/lib/links";
+import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
-type Artwork = {
-  id: string;
-  title: string;
-  medium: string;
-  image: string;
-};
+/* ---------- Types and helpers ---------- */
 
 type Member = {
-  id: string;
-  name: string;
-  email: string;
-  birthdate: string;
-  role: string;
+  fullName: string;
+  avatarUrl: string;
+  memberType: string;
+  state: string;
+  country: string;
+  disciplines: string[];
   bio: string;
-  avatar: string;
-  artworks: Artwork[];
+  instagram: string;
+  birthDate: string;
 };
 
-const MONTHS = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+const MEMBER_LABELS: Record<string, string> = {
+  student: "Student",
+  hobbyist: "Hobbyist",
+  emerging: "Emerging artist",
+  professional: "Professional artist",
+  educator: "Art educator",
+  enthusiast: "Art enthusiast",
+};
 
-function formatBirthdayDisplay(birthdate: string, includeYear: boolean) {
-  if (!birthdate) return "";
-  const parts = birthdate.split("-");
-  if (parts.length === 3) {
-    const year = parts[0];
-    const monthIndex = parseInt(parts[1], 10) - 1;
-    const day = parseInt(parts[2], 10);
-    if (MONTHS[monthIndex] && !isNaN(day)) {
-      return includeYear
-        ? `${MONTHS[monthIndex]} ${day}, ${year}`
-        : `${MONTHS[monthIndex]} ${day}`;
-    }
-  }
-  return birthdate;
+function formatBirthday(value: string) {
+  if (!value) return "";
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return "";
+  return d.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
 }
 
+/* ---------- Page ---------- */
+
 export default function AccountPage() {
+  const router = useRouter();
   const [member, setMember] = useState<Member | null>(null);
-  const [showBirthYear, setShowBirthYear] = useState(false);
-  const [title, setTitle] = useState("");
-  const [medium, setMedium] = useState("");
-  const [artImage, setArtImage] = useState("");
-  const [showUpload, setShowUpload] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    const raw = localStorage.getItem("tfa_member");
-    if (raw) {
-      try {
-        setMember(JSON.parse(raw));
-      } catch {}
-    }
-  }, []);
+    let cancelled = false;
 
-  function handleArtSelect(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        const size = 700;
-        canvas.width = size;
-        canvas.height = size;
-        const ctx = canvas.getContext("2d");
-        if (ctx) {
-          const min = Math.min(img.width, img.height);
-          ctx.drawImage(
-            img,
-            (img.width - min) / 2,
-            (img.height - min) / 2,
-            min,
-            min,
-            0,
-            0,
-            size,
-            size
-          );
-          setArtImage(canvas.toDataURL("image/jpeg", 0.85));
-        }
-      };
-      img.src = reader.result as string;
+    async function load() {
+      const supabase = createClient();
+      const { data: auth } = await supabase.auth.getUser();
+
+      if (!auth.user) {
+        router.replace("/login");
+        return;
+      }
+
+      const user = auth.user;
+      const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
+
+      const { data: row, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle();
+
+      if (cancelled) return;
+
+      if (error) {
+        setFailed(true);
+        setLoading(false);
+        return;
+      }
+
+      const p = (row ?? {}) as Record<string, unknown>;
+      const text = (a: unknown, b: unknown) =>
+        (typeof a === "string" && a) || (typeof b === "string" && b) || "";
+      const list = (a: unknown, b: unknown): string[] =>
+        Array.isArray(a) ? (a as string[]) : Array.isArray(b) ? (b as string[]) : [];
+
+      setMember({
+        fullName: text(p.full_name, meta.full_name),
+        avatarUrl: text(p.avatar_url, ""),
+        memberType: text(p.member_type, meta.member_type),
+        state: text(p.state, meta.state),
+        country: text(p.country, meta.country),
+        disciplines: list(p.disciplines, meta.disciplines),
+        bio: text(p.bio, ""),
+        instagram: text(p.instagram, meta.instagram),
+        birthDate: text(meta.birth_date, ""),
+      });
+      setLoading(false);
+    }
+
+    load();
+    return () => {
+      cancelled = true;
     };
-    reader.readAsDataURL(file);
+  }, [router]);
+
+  async function logOut() {
+    setLoggingOut(true);
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.replace("/");
+    router.refresh();
   }
 
-  async function handlePostArtwork(e: React.FormEvent) {
-    e.preventDefault();
-    if (!member || !artImage || !title) return;
-    setUploading(true);
-    const res = await fetch("/api/artwork", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        memberId: member.id,
-        title,
-        medium,
-        image: artImage,
-      }),
-    });
-    const data = await res.json();
-    setUploading(false);
-    if (res.ok && data.member) {
-      setMember(data.member);
-      localStorage.setItem("tfa_member", JSON.stringify(data.member));
-      setTitle("");
-      setMedium("");
-      setArtImage("");
-      setShowUpload(false);
-    }
-  }
-
-  if (!member) {
-    return (
-      <>
-        <Navbar />
-        <main className="bg-cream px-4 pb-24 pt-32 text-center text-ink sm:px-6">
-          <div className="mx-auto max-w-lg rounded-[28px] border border-line bg-paper p-8">
-            <p className="eyebrow text-crimson">Member Portfolio</p>
-            <h1 className="mt-2 text-3xl font-extrabold">Sign in to your account</h1>
-            <p className="mt-3 text-sm text-muted">
-              Create your official TFA member account or log in to post your artwork in your portfolio grid.
-            </p>
-            <div className="mt-6 flex justify-center gap-3">
-              <Link
-                href="/join"
-                className="rounded-full bg-crimson px-6 py-3 text-sm font-bold text-cream"
-              >
-                Become a Member / Log In
-              </Link>
-            </div>
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
+  const location = member
+    ? [member.state, member.country].filter(Boolean).join(", ")
+    : "";
+  const birthday = member ? formatBirthday(member.birthDate) : "";
 
   return (
-    <>
-      <Navbar />
-      <main className="bg-cream px-4 pb-20 pt-28 text-ink sm:px-6 md:pt-32">
-        <div className="mx-auto max-w-4xl">
-          {/* Instagram-style Profile Top */}
-          <div className="rounded-[32px] border border-line bg-paper p-6 sm:p-10">
-            <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-5">
-                <img
-                  src={member.avatar}
-                  alt={member.name}
-                  className="size-20 rounded-full border-2 border-crimson object-cover sm:size-24"
-                />
-                <div>
-                  <p className="eyebrow text-crimson">{member.role}</p>
-                  <h1 className="mt-1 text-2xl font-extrabold sm:text-3xl">
-                    {member.name}
-                  </h1>
-                  {member.bio && (
-                    <p className="mt-1 max-w-md text-sm text-muted">{member.bio}</p>
-                  )}
-                  <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-muted">
-                    <span>
-                      🎂 Birthday:{" "}
-                      <strong className="text-ink">
-                        {formatBirthdayDisplay(member.birthdate, showBirthYear)}
-                      </strong>
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setShowBirthYear(!showBirthYear)}
-                      className="rounded-full border border-line bg-cream px-2.5 py-0.5 text-[11px] font-bold text-crimson hover:bg-crimson/10"
-                      title="Your birth year is private and only visible to you as the account owner"
-                    >
-                      {showBirthYear ? "Hide year" : "Show birth year (Only you)"}
-                    </button>
-                    <span>•</span>
-                    <span>{member.artworks?.length || 0} artworks</span>
+    <div className="min-h-dvh bg-cream text-ink">
+      {/* Top bar */}
+      <header className="border-b border-line">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-5 py-3 sm:px-8">
+          <Link href="/" aria-label="The Fine Artist Community, home">
+            <Image
+              src="/images/tfa-logo-mark.png"
+              alt="The Fine Artist Community logo"
+              width={240}
+              height={133}
+              priority
+              className="h-8 w-auto"
+            />
+          </Link>
+          <button
+            type="button"
+            onClick={logOut}
+            disabled={loggingOut || loading}
+            className="rounded-full border-[1.5px] border-crimson px-5 py-2 text-sm font-bold text-crimson transition hover:bg-crimson hover:text-cream disabled:opacity-50"
+          >
+            {loggingOut ? "Logging out..." : "Log out"}
+          </button>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-4xl px-5 py-10 sm:px-8 sm:py-14">
+        {loading && <p className="text-center text-muted">Loading your profile...</p>}
+
+        {failed && (
+          <p role="alert" className="rounded-xl bg-crimson/10 px-4 py-3 text-sm font-medium text-crimson-deep">
+            We could not load your profile. Please refresh the page, or log out and back in.
+          </p>
+        )}
+
+        {member && (
+          <>
+            {/* Profile header */}
+            <section className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-start sm:text-left">
+              <div className="size-32 shrink-0 overflow-hidden rounded-full border-4 border-crimson bg-paper sm:size-40">
+                {member.avatarUrl ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={member.avatarUrl}
+                    alt={`${member.fullName || "Your"} profile photo`}
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  <div className="flex size-full items-center justify-center px-3 text-xs text-muted">
+                    No photo
                   </div>
-                </div>
-              </div>
-
-              <div className="flex flex-wrap gap-2.5">
-                <button
-                  type="button"
-                  onClick={() => setShowUpload(!showUpload)}
-                  className="rounded-full bg-crimson px-5 py-2.5 text-sm font-bold text-cream transition hover:bg-crimson-deep"
-                >
-                  {showUpload ? "Cancel" : "+ Post Artwork"}
-                </button>
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full border-[1.5px] border-crimson px-5 py-2.5 text-sm font-bold text-crimson transition hover:bg-crimson hover:text-cream"
-                >
-                  WhatsApp Group
-                </a>
-                <button
-                  type="button"
-                  onClick={() => {
-                    localStorage.removeItem("tfa_member");
-                    setMember(null);
-                  }}
-                  className="rounded-full border border-line px-4 py-2.5 text-xs font-bold text-muted hover:text-ink"
-                >
-                  Log out
-                </button>
-              </div>
-            </div>
-
-            {showUpload && (
-              <form
-                onSubmit={handlePostArtwork}
-                className="mt-6 border-t border-line pt-6"
-              >
-                <h2 className="text-lg font-bold">Add Artwork to Portfolio Grid</h2>
-                <div className="mt-4 grid gap-4 sm:grid-cols-3">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    required
-                    onChange={handleArtSelect}
-                    className="block w-full text-xs text-ink file:mr-3 file:rounded-full file:border-0 file:bg-crimson file:px-4 file:py-2 file:text-xs file:font-bold file:text-cream"
-                  />
-                  <input
-                    type="text"
-                    required
-                    placeholder="Artwork title *"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="rounded-2xl border border-line bg-cream px-4 py-2.5 text-sm"
-                  />
-                  <input
-                    type="text"
-                    placeholder="Medium (e.g. Oil on canvas)"
-                    value={medium}
-                    onChange={(e) => setMedium(e.target.value)}
-                    className="rounded-2xl border border-line bg-cream px-4 py-2.5 text-sm"
-                  />
-                </div>
-                {artImage && (
-                  <button
-                    type="submit"
-                    disabled={uploading}
-                    className="mt-4 rounded-full bg-crimson px-6 py-2.5 text-sm font-bold text-cream"
-                  >
-                    {uploading ? "Posting..." : "Publish to Grid"}
-                  </button>
                 )}
-              </form>
-            )}
-          </div>
-
-          {/* IG-Style 3-Column Square Portfolio Grid */}
-          <div className="mt-8">
-            <div className="mb-4 flex items-center justify-between border-b border-line pb-3">
-              <span className="text-xs font-bold uppercase tracking-widest text-crimson">
-                Portfolio Grid
-              </span>
-              <Link href="/blog" className="text-xs font-bold text-ink underline">
-                Read Community Blogposts →
-              </Link>
-            </div>
-
-            {!member.artworks || member.artworks.length === 0 ? (
-              <div className="rounded-[28px] border border-line bg-paper p-12 text-center">
-                <p className="font-bold">No artworks posted yet</p>
-                <p className="mt-1 text-sm text-muted">
-                  Use &ldquo;+ Post Artwork&rdquo; above to display your works in a clean square portfolio grid.
-                </p>
               </div>
-            ) : (
-              <div className="grid grid-cols-3 gap-2 sm:gap-4">
-                {member.artworks.map((art) => (
-                  <div
-                    key={art.id}
-                    className="group relative aspect-square overflow-hidden rounded-2xl bg-ink"
+
+              <div className="min-w-0 flex-1">
+                <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">
+                  {member.fullName || "Your profile"}
+                </h1>
+
+                <p className="mt-1.5 text-[15px] text-muted">
+                  {[MEMBER_LABELS[member.memberType] ?? member.memberType, location]
+                    .filter(Boolean)
+                    .join(" · ")}
+                </p>
+
+                {member.bio && (
+                  <p className="mt-4 max-w-xl text-[15px] leading-relaxed">{member.bio}</p>
+                )}
+
+                {member.instagram && (
+                  <a
+                    href={`https://instagram.com/${member.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-3 inline-block text-sm font-bold text-crimson hover:underline"
                   >
-                    <img
-                      src={art.image}
-                      alt={art.title}
-                      className="size-full object-cover transition duration-300 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 flex flex-col justify-end bg-ink/70 p-3 opacity-0 transition group-hover:opacity-100">
-                      <p className="text-sm font-bold text-cream">{art.title}</p>
-                      <p className="text-xs text-cream/75">{art.medium}</p>
-                    </div>
+                    @{member.instagram}
+                  </a>
+                )}
+
+                {member.disciplines.length > 0 && (
+                  <div className="mt-5 flex flex-wrap justify-center gap-2 sm:justify-start">
+                    {member.disciplines.map((d) => (
+                      <span
+                        key={d}
+                        className="rounded-full border border-line bg-paper px-3.5 py-1.5 text-xs font-medium"
+                      >
+                        {d}
+                      </span>
+                    ))}
                   </div>
+                )}
+
+                {birthday && (
+                  <p className="mt-5 text-xs text-muted">
+                    Birthday: {birthday}{" "}
+                    <span className="rounded-full bg-paper px-2 py-0.5 font-bold">
+                      Private, only you see this
+                    </span>
+                  </p>
+                )}
+              </div>
+            </section>
+
+            {/* Artwork grid */}
+            <section className="mt-14 border-t border-line pt-8">
+              <div className="flex items-baseline justify-between">
+                <h2 className="text-xl font-extrabold">Your artwork</h2>
+                <span className="text-xs text-muted">Uploads arrive in the next step</span>
+              </div>
+
+              <div className="mt-5 grid grid-cols-3 gap-1.5 sm:gap-3">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="aspect-square rounded-lg border border-dashed border-line bg-paper"
+                  />
                 ))}
               </div>
-            )}
-          </div>
-        </div>
+              <p className="mt-5 text-center text-sm text-muted">
+                No artwork yet. Soon you will be able to add your first piece here.
+              </p>
+            </section>
+
+            {/* Blog link */}
+            <section className="mt-14 rounded-[24px] bg-crimson p-8 text-cream">
+              <p className="eyebrow text-cream/80">Community blog</p>
+              <h2 className="mt-2 text-2xl font-extrabold">Stories from our artists.</h2>
+              <p className="mt-2 max-w-md text-sm leading-relaxed text-cream/80">
+                Read and share what the TFA community is making and thinking about.
+              </p>
+              <Link
+                href="/blog"
+                className="mt-5 inline-block rounded-full bg-cream px-6 py-3 text-sm font-bold text-crimson transition hover:bg-paper"
+              >
+                Visit the blog
+              </Link>
+            </section>
+          </>
+        )}
       </main>
-      <Footer />
-    </>
+    </div>
   );
 }

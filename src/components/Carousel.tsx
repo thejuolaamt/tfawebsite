@@ -1,6 +1,12 @@
 ﻿"use client";
 
-import { Children, useRef, type ReactNode } from "react";
+import {
+  Children,
+  useCallback,
+  useEffect,
+  useRef,
+  type ReactNode,
+} from "react";
 
 type Props = {
   children: ReactNode;
@@ -8,41 +14,107 @@ type Props = {
   label: string;
   /** Gap between cards, as Tailwind classes */
   gapClass?: string;
+  /** Milliseconds between automatic moves. Use 0 to turn autoplay off. */
+  interval?: number;
 };
 
 /**
- * Native, browser-driven carousel.
- * - No autoplay, no requestAnimationFrame loop, no JS touch/wheel handlers.
- *   The browser handles every swipe on its own thread, so vertical page
- *   scrolling over the carousel stays smooth on phones.
- * - CSS scroll-snap gives the "lands on a card" feel.
- * - Each card renders once (good for SEO and fewer DOM nodes).
+ * Native scroll-snap carousel with gentle autoplay.
+ * - Moves one card every `interval` ms, then loops back to the start.
+ * - Only runs while the carousel is on screen and the tab is visible.
+ * - Pauses on mouse hover, keyboard focus, touch, swipe or wheel,
+ *   then resumes a few seconds later.
+ * - Respects "reduce motion" system settings.
  */
 export default function Carousel({
   children,
   label,
   gapClass = "gap-4 md:gap-5",
+  interval = 3500,
 }: Props) {
   const items = Children.toArray(children);
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const hoverRef = useRef(false);
+  const focusRef = useRef(false);
+  const visibleRef = useRef(false);
+  const resumeAtRef = useRef(0);
 
-  const step = (dir: 1 | -1) => {
+  const holdAutoplay = () => {
+    resumeAtRef.current = Date.now() + 6000;
+  };
+
+  const step = useCallback((dir: 1 | -1) => {
     const el = scrollerRef.current;
     if (!el) return;
     const card = el.querySelector<HTMLElement>("[data-card]");
     const width = card ? card.offsetWidth : el.clientWidth * 0.8;
-    const gap = parseFloat(getComputedStyle(el.firstElementChild!).columnGap) || 16;
-    el.scrollBy({ left: dir * (width + gap), behavior: "smooth" });
-  };
+    const gap =
+      parseFloat(getComputedStyle(el.firstElementChild!).columnGap) || 16;
+
+    const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 8;
+    const atStart = el.scrollLeft <= 8;
+
+    if (dir === 1 && atEnd) {
+      el.scrollTo({ left: 0, behavior: "smooth" });
+    } else if (dir === -1 && atStart) {
+      el.scrollTo({ left: el.scrollWidth, behavior: "smooth" });
+    } else {
+      el.scrollBy({ left: dir * (width + gap), behavior: "smooth" });
+    }
+  }, []);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el || !interval) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0.3 }
+    );
+    io.observe(el);
+
+    const id = window.setInterval(() => {
+      if (document.hidden) return;
+      if (!visibleRef.current) return;
+      if (hoverRef.current || focusRef.current) return;
+      if (Date.now() < resumeAtRef.current) return;
+      step(1);
+    }, interval);
+
+    return () => {
+      io.disconnect();
+      window.clearInterval(id);
+    };
+  }, [interval, step]);
 
   return (
-    <div className="relative mt-7 sm:mt-8 md:mt-12">
+    <div
+      className="relative mt-7 sm:mt-8 md:mt-12"
+      onPointerEnter={(e) => {
+        if (e.pointerType === "mouse") hoverRef.current = true;
+      }}
+      onPointerLeave={(e) => {
+        if (e.pointerType === "mouse") hoverRef.current = false;
+      }}
+      onPointerDown={holdAutoplay}
+      onTouchStart={holdAutoplay}
+      onWheel={holdAutoplay}
+    >
       <div
         ref={scrollerRef}
         role="region"
         aria-roledescription="carousel"
         aria-label={label}
         tabIndex={0}
+        onFocus={(e) => {
+          if (e.currentTarget.matches(":focus-visible")) focusRef.current = true;
+        }}
+        onBlur={() => {
+          focusRef.current = false;
+        }}
         className="snap-x snap-mandatory overflow-x-auto overflow-y-hidden overscroll-x-contain scroll-px-4 px-4 py-6 [scrollbar-width:none] [-ms-overflow-style:none] sm:scroll-px-0 sm:px-0 [&::-webkit-scrollbar]:hidden"
       >
         <div className={`flex w-max ${gapClass}`}>
@@ -58,7 +130,10 @@ export default function Carousel({
       <div className="mt-2 hidden justify-end gap-2 md:flex">
         <button
           type="button"
-          onClick={() => step(-1)}
+          onClick={() => {
+            holdAutoplay();
+            step(-1);
+          }}
           aria-label="Previous card"
           className="flex size-11 items-center justify-center rounded-full border-[1.5px] border-current text-lg font-bold transition hover:opacity-70"
         >
@@ -66,7 +141,10 @@ export default function Carousel({
         </button>
         <button
           type="button"
-          onClick={() => step(1)}
+          onClick={() => {
+            holdAutoplay();
+            step(1);
+          }}
           aria-label="Next card"
           className="flex size-11 items-center justify-center rounded-full border-[1.5px] border-current text-lg font-bold transition hover:opacity-70"
         >

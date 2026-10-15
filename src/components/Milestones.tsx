@@ -1,91 +1,125 @@
-import Photo from "./Photo";
-import Carousel from "./Carousel";
+﻿import Photo from "./Photo";
 
+// The first item is the featured card (big). The other five fill the grid.
 // To add a real photo to a card, add:  image: "/images/story/your-file.jpg"
 const milestones: {
   tag: string;
   title: string;
   text: string;
-  label: string;
   image?: string;
 }[] = [
   {
     tag: "23 July 2026",
     title: "Career guidance seminar",
     text: "At Saint Louis Secondary School, Ondo, guiding art-inclined students toward careers in the arts.",
-    label: "Photo: career seminar",
-  },
-  {
-    tag: "2025",
-    title: "Online practical workshop",
-    text: "A hands-on practical session for artists, held entirely online.",
-    label: "Photo: online workshop",
-  },
-  {
-    tag: "Every week",
-    title: "Weekly drawing tasks",
-    text: "Creative challenges with up to 15 artists taking part.",
-    label: "Photo: drawing task",
-  },
-  {
-    tag: "Series",
-    title: "Artist interviews",
-    text: "Conversations with artists, starting with Kenny Daniel Art. More to come.",
-    label: "Photo: artist interview",
-  },
-  {
-    tag: "In person",
-    title: "Meet-ups",
-    text: "Our first physical meet, and members connecting face to face at exhibitions.",
-    label: "Photo: members meeting",
   },
   {
     tag: "Registered",
     title: "TFA Art Store",
     text: "Our art store is now registered with CAC, bringing art materials within reach.",
-    label: "Photo: art store",
+  },
+  {
+    tag: "2025",
+    title: "Online practical workshop",
+    text: "A hands-on practical session for artists, held entirely online.",
+  },
+  {
+    tag: "Every week",
+    title: "Weekly drawing tasks",
+    text: "Creative challenges with up to 15 artists taking part.",
+  },
+  {
+    tag: "Series",
+    title: "Artist interviews",
+    text: "Conversations with artists, starting with Kenny Daniel Art. More to come.",
+  },
+  {
+    tag: "In person",
+    title: "Meet-ups",
+    text: "Our first physical meet, and members connecting face to face at exhibitions.",
   },
 ];
 
-const tones = ["bg-crimson", "bg-ink", "bg-crimson-deep"];
+// Style for each of the five smaller cards, in order.
+const small = [
+  "bg-ink text-cream",
+  "border border-line bg-paper text-ink",
+  "border border-line bg-paper text-ink",
+  "bg-crimson-deep text-cream",
+  "border border-line bg-paper text-ink",
+];
 
 export default function Milestones() {
+  const [featured, ...rest] = milestones;
+
   return (
-    <section id="milestones" className="bg-cream py-14 text-ink md:py-24">
-      <div className="mx-auto max-w-6xl px-0 sm:px-6">
+    <section id="milestones" className="bg-cream px-4 py-14 text-ink sm:px-6 md:py-24">
+      <div className="mx-auto max-w-6xl">
         <p className="eyebrow text-crimson">What we have done</p>
         <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
           Built by artists, one step at a time.
         </h2>
 
-        <Carousel label="What TFA has done so far">
-          {milestones.map((m, i) => (
-            <div
-              key={m.title}
-              className={`w-[280px] shrink-0 overflow-hidden rounded-[24px] text-cream shadow-sm sm:w-[320px] md:w-[340px] md:rounded-[28px] ${tones[i % tones.length]}`}
-            >
-              {m.image && (
-                <Photo
-                  src={m.image}
-                  alt={m.title}
-                  label={m.label}
-                  tone="dark"
-                  sizes="(min-width: 768px) 340px, 320px"
-                  className="h-[260px] w-full !rounded-none !border-0 sm:h-[280px] md:h-56"
-                />
-              )}
-              <div className="p-5">
-                <p className="eyebrow text-blush">{m.tag}</p>
-                <h3 className="mt-2 text-xl font-bold leading-tight sm:text-2xl">
-                  {m.title}
-                </h3>
-                <p className="mt-2 text-[14px] leading-relaxed text-cream/80 sm:text-[15px]">
-                  {m.text}
-                </p>
-              </div>
+        <div
+          data-stagger
+          className="mt-7 grid gap-3 md:mt-12 md:grid-cols-3 md:gap-4"
+        >
+          {/* Featured */}
+          <div className="flex flex-col justify-between overflow-hidden rounded-[32px] bg-crimson text-cream md:col-span-2 md:row-span-2">
+            {featured.image && (
+              <Photo
+                src={featured.image}
+                alt={featured.title}
+                tone="dark"
+                sizes="(min-width: 768px) 700px, 100vw"
+                className="h-56 w-full !rounded-none !border-0 md:h-72"
+              />
+            )}
+            <div className="p-6 md:p-10">
+              <p className="eyebrow text-blush">{featured.tag}</p>
+              <h3 className="mt-3 text-[2rem] font-extrabold leading-[1.05] md:text-5xl">
+                {featured.title}
+              </h3>
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-cream/85 md:text-lg">
+                {featured.text}
+              </p>
             </div>
-          ))}
-        </Carousel>
+          </div>
+
+          {/* Smaller cards */}
+          {rest.map((m, i) => {
+            const dark = small[i].includes("text-cream");
+            return (
+              <div
+                key={m.title}
+                className={`overflow-hidden rounded-[28px] ${small[i]}`}
+              >
+                {m.image && (
+                  <Photo
+                    src={m.image}
+                    alt={m.title}
+                    tone={dark ? "dark" : "light"}
+                    sizes="(min-width: 768px) 340px, 100vw"
+                    className="h-44 w-full !rounded-none !border-0"
+                  />
+                )}
+                <div className="p-5 md:p-6">
+                  <p className={`eyebrow ${dark ? "text-blush" : "text-crimson"}`}>
+                    {m.tag}
+                  </p>
+                  <h3 className="mt-2 text-xl font-bold leading-tight md:text-2xl">
+                    {m.title}
+                  </h3>
+                  <p
+                    className={`mt-2 text-[14px] leading-relaxed md:text-[15px] ${dark ? "text-cream/80" : "text-muted"}`}
+                  >
+                    {m.text}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

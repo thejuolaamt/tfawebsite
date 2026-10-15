@@ -1,62 +1,144 @@
-import Photo from "./Photo";
+﻿import Photo from "./Photo";
 import Carousel from "./Carousel";
 
-// PLACEHOLDERS: replace names, roles, and bios with the real team.
-// To add a real photo to a card, add:  image: "/images/story/your-file.jpg"
+// Titles show who a person is to TFA, not a task.
+// Founder: "Founder". The six Stewards share one title: "Community Steward".
+// Paid roles keep their function title (e.g. Assistant Content Manager).
+// To add a real photo to a card, add:  image: "/images/team/your-file.jpg"
+// A card with no image shows a placeholder (flag: "mexico" shows the Mexican flag).
+// Socials: paste the full profile link, e.g. facebook: "https://facebook.com/name".
+// Left empty (""), the button shows dimmed and does nothing.
 const team: {
   role: string;
   name: string;
   text: string;
   label: string;
   image?: string;
+  flag?: "mexico";
+  facebook: string;
+  instagram: string;
   loading?: "lazy" | "eager";
 }[] = [
   {
-    role: "Founder",
+    role: "Founder, TFA",
     name: "Olayinka Judah",
-    text: "Art historian, curator and founder of TFA. He is passionate about making art accessible to all.",
-    label: "Photo: founder",
+    text: "Artist and art educator.",
+    label: "Photo: Olayinka Judah",
     image: "/images/team/olayinka-judah.jpeg",
+    facebook: "",
+    instagram: "",
     loading: "eager",
   },
   {
-    role: "Team Lead II",
+    role: "Community Steward, TFA",
     name: "Oyinloluwa Akindele",
-    text: "Professional Sculptor, design expert and Teacher",
-    label: "Photo: co-founder",
+    text: "Artist and educator.",
+    label: "Photo: Oyinloluwa Akindele",
     image: "/images/team/oyinloluwa-akindele.jpeg",
+    facebook: "",
+    instagram: "",
   },
   {
-    role: "Workshop facilitator",
+    role: "Community Steward, TFA",
     name: "Emmanuel Okolieze",
-    text: "Professional Pencil portrait artist, and workshop facilitator",
-    label: "Photo: creative lead",
+    text: "Professional artist.",
+    label: "Photo: Emmanuel Okolieze",
     image: "/images/team/emmanuel-okolieze.jpeg",
+    facebook: "",
+    instagram: "",
   },
   {
-    role: "Moderator Lead II",
+    role: "Community Steward, TFA",
     name: "Promise Oloruntobi",
-    text: "Professional artist and moderator.",
-    label: "Photo: community manager",
+    text: "Professional artist.",
+    label: "Photo: Promise Oloruntobi",
     image: "/images/team/promise-oloruntobi.jpeg",
+    facebook: "",
+    instagram: "",
   },
   {
-    role: "Content Editor",
+    role: "Community Steward, TFA",
     name: "Taiwo Oladele",
-    text: "Community storyteller and editorial lead, shaping the voice and message behind TFA.",
-    label: "Photo: content editor",
+    text: "Community storyteller.",
+    label: "Photo: Taiwo Oladele",
     image: "/images/team/taiwo-oladele.jpeg",
+    facebook: "",
+    instagram: "",
   },
   {
-    role: "Content Manager II",
+    role: "Community Steward, TFA",
+    name: "Valeria Ximena Lopez",
+    text: "Fine artist.",
+    label: "Photo: Valeria Ximena Lopez",
+    flag: "mexico",
+    facebook: "",
+    instagram: "",
+  },
+  {
+    role: "Assistant Content Manager, TFA",
     name: "Pamilerin Oluwasanmi",
-    text: "Creative content manager and social media expert",
-    label: "Photo: art store",
+    text: "Creative and content specialist.",
+    label: "Photo: Pamilerin Oluwasanmi",
     image: "/images/team/pamilerin-oluwasanmi.jpeg",
+    facebook: "",
+    instagram: "",
   },
 ];
 
 const tones = ["bg-crimson", "bg-ink", "bg-crimson-deep"];
+
+// Drawn as SVG because flag emojis do not show on Windows.
+function MexicoFlag() {
+  return (
+    <svg
+      viewBox="0 0 120 80"
+      className="w-28 rounded-lg shadow-md md:w-32"
+      aria-hidden="true"
+    >
+      <rect width="40" height="80" fill="#006847" />
+      <rect x="40" width="40" height="80" fill="#FFFFFF" />
+      <rect x="80" width="40" height="80" fill="#CE1126" />
+      <circle cx="60" cy="40" r="11" fill="#8B5A2B" fillOpacity="0.85" />
+      <circle cx="60" cy="40" r="7" fill="#006847" fillOpacity="0.8" />
+    </svg>
+  );
+}
+
+function SocialLink({
+  label,
+  href,
+  person,
+}: {
+  label: string;
+  href: string;
+  person: string;
+}) {
+  const base =
+    "rounded-full border border-cream/40 px-3 py-1.5 text-xs font-medium";
+
+  if (!href) {
+    return (
+      <span
+        className={`${base} cursor-default text-cream/40`}
+        title="Link coming soon"
+      >
+        {label}
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${person} on ${label}`}
+      className={`${base} text-cream transition hover:bg-cream hover:text-crimson`}
+    >
+      {label}
+    </a>
+  );
+}
 
 export default function Team() {
   return (
@@ -64,24 +146,34 @@ export default function Team() {
       <div className="mx-auto max-w-6xl px-0 sm:px-6">
         <p className="eyebrow text-crimson">Our team</p>
         <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
-          Community Leaders.
+          Our core leaders.
         </h2>
 
-        <Carousel label="Community leaders">
+        <Carousel label="TFA core leaders">
           {team.map((m, i) => (
             <div
               key={m.name}
               className={`w-[280px] shrink-0 overflow-hidden rounded-[24px] text-cream shadow-sm sm:w-[320px] md:w-[340px] md:rounded-[28px] ${tones[i % tones.length]}`}
             >
-              <Photo
-                src={m.image}
-                alt={`${m.name}, ${m.role}`}
-                label={m.label}
-                tone="dark"
-                sizes="(min-width: 768px) 340px, 320px"
-                loading={m.loading ?? "lazy"}
-                className="h-[260px] w-full !rounded-none !border-0 sm:h-[280px] md:h-56"
-              />
+              {m.flag === "mexico" && !m.image ? (
+                <div
+                  role="img"
+                  aria-label={`${m.name}, ${m.role}`}
+                  className="flex h-[260px] w-full items-center justify-center bg-paper/10 sm:h-[280px] md:h-56"
+                >
+                  <MexicoFlag />
+                </div>
+              ) : (
+                <Photo
+                  src={m.image}
+                  alt={`${m.name}, ${m.role}`}
+                  label={m.label}
+                  tone="dark"
+                  sizes="(min-width: 768px) 340px, 320px"
+                  loading={m.loading ?? "lazy"}
+                  className="h-[260px] w-full !rounded-none !border-0 sm:h-[280px] md:h-56"
+                />
+              )}
               <div className="p-5">
                 <p className="eyebrow text-blush">{m.role}</p>
                 <h3 className="mt-2 text-xl font-bold leading-tight sm:text-2xl">
@@ -90,6 +182,10 @@ export default function Team() {
                 <p className="mt-2 text-[14px] leading-relaxed text-cream/80 sm:text-[15px]">
                   {m.text}
                 </p>
+                <div className="mt-4 flex gap-2">
+                  <SocialLink label="Facebook" href={m.facebook} person={m.name} />
+                  <SocialLink label="Instagram" href={m.instagram} person={m.name} />
+                </div>
               </div>
             </div>
           ))}

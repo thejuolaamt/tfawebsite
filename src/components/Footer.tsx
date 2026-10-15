@@ -1,20 +1,23 @@
 ﻿import Image from "next/image";
-import { JOIN_URL } from "@/lib/links";
+import Link from "next/link";
+import { JOIN_URL, WHATSAPP_URL } from "@/lib/links";
 
 // Fill in a link to show it in the footer. Leave "" to hide it.
 const SOCIALS = [
-  { label: "WhatsApp", href: JOIN_URL },
+  { label: "WhatsApp", href: WHATSAPP_URL },
   { label: "Instagram", href: "https://instagram.com/thefineartistig" },
   { label: "Facebook", href: "https://facebook.com/thefineartistfacebook" },
   { label: "Email", href: "mailto:officialthefineartist@gmail.com" },
 ];
 
 const LINKS = [
-  { label: "Our Story", href: "#story" },
-  { label: "About", href: "#about" },
-  { label: "Mission", href: "#mission" },
-  { label: "Team", href: "#team" },
-  { label: "Workshop", href: "#workshop" },
+  { label: "Our Story", href: "/#story" },
+  { label: "About", href: "/#about" },
+  { label: "Mission", href: "/#mission" },
+  { label: "Team", href: "/#team" },
+  { label: "Workshop", href: "/#workshop" },
+  { label: "Community Blog", href: "/blog" },
+  { label: "Member Account", href: "/account" },
 ];
 
 export default function Footer() {
@@ -37,14 +40,12 @@ export default function Footer() {
             <p className="mt-3 max-w-xs text-sm text-cream/70">
               The Fine Artist Community. Home of creative inclusiveness.
             </p>
-            <a
+            <Link
               href={JOIN_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               className="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-crimson px-6 text-sm font-bold text-cream transition hover:bg-crimson-deep"
             >
               Become a Member
-            </a>
+            </Link>
           </div>
 
           <div>
@@ -52,12 +53,12 @@ export default function Footer() {
             <ul className="mt-4 space-y-3">
               {LINKS.map((l) => (
                 <li key={l.href}>
-                  <a
+                  <Link
                     href={l.href}
                     className="text-sm text-cream/80 transition hover:text-cream"
                   >
                     {l.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -90,5 +91,3 @@ export default function Footer() {
     </footer>
   );
 }
-
-

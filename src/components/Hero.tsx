@@ -1,4 +1,5 @@
 ﻿import type { CSSProperties } from "react";
+import Link from "next/link";
 import { JOIN_URL, WORKSHOP_URL } from "@/lib/links";
 
 const CREAM = "#F8F6DF";
@@ -117,14 +118,12 @@ export default function Hero() {
           style={{ "--d": "520ms" } as CSSProperties}
           className="mt-8 flex flex-wrap items-center justify-center gap-3 md:mt-10"
         >
-          <a
+          <Link
             href={JOIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
             className="inline-block rounded-full bg-cream px-6 py-3 text-sm font-medium text-crimson transition hover:bg-paper sm:px-7"
           >
             Become a Member
-          </a>
+          </Link>
           <a
             href={WORKSHOP_URL}
             target="_blank"

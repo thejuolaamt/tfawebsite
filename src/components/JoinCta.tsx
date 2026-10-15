@@ -1,4 +1,5 @@
-﻿import { JOIN_URL, WORKSHOP_URL } from "@/lib/links";
+﻿import Link from "next/link";
+import { JOIN_URL, WORKSHOP_URL } from "@/lib/links";
 
 export default function JoinCta() {
   return (
@@ -8,22 +9,25 @@ export default function JoinCta() {
           Your seat is ready.
         </h2>
         <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <a
+          <Link
             href={JOIN_URL}
-            target="_blank"
-            rel="noopener noreferrer"
             className="inline-flex min-h-13 items-center justify-center rounded-full bg-crimson px-7 text-base font-bold text-cream transition hover:bg-crimson-deep"
           >
             Become a Member
+          </Link>
+          <a
+            href={WORKSHOP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-13 items-center justify-center rounded-full border-[1.5px] border-crimson px-7 text-base font-bold text-crimson transition hover:bg-crimson hover:text-cream"
+          >
+            Register for Workshop
           </a>
-          <a href={WORKSHOP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-13 items-center justify-center rounded-full border-[1.5px] border-crimson px-7 text-base font-bold text-crimson transition hover:bg-crimson hover:text-cream">Register for Workshop</a>
         </div>
         <p className="mt-8 text-sm text-muted">
-          The Fine Artist Community. 
-          Home of creative inclusiveness.
+          The Fine Artist Community. Home of creative inclusiveness.
         </p>
       </div>
     </section>
   );
 }
-

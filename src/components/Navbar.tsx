@@ -2,13 +2,16 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { JOIN_URL, WORKSHOP_URL } from "@/lib/links";
 
 const links = [
-  { label: "Our Story", href: "#story" },
-  { label: "About", href: "#about" },
-  { label: "Mission", href: "#mission" },
-  { label: "Team", href: "#team" },
+  { label: "Our Story", href: "/#story" },
+  { label: "About", href: "/#about" },
+  { label: "Mission", href: "/#mission" },
+  { label: "Team", href: "/#team" },
+  { label: "Blog", href: "/blog" },
+  { label: "Account", href: "/account" },
 ];
 
 export default function Navbar() {
@@ -17,7 +20,7 @@ export default function Navbar() {
   return (
     <header className="fixed top-0 left-0 z-50 w-full border-b border-line bg-cream/95 md:backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
-        <a href="#" aria-label="The Fine Artist Community, back to top" className="flex items-center">
+        <Link href="/" aria-label="The Fine Artist Community, back to top" className="flex items-center">
           <Image
             src="/images/tfa-logo-mark.png"
             alt="The Fine Artist Community logo"
@@ -26,18 +29,18 @@ export default function Navbar() {
             priority
             className="h-9 w-auto"
           />
-        </a>
+        </Link>
 
         {/* Desktop links */}
         <ul className="hidden items-center gap-8 md:flex">
           {links.map((link) => (
             <li key={link.href}>
-              <a
+              <Link
                 href={link.href}
                 className="text-sm font-medium text-muted transition hover:text-crimson"
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li>
@@ -51,14 +54,12 @@ export default function Navbar() {
             </a>
           </li>
           <li>
-            <a
+            <Link
               href={JOIN_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               className="rounded-full bg-crimson px-5 py-2.5 text-sm font-bold text-cream transition hover:bg-crimson-deep"
             >
               Become a Member
-            </a>
+            </Link>
           </li>
         </ul>
 
@@ -78,13 +79,13 @@ export default function Navbar() {
         <ul className="flex flex-col border-t border-line bg-cream px-6 pb-6 pt-2 md:hidden">
           {links.map((link) => (
             <li key={link.href} className="border-b border-line">
-              <a
+              <Link
                 href={link.href}
                 onClick={() => setOpen(false)}
                 className="block py-4 font-display text-2xl font-bold tracking-tight text-ink"
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
           <li className="flex flex-col gap-3 pt-5">
@@ -97,15 +98,13 @@ export default function Navbar() {
             >
               Register for Workshop
             </a>
-            <a
+            <Link
               href={JOIN_URL}
-              target="_blank"
-              rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className="inline-flex min-h-13 w-full items-center justify-center rounded-full bg-crimson text-base font-bold text-cream"
             >
               Become a Member
-            </a>
+            </Link>
           </li>
         </ul>
       )}

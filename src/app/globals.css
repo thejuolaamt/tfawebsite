@@ -40,7 +40,7 @@ body {
   color: var(--color-ink);
   font-family: var(--font-sans);
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
 }
 
 main {
@@ -111,7 +111,7 @@ section > div {
   }
 
   section {
-    min-height: 100dvh;
+    min-height: 100svh;
   }
 
   h1,
@@ -142,7 +142,7 @@ main {
 section,
 #home {
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
 }
 
 /* Content never hides under the fixed navbar */
@@ -158,7 +158,7 @@ section {
 /* The welcome screen stays a full screen */
 #home {
   min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 100svh;
 }
 
 /* Phones: only sections with no side padding of their own get a 1rem gutter */
@@ -167,4 +167,11 @@ section {
     padding-left: 1rem;
     padding-right: 1rem;
   }
+}
+
+/* Stop the browser from nudging scroll position when layout above changes */
+html,
+body,
+main {
+  overflow-anchor: none;
 }

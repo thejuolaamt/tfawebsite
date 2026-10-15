@@ -33,7 +33,10 @@ export default function ScrollReveal() {
           const isGroupChild = el.parentElement?.hasAttribute("data-stagger");
           if (group && !isGroupChild) return;
           el.setAttribute("data-reveal", "");
-          (el as HTMLElement).style.setProperty("--d", `${index * 130}ms`);
+          (el as HTMLElement).style.setProperty(
+            "--d",
+            `${Math.min(index, 5) * 60}ms`
+          );
           index++;
         });
       });
@@ -47,7 +50,7 @@ export default function ScrollReveal() {
             }
           });
         },
-        { rootMargin: "0px 0px -10% 0px" }
+        { rootMargin: "0px 0px 20% 0px" }
       );
       sections.forEach((section) => observer!.observe(section));
     }

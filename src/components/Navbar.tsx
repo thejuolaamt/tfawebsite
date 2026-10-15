@@ -15,7 +15,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 z-50 w-full border-b border-line bg-cream/90 backdrop-blur">
+    <header className="fixed top-0 left-0 z-50 w-full border-b border-line bg-cream/95 md:backdrop-blur">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <a href="#" aria-label="The Fine Artist Community, back to top" className="flex items-center">
           <Image

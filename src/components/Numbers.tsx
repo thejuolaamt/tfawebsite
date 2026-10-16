@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/client";
 import Photo from "./Photo";
 
 const AVATARS = [
@@ -17,14 +18,20 @@ export default function Numbers() {
   const [memberAvatars, setMemberAvatars] = useState<string[]>(AVATARS);
 
   useEffect(() => {
-    fetch("/api/members")
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data.newestTen) && data.newestTen.length > 0) {
-          setMemberAvatars(data.newestTen.map((m: { avatar: string }) => m.avatar));
-        }
-      })
-      .catch(() => {});
+    const supabase = createClient();
+    supabase
+      .from("profiles")
+      .select("avatar_url")
+      .eq("onboarded", true)
+      .not("avatar_url", "is", null)
+      .order("created_at", { ascending: false })
+      .limit(10)
+      .then(({ data }) => {
+        const urls = (data ?? [])
+          .map((r) => r.avatar_url as string)
+          .filter(Boolean);
+        if (urls.length > 0) setMemberAvatars(urls);
+      });
   }, []);
 
   // Max 10 pictures shown, newest member first
@@ -52,7 +59,7 @@ export default function Numbers() {
             </div>
             <div className="mt-5 flex flex-wrap items-center md:mt-10" aria-label="Newest community members">
               {visibleMembers.map((src, index) =>
-                src.startsWith("data:") ? (
+                !src.startsWith("/") ? (
                   <img
                     key={`${index}-${src.slice(0, 24)}`}
                     src={src}

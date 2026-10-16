@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import ScrollReveal from "@/components/ScrollReveal";
+import SmoothScroll from "@/components/SmoothScroll";
 import Hero from "@/components/Hero";
 import Numbers from "@/components/Numbers";
 import Workshop from "@/components/Workshop";
@@ -23,6 +24,7 @@ export default function Home() {
     <>
       <Navbar />
       <ScrollReveal />
+      <SmoothScroll />
       <main>
         <JsonLd />
         <Hero />

@@ -175,3 +175,50 @@ body,
 main {
   overflow-anchor: none;
 }
+
+/* ===== Lively scrolling ===== */
+
+/* Thin crimson progress line across the very top */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  width: 100%;
+  height: 3px;
+  background: var(--color-crimson);
+  transform-origin: 0 50%;
+  transform: scaleX(var(--scroll-progress, 0));
+  pointer-events: none;
+}
+
+/* Each item rises into place as it reaches the screen */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(32px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js-reveal [data-reveal].in-view {
+    animation: reveal-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--d, 0ms) both;
+  }
+}
+
+/* Hero: text drifts up and fades, shapes drift slower, as you scroll away */
+.hero-fade {
+  opacity: calc(1 - var(--hero-p, 0) * 1.15);
+  transform: translateY(calc(var(--hero-p, 0) * -40px));
+  will-change: transform, opacity;
+}
+
+.hero-shapes {
+  transform: translateY(calc(var(--hero-p, 0) * 90px))
+    scale(calc(1 + var(--hero-p, 0) * 0.06));
+  will-change: transform;
+}

@@ -51,7 +51,7 @@ function Gathering({
 
 function Shapes() {
   return (
-    <div aria-hidden="true" className="pointer-events-none absolute inset-0">
+    <div aria-hidden="true" className="hero-shapes pointer-events-none absolute inset-0">
       {/* Wide screens */}
       <svg
         className="hidden h-full w-full md:block"
@@ -103,7 +103,7 @@ export default function Hero() {
     >
       <Shapes />
 
-      <div className="relative z-10 mx-auto max-w-4xl">
+      <div className="hero-fade relative z-10 mx-auto max-w-4xl">
         <p className="mb-4 text-[10px] uppercase tracking-[0.32em] text-cream/70 sm:text-xs md:mb-5 md:text-sm">
           Welcome to
         </p>

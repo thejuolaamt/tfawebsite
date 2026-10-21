@@ -1,5 +1,6 @@
 ﻿import Link from "next/link";
-import { JOIN_URL, WORKSHOP_URL } from "@/lib/links";
+import { JOIN_URL } from "@/lib/links";
+import { WORKSHOP } from "@/lib/events";
 
 export default function JoinCta() {
   return (
@@ -8,6 +9,9 @@ export default function JoinCta() {
         <h2 className="text-[2.3rem] font-extrabold leading-none text-crimson sm:text-[44px] md:text-7xl">
           Your seat is ready.
         </h2>
+        <p className="mt-5 text-base text-muted md:text-lg">
+          Free to join. Open to artists of every level.
+        </p>
         <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <Link
             href={JOIN_URL}
@@ -15,18 +19,24 @@ export default function JoinCta() {
           >
             Become a Member
           </Link>
-          <a
-            href={WORKSHOP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-13 items-center justify-center rounded-full border-[1.5px] border-crimson px-7 text-base font-bold text-crimson transition hover:bg-crimson hover:text-cream"
-          >
-            Register for Workshop
-          </a>
+          {WORKSHOP.open ? (
+            <a
+              href={WORKSHOP.registerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-13 items-center justify-center rounded-full border-[1.5px] border-crimson px-7 text-base font-bold text-crimson transition hover:bg-crimson hover:text-cream"
+            >
+              Register for Workshop
+            </a>
+          ) : (
+            <Link
+              href="/events"
+              className="inline-flex min-h-13 items-center justify-center rounded-full border-[1.5px] border-crimson px-7 text-base font-bold text-crimson transition hover:bg-crimson hover:text-cream"
+            >
+              See events
+            </Link>
+          )}
         </div>
-        <p className="mt-8 text-sm text-muted">
-          The Fine Artist Community. Home of creative inclusiveness.
-        </p>
       </div>
     </section>
   );

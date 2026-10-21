@@ -568,7 +568,7 @@ export default function JoinPage() {
         </div>
 
         <p className="relative max-w-sm text-sm leading-relaxed text-cream/70">
-          Free to join. Your email, date of birth and phone number stay private.
+          Free to join. Your date of birth and city stay private. Your email and WhatsApp number are only shared with a member you exchange art materials with.
         </p>
       </aside>
 
@@ -851,7 +851,7 @@ export default function JoinPage() {
                         label="WhatsApp number"
                         htmlFor="phone"
                         optional
-                        hint="So we can add you to the right community groups. This stays private."
+                        hint="So we can add you to the right community groups. Only shared with a member you exchange materials with."
                       >
                         <input
                           id="phone"

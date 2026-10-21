@@ -4,6 +4,8 @@ import { useLayoutEffect } from "react";
 
 /**
  * Reveals each heading, paragraph and card the moment it scrolls into view.
+ * Anything already marked with data-reveal in the page (like the Hero buttons)
+ * is revealed the same way and keeps its own delay.
  * (Menu-link jumps are handled by SmoothScroll.)
  */
 export default function ScrollReveal() {
@@ -22,7 +24,7 @@ export default function ScrollReveal() {
 
     sections.forEach((section) => {
       const items = section.querySelectorAll<HTMLElement>(
-        "h1, h2, p, [data-stagger] > *"
+        "h1, h2, p, [data-reveal], [data-stagger] > *"
       );
       const seen = new Map<Element, number>();
 
@@ -35,8 +37,11 @@ export default function ScrollReveal() {
         const position = seen.get(parent) ?? 0;
         seen.set(parent, position + 1);
 
+        const hasOwnDelay = el.hasAttribute("data-reveal");
         el.setAttribute("data-reveal", "");
-        el.style.setProperty("--d", `${Math.min(position, 4) * 70}ms`);
+        if (!hasOwnDelay) {
+          el.style.setProperty("--d", `${Math.min(position, 4) * 70}ms`);
+        }
         targets.push(el);
       });
     });

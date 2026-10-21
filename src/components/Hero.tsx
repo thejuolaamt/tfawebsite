@@ -1,6 +1,7 @@
 ﻿import type { CSSProperties } from "react";
 import Link from "next/link";
-import { JOIN_URL, WORKSHOP_URL } from "@/lib/links";
+import { JOIN_URL } from "@/lib/links";
+import { WORKSHOP } from "@/lib/events";
 
 const CREAM = "#F8F6DF";
 
@@ -124,14 +125,7 @@ export default function Hero() {
           >
             Become a Member
           </Link>
-          <a
-            href={WORKSHOP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block rounded-full border-[1.5px] border-cream px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream hover:text-crimson sm:px-7"
-          >
-            Register for Workshop
-          </a>
+          {WORKSHOP.open ? (<a href={WORKSHOP.registerUrl} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full border-[1.5px] border-cream px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream hover:text-crimson sm:px-7">Register for Workshop</a>) : (<Link href="/events" className="inline-block rounded-full border-[1.5px] border-cream px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream hover:text-crimson sm:px-7">See events</Link>)}
         </div>
       </div>
     </section>

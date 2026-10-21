@@ -116,16 +116,7 @@ function SocialLink({
   const base =
     "rounded-full border border-cream/40 px-3 py-1.5 text-xs font-medium";
 
-  if (!href) {
-    return (
-      <span
-        className={`${base} cursor-default text-cream/40`}
-        title="Link coming soon"
-      >
-        {label}
-      </span>
-    );
-  }
+  if (!href) return null;
 
   return (
     <a
@@ -142,7 +133,7 @@ function SocialLink({
 
 export default function Team() {
   return (
-    <section id="team" className="bg-paper py-14 text-ink md:py-24">
+    <section id="team" className="bg-cream py-14 text-ink md:py-24">
       <div className="mx-auto max-w-6xl px-0 sm:px-6">
         <p className="eyebrow text-crimson">Our team</p>
         <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">

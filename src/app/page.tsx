@@ -4,13 +4,9 @@ import ScrollReveal from "@/components/ScrollReveal";
 import SmoothScroll from "@/components/SmoothScroll";
 import Hero from "@/components/Hero";
 import Numbers from "@/components/Numbers";
-import Workshop from "@/components/Workshop";
-import OurStory from "@/components/OurStory";
 import About from "@/components/About";
-import MissionVision from "@/components/MissionVision";
 import Team from "@/components/Team";
-import Milestones from "@/components/Milestones";
-import Upcoming from "@/components/Upcoming";
+import EventsPreview from "@/components/EventsPreview";
 import JoinCta from "@/components/JoinCta";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/JsonLd";
@@ -29,13 +25,9 @@ export default function Home() {
         <JsonLd />
         <Hero />
         <Numbers />
-        <Workshop />
-        <OurStory />
         <About />
-        <MissionVision />
         <Team />
-        <Milestones />
-        <Upcoming />
+        <EventsPreview />
         <JoinCta />
       </main>
       <Footer />

@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Avatar from "@/components/Avatar";
 import { createClient } from "@/lib/supabase/client";
+import { resizeImage } from "@/lib/image";
+import { storagePathFromUrl } from "@/lib/materials";
 
 /* ---------- Types and helpers ---------- */
 
@@ -20,6 +23,14 @@ type Member = {
   birthDate: string;
 };
 
+type Artwork = {
+  id: string;
+  image_url: string;
+  title: string | null;
+  caption: string | null;
+  created_at: string;
+};
+
 const MEMBER_LABELS: Record<string, string> = {
   student: "Student",
   hobbyist: "Hobbyist",
@@ -28,6 +39,9 @@ const MEMBER_LABELS: Record<string, string> = {
   educator: "Art educator",
   enthusiast: "Art enthusiast",
 };
+
+const FIELD =
+  "w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] text-ink placeholder:text-muted/60 focus:border-crimson focus:outline-none focus:ring-2 focus:ring-crimson/20";
 
 function formatBirthday(value: string) {
   if (!value) return "";
@@ -41,9 +55,27 @@ function formatBirthday(value: string) {
 export default function AccountPage() {
   const router = useRouter();
   const [member, setMember] = useState<Member | null>(null);
+  const [userId, setUserId] = useState("");
   const [loading, setLoading] = useState(true);
   const [loggingOut, setLoggingOut] = useState(false);
   const [failed, setFailed] = useState(false);
+
+  const [artworks, setArtworks] = useState<Artwork[]>([]);
+  const [given, setGiven] = useState(0);
+  const [received, setReceived] = useState(0);
+
+  // Add artwork form
+  const [showUpload, setShowUpload] = useState(false);
+  const [artBlob, setArtBlob] = useState<Blob | null>(null);
+  const [artPreview, setArtPreview] = useState("");
+  const [artTitle, setArtTitle] = useState("");
+  const [artCaption, setArtCaption] = useState("");
+  const [artError, setArtError] = useState("");
+  const [uploading, setUploading] = useState(false);
+
+  // Big view of one artwork
+  const [selected, setSelected] = useState<Artwork | null>(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -80,6 +112,7 @@ export default function AccountPage() {
       const list = (a: unknown, b: unknown): string[] =>
         Array.isArray(a) ? (a as string[]) : Array.isArray(b) ? (b as string[]) : [];
 
+      setUserId(user.id);
       setMember({
         fullName: text(p.full_name, meta.full_name),
         avatarUrl: text(p.avatar_url, ""),
@@ -92,6 +125,30 @@ export default function AccountPage() {
         birthDate: text(meta.birth_date, ""),
       });
       setLoading(false);
+
+      // Artwork and materials numbers load after the profile shows
+      const [art, gave, got] = await Promise.all([
+        supabase
+          .from("artworks")
+          .select("id, image_url, title, caption, created_at")
+          .eq("user_id", user.id)
+          .order("created_at", { ascending: false }),
+        supabase
+          .from("materials")
+          .select("id", { count: "exact", head: true })
+          .eq("donor_id", user.id)
+          .eq("status", "collected"),
+        supabase
+          .from("materials")
+          .select("id", { count: "exact", head: true })
+          .eq("collected_by", user.id)
+          .eq("status", "collected"),
+      ]);
+
+      if (cancelled) return;
+      setArtworks((art.data ?? []) as Artwork[]);
+      setGiven(gave.count ?? 0);
+      setReceived(got.count ?? 0);
     }
 
     load();
@@ -106,6 +163,101 @@ export default function AccountPage() {
     await supabase.auth.signOut();
     router.replace("/");
     router.refresh();
+  }
+
+  async function onArtPick(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setArtError("");
+
+    if (!file.type.startsWith("image/")) {
+      setArtError("Please choose an image (JPG or PNG).");
+      return;
+    }
+    if (file.size > 25 * 1024 * 1024) {
+      setArtError("That image is too large. Please choose one under 25 MB.");
+      return;
+    }
+
+    try {
+      const blob = await resizeImage(file, 1600);
+      if (artPreview) URL.revokeObjectURL(artPreview);
+      setArtBlob(blob);
+      setArtPreview(URL.createObjectURL(blob));
+    } catch {
+      setArtError("We could not read that image. Please try a JPG or PNG.");
+    }
+  }
+
+  function closeUpload() {
+    if (artPreview) URL.revokeObjectURL(artPreview);
+    setShowUpload(false);
+    setArtBlob(null);
+    setArtPreview("");
+    setArtTitle("");
+    setArtCaption("");
+    setArtError("");
+  }
+
+  async function uploadArt() {
+    if (!artBlob || !userId) {
+      setArtError("Please choose an image first.");
+      return;
+    }
+    setUploading(true);
+    setArtError("");
+
+    const supabase = createClient();
+    const path = `${userId}/${Date.now()}.jpg`;
+
+    const { error: upError } = await supabase.storage
+      .from("artworks")
+      .upload(path, artBlob, { contentType: "image/jpeg" });
+
+    if (upError) {
+      setUploading(false);
+      setArtError("We could not upload your artwork. Please try again.");
+      return;
+    }
+
+    const { data: pub } = supabase.storage.from("artworks").getPublicUrl(path);
+
+    const { data: inserted, error: insError } = await supabase
+      .from("artworks")
+      .insert({
+        user_id: userId,
+        image_url: pub.publicUrl,
+        title: artTitle.trim() || null,
+        caption: artCaption.trim() || null,
+      })
+      .select("id, image_url, title, caption, created_at")
+      .single();
+
+    if (insError || !inserted) {
+      await supabase.storage.from("artworks").remove([path]);
+      setUploading(false);
+      setArtError("We could not save your artwork. Please try again.");
+      return;
+    }
+
+    setArtworks((list) => [inserted as Artwork, ...list]);
+    setUploading(false);
+    closeUpload();
+  }
+
+  async function deleteArt(art: Artwork) {
+    if (!window.confirm("Delete this artwork? This cannot be undone.")) return;
+    setDeleting(true);
+    const supabase = createClient();
+    const { error } = await supabase.from("artworks").delete().eq("id", art.id);
+    if (!error) {
+      const path = storagePathFromUrl(art.image_url, "artworks");
+      if (path) await supabase.storage.from("artworks").remove([path]);
+      setArtworks((list) => list.filter((a) => a.id !== art.id));
+      setSelected(null);
+    }
+    setDeleting(false);
   }
 
   const location = member
@@ -151,21 +303,12 @@ export default function AccountPage() {
         {member && (
           <>
             {/* Profile header */}
-            <section className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-start sm:text-left">
-              <div className="size-32 shrink-0 overflow-hidden rounded-full border-4 border-crimson bg-paper sm:size-40">
-                {member.avatarUrl ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={member.avatarUrl}
-                    alt={`${member.fullName || "Your"} profile photo`}
-                    className="size-full object-cover"
-                  />
-                ) : (
-                  <div className="flex size-full items-center justify-center px-3 text-xs text-muted">
-                    No photo
-                  </div>
-                )}
-              </div>
+            <div className="flex flex-col items-center gap-6 text-center sm:flex-row sm:items-start sm:text-left">
+              <Avatar
+                src={member.avatarUrl}
+                name={member.fullName}
+                className="size-32 border-4 border-crimson text-3xl sm:size-40"
+              />
 
               <div className="min-w-0 flex-1">
                 <h1 className="text-3xl font-extrabold leading-tight sm:text-4xl">
@@ -175,7 +318,7 @@ export default function AccountPage() {
                 <p className="mt-1.5 text-[15px] text-muted">
                   {[MEMBER_LABELS[member.memberType] ?? member.memberType, location]
                     .filter(Boolean)
-                    .join(" · ")}
+                    .join(" \u00B7 ")}
                 </p>
 
                 {member.bio && (
@@ -215,30 +358,153 @@ export default function AccountPage() {
                   </p>
                 )}
               </div>
-            </section>
+            </div>
 
             {/* Artwork grid */}
-            <section className="mt-14 border-t border-line pt-8">
-              <div className="flex items-baseline justify-between">
+            <div className="mt-14 border-t border-line pt-8">
+              <div className="flex items-center justify-between gap-4">
                 <h2 className="text-xl font-extrabold">Your artwork</h2>
-                <span className="text-xs text-muted">Uploads arrive in the next step</span>
+                {!showUpload && (
+                  <button
+                    type="button"
+                    onClick={() => setShowUpload(true)}
+                    className="rounded-full bg-crimson px-5 py-2.5 text-sm font-bold text-cream transition hover:bg-crimson-deep"
+                  >
+                    + Add artwork
+                  </button>
+                )}
               </div>
 
-              <div className="mt-5 grid grid-cols-3 gap-1.5 sm:gap-3">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="aspect-square rounded-lg border border-dashed border-line bg-paper"
-                  />
-                ))}
+              {showUpload && (
+                <div className="mt-5 rounded-[24px] border border-line bg-paper p-5">
+                  {artPreview && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={artPreview}
+                      alt="Your artwork preview"
+                      className="mb-4 max-h-72 w-full rounded-2xl object-contain"
+                    />
+                  )}
+
+                  <label className="inline-block cursor-pointer rounded-full border-[1.5px] border-crimson px-5 py-2 text-sm font-bold text-crimson transition hover:bg-crimson hover:text-cream">
+                    {artPreview ? "Change image" : "Choose image"}
+                    <input type="file" accept="image/*" onChange={onArtPick} className="sr-only" />
+                  </label>
+
+                  <div className="mt-4 space-y-3">
+                    <input
+                      value={artTitle}
+                      maxLength={80}
+                      onChange={(e) => setArtTitle(e.target.value)}
+                      placeholder="Title (optional)"
+                      className={FIELD}
+                    />
+                    <textarea
+                      value={artCaption}
+                      maxLength={300}
+                      rows={3}
+                      onChange={(e) => setArtCaption(e.target.value)}
+                      placeholder="Tell us about it: medium, size, story (optional)"
+                      className={FIELD}
+                    />
+                  </div>
+
+                  {artError && (
+                    <p role="alert" className="mt-3 rounded-xl bg-crimson/10 px-4 py-3 text-sm font-medium text-crimson-deep">
+                      {artError}
+                    </p>
+                  )}
+
+                  <div className="mt-4 flex gap-3">
+                    <button
+                      type="button"
+                      onClick={uploadArt}
+                      disabled={uploading || !artBlob}
+                      className="rounded-full bg-crimson px-6 py-2.5 text-sm font-bold text-cream transition hover:bg-crimson-deep disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {uploading ? "Uploading..." : "Post artwork"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={closeUpload}
+                      disabled={uploading}
+                      className="rounded-full px-5 py-2.5 text-sm font-bold text-muted hover:text-ink"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {artworks.length > 0 ? (
+                <div className="mt-5 grid grid-cols-3 gap-1.5 sm:gap-3">
+                  {artworks.map((art) => (
+                    <button
+                      key={art.id}
+                      type="button"
+                      onClick={() => setSelected(art)}
+                      className="aspect-square overflow-hidden rounded-lg bg-paper"
+                      aria-label={art.title ? `Open ${art.title}` : "Open artwork"}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={art.image_url}
+                        alt={art.title ?? "Artwork"}
+                        loading="lazy"
+                        className="size-full object-cover transition hover:scale-105"
+                      />
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                !showUpload && (
+                  <p className="mt-5 rounded-2xl border border-dashed border-line bg-paper px-5 py-8 text-center text-sm text-muted">
+                    No artwork yet. Tap &ldquo;Add artwork&rdquo; to post your first piece.
+                  </p>
+                )
+              )}
+            </div>
+
+            {/* Materials sharing */}
+            <div className="mt-14 rounded-[24px] border border-line bg-paper p-6 sm:p-8">
+              <p className="eyebrow text-crimson">Materials sharing</p>
+              <h2 className="mt-2 text-xl font-extrabold">Artists giving to artists.</h2>
+              <div className="mt-4 flex gap-8">
+                <div>
+                  <p className="font-display text-4xl font-extrabold leading-none text-crimson">{given}</p>
+                  <p className="mt-1 text-xs text-muted">{given === 1 ? "item given" : "items given"}</p>
+                </div>
+                <div>
+                  <p className="font-display text-4xl font-extrabold leading-none text-crimson">{received}</p>
+                  <p className="mt-1 text-xs text-muted">
+                    {received === 1 ? "item received" : "items received"}
+                  </p>
+                </div>
               </div>
-              <p className="mt-5 text-center text-sm text-muted">
-                No artwork yet. Soon you will be able to add your first piece here.
-              </p>
-            </section>
+              <div className="mt-5 flex flex-wrap gap-3">
+                <Link
+                  href="/materials"
+                  className="rounded-full bg-crimson px-5 py-2.5 text-sm font-bold text-cream transition hover:bg-crimson-deep"
+                >
+                  Browse materials
+                </Link>
+                <Link
+                  href="/materials/donate"
+                  className="rounded-full border-[1.5px] border-crimson px-5 py-2.5 text-sm font-bold text-crimson transition hover:bg-crimson hover:text-cream"
+                >
+                  Donate materials
+                </Link>
+                <Link
+                  href="/materials/mine"
+                  className="rounded-full px-3 py-2.5 text-sm font-bold text-muted hover:text-ink"
+                >
+                  My materials
+                </Link>
+              </div>
+            </div>
 
             {/* Blog link */}
-            <section className="mt-14 rounded-[24px] bg-crimson p-8 text-cream">
+            <div className="mt-8 rounded-[24px] bg-crimson p-8 text-cream">
               <p className="eyebrow text-cream/80">Community blog</p>
               <h2 className="mt-2 text-2xl font-extrabold">Stories from our artists.</h2>
               <p className="mt-2 max-w-md text-sm leading-relaxed text-cream/80">
@@ -250,10 +516,55 @@ export default function AccountPage() {
               >
                 Visit the blog
               </Link>
-            </section>
+            </div>
           </>
         )}
       </main>
+
+      {/* Big view of one artwork */}
+      {selected && (
+        <div
+          className="fixed inset-0 z-[60] flex items-center justify-center bg-ink/85 p-4"
+          onClick={() => setSelected(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            className="max-h-full w-full max-w-2xl overflow-y-auto rounded-[24px] bg-cream p-4 sm:p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={selected.image_url}
+              alt={selected.title ?? "Artwork"}
+              className="max-h-[60vh] w-full rounded-2xl object-contain"
+            />
+            {selected.title && <h3 className="mt-4 text-xl font-extrabold">{selected.title}</h3>}
+            {selected.caption && (
+              <p className="mt-2 whitespace-pre-line text-[15px] leading-relaxed text-muted">
+                {selected.caption}
+              </p>
+            )}
+            <div className="mt-5 flex gap-3">
+              <button
+                type="button"
+                onClick={() => setSelected(null)}
+                className="rounded-full bg-crimson px-6 py-2.5 text-sm font-bold text-cream"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                disabled={deleting}
+                onClick={() => deleteArt(selected)}
+                className="rounded-full border-[1.5px] border-ink px-6 py-2.5 text-sm font-bold text-ink transition hover:bg-ink hover:text-cream disabled:opacity-60"
+              >
+                {deleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -64,7 +64,7 @@ export default function Numbers() {
                     key={`${index}-${src.slice(0, 24)}`}
                     src={src}
                     alt="Member avatar"
-                    className={`size-11 rounded-full border-2 border-crimson object-cover md:size-12 ${
+                    className={`size-11 shrink-0 aspect-square rounded-full border-2 border-crimson object-cover md:size-12 ${
                       index > 0 ? "-ml-3" : ""
                     }`}
                   />
@@ -75,7 +75,7 @@ export default function Numbers() {
                     alt=""
                     tone="dark"
                     sizes="48px"
-                    className={`size-11 rounded-full !p-0 md:size-12 ${
+                    className={`size-11 shrink-0 aspect-square rounded-full !p-0 md:size-12 ${
                       index > 0 ? "-ml-3" : ""
                     }`}
                   />
@@ -84,7 +84,7 @@ export default function Numbers() {
               <Link
                 href="/join"
                 title="Become a member"
-                className="-ml-3 inline-flex size-11 items-center justify-center rounded-full border-2 border-cream bg-ink font-display text-lg font-extrabold text-cream transition hover:scale-105 md:size-12"
+                className="-ml-3 inline-flex size-11 shrink-0 items-center justify-center rounded-full border-2 border-cream bg-ink font-display text-lg font-extrabold text-cream transition hover:scale-105 md:size-12"
               >
                 +
               </Link>
@@ -125,7 +125,7 @@ export default function Numbers() {
                     alt=""
                     tone="dark"
                     sizes="44px"
-                    className={`size-9 rounded-full !p-0 md:size-11 ${index > 0 ? "-ml-2.5" : ""}`}
+                    className={`size-9 shrink-0 aspect-square rounded-full !p-0 md:size-11 ${index > 0 ? "-ml-2.5" : ""}`}
                   />
                 ))}
               </div>

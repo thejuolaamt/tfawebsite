@@ -160,9 +160,14 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} The Fine Artist Community (TFA). All rights
             reserved.
           </p>
-          <a href={`mailto:${EMAIL}`} className="transition hover:text-cream">
+          <div className="flex items-center gap-5">
+            <Link href="/privacy" className="transition hover:text-cream">
+              Privacy Policy
+            </Link>
+            <a href={`mailto:${EMAIL}`} className="transition hover:text-cream">
             {EMAIL}
           </a>
+          </div>
         </div>
       </div>
     </footer>

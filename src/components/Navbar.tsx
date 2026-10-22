@@ -14,9 +14,10 @@ const visitorLinks = [
   { label: "Events", href: "/events" },
 ];
 
-// What logged-in members see. The Feed link joins this list when the feed is built.
+// What logged-in members see
 const memberLinks = [
   { label: "Home", href: "/" },
+  { label: "Feed", href: "/feed" },
   { label: "Events", href: "/events" },
   { label: "Materials", href: "/materials" },
   { label: "Blog", href: "/blog" },

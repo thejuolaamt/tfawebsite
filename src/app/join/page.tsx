@@ -1049,8 +1049,18 @@ export default function JoinPage() {
                           I agree that TFA may keep my details, including my
                           email, date of birth and phone number, to manage my
                           membership, send me community emails and celebrate my
-                          birthday. Only my profile (name, photo, bio, art
-                          interests, state and country) is visible to others.
+                          birthday. Other logged-in members can see my profile
+                          (name, photo, bio, art interests, state, country and
+                          Instagram), and my profile photo may also appear on
+                          the homepage. I have read the{" "}
+                          <Link
+                            href="/privacy"
+                            target="_blank"
+                            className="font-bold text-crimson underline underline-offset-2"
+                          >
+                            Privacy Policy
+                          </Link>
+                          .
                         </span>
                       </label>
                     </div>

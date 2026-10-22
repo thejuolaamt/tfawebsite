@@ -4,6 +4,7 @@ import { useRef, useState, type FormEvent } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { peekNext, clearNext } from "@/lib/next";
 
 /* ---------- Options ---------- */
 
@@ -324,6 +325,8 @@ export default function JoinPage() {
   const set = (patch: Partial<FormState>) => setForm((f) => ({ ...f, ...patch }));
   const score = passwordScore(form.password);
   const firstName = form.fullName.trim().split(/\s+/)[0] || "friend";
+  const nextPath = peekNext("/feed");
+  const nextLabel = nextPath === "/feed" ? "Go to the community feed" : "Go to the item";
 
   function validate(index: number): string {
     if (index === 0) {
@@ -616,12 +619,10 @@ export default function JoinPage() {
               Your profile is ready, and your photo will now appear among our
               members. We are glad you are here.
             </p>
-            <Link
-              href="/"
+            <Link href={nextPath} onClick={() => clearNext()}
               className="mt-8 rounded-full bg-crimson px-8 py-3.5 text-[15px] font-bold text-cream transition hover:bg-crimson-deep"
             >
-              Go to the homepage
-            </Link>
+              {nextLabel}</Link>
           </div>
         ) : checkEmail ? (
           <div className="flex min-h-0 flex-1 flex-col items-center justify-center px-6 py-10 text-center">

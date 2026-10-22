@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { createClient } from "@/lib/supabase/client";
+import { takeNext } from "@/lib/next";
 
 const inputClass =
   "w-full rounded-xl border border-line bg-paper px-4 py-3 text-[15px] text-ink placeholder:text-muted/60 focus:border-crimson focus:outline-none focus:ring-2 focus:ring-crimson/20";
@@ -47,7 +48,7 @@ export default function LoginPage() {
       return;
     }
 
-    router.replace("/account");
+    router.replace(takeNext("/feed"));
     router.refresh();
   }
 
@@ -61,7 +62,7 @@ export default function LoginPage() {
             Welcome back.
           </h1>
           <p className="mt-3 text-[15px] leading-relaxed text-muted">
-            Log in to see your profile and your portfolio.
+            Log in to see new artwork from our artists and share your own.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-5" noValidate>

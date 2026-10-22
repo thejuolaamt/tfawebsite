@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ShareMaterial from "@/components/ShareMaterial";
 import { createClient } from "@/lib/supabase/client";
 import {
   MATERIAL_COLUMNS,
@@ -316,6 +317,8 @@ export default function MyMaterialsPage() {
                             </div>
                           </>
                         )}
+
+                        {m.status === "available" && <ShareMaterial id={m.id} title={m.title} />}
 
                         {["pending", "available", "rejected"].includes(m.status) && (
                           <button

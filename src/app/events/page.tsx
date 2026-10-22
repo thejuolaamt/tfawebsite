@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Photo from "@/components/Photo";
 import { JOIN_URL } from "@/lib/links";
+import { VisitorOnly, MemberOnly } from "@/components/AuthGate";
 import { WORKSHOP, COMING_UP, ACTIVITIES, PAST, type EventItem } from "@/lib/events";
 
 export const metadata: Metadata = {
@@ -103,7 +104,7 @@ export default function EventsPage() {
               </>
             )}
 
-            {WORKSHOP.open ? (<a href={WORKSHOP.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex min-h-13 items-center justify-center rounded-full bg-cream px-7 text-base font-bold text-crimson transition hover:bg-paper">Register for Workshop</a>) : (<p className="mt-8 max-w-xl rounded-[28px] border border-paper/25 p-5 text-[15px] leading-relaxed text-cream/85">Registration is closed for now. The workshop happens once a year. <Link href={JOIN_URL} className="font-bold text-cream underline underline-offset-4">Become a member</Link> to hear first when the next one opens.</p>)}
+            {WORKSHOP.open ? (<a href={WORKSHOP.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex min-h-13 items-center justify-center rounded-full bg-cream px-7 text-base font-bold text-crimson transition hover:bg-paper">Register for Workshop</a>) : (<p className="mt-8 max-w-xl rounded-[28px] border border-paper/25 p-5 text-[15px] leading-relaxed text-cream/85">Registration is closed for now. The workshop happens once a year. <VisitorOnly><Link href={JOIN_URL} className="font-bold text-cream underline underline-offset-4">Become a member</Link> to hear first when the next one opens.</VisitorOnly><MemberOnly>We will share the next date here.</MemberOnly></p>)}
           </div>
         </div>
 
@@ -175,7 +176,7 @@ export default function EventsPage() {
         </div>
 
         {/* Join */}
-        <div className="bg-crimson px-6 py-14 text-center text-cream md:py-20">
+        <VisitorOnly><div className="bg-crimson px-6 py-14 text-center text-cream md:py-20">
           <div className="mx-auto max-w-2xl">
             <h2 className="text-[2rem] font-extrabold leading-tight md:text-5xl">
               Want to take part?
@@ -190,7 +191,7 @@ export default function EventsPage() {
               Become a Member
             </Link>
           </div>
-        </div>
+        </div></VisitorOnly>
       </main>
       <Footer />
     </>

@@ -1,6 +1,7 @@
 ﻿import type { CSSProperties } from "react";
 import Link from "next/link";
 import { JOIN_URL } from "@/lib/links";
+import { VisitorOnly } from "@/components/AuthGate";
 import { WORKSHOP } from "@/lib/events";
 
 const CREAM = "#F8F6DF";
@@ -119,12 +120,12 @@ export default function Hero() {
           style={{ "--d": "520ms" } as CSSProperties}
           className="mt-8 flex flex-wrap items-center justify-center gap-3 md:mt-10"
         >
-          <Link
+          <VisitorOnly><Link
             href={JOIN_URL}
             className="inline-block rounded-full bg-cream px-6 py-3 text-sm font-medium text-crimson transition hover:bg-paper sm:px-7"
           >
             Become a Member
-          </Link>
+          </Link></VisitorOnly>
           {WORKSHOP.open ? (<a href={WORKSHOP.registerUrl} target="_blank" rel="noopener noreferrer" className="inline-block rounded-full border-[1.5px] border-cream px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream hover:text-crimson sm:px-7">Register for Workshop</a>) : (<Link href="/events" className="inline-block rounded-full border-[1.5px] border-cream px-6 py-3 text-sm font-medium text-cream transition hover:bg-cream hover:text-crimson sm:px-7">See events</Link>)}
         </div>
       </div>

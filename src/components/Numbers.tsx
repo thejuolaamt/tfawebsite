@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import Photo from "./Photo";
+import { VisitorOnly } from "./AuthGate";
 
 const AVATARS = [
   "/images/team/olayinka-judah.jpeg",
@@ -81,13 +82,13 @@ export default function Numbers() {
                   />
                 )
               )}
-              <Link
+              <VisitorOnly><Link
                 href="/join"
                 title="Become a member"
                 className="-ml-3 inline-flex size-11 shrink-0 items-center justify-center rounded-full border-2 border-cream bg-ink font-display text-lg font-extrabold text-cream transition hover:scale-105 md:size-12"
               >
                 +
-              </Link>
+              </Link></VisitorOnly>
             </div>
           </div>
 

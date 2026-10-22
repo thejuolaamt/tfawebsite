@@ -1,10 +1,10 @@
 ﻿"use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Avatar from "@/components/Avatar";
+import Navbar from "@/components/Navbar";
 import { createClient } from "@/lib/supabase/client";
 import { resizeImage } from "@/lib/image";
 import { storagePathFromUrl } from "@/lib/materials";
@@ -267,31 +267,9 @@ export default function AccountPage() {
 
   return (
     <div className="min-h-dvh bg-cream text-ink">
-      {/* Top bar */}
-      <header className="border-b border-line">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-5 py-3 sm:px-8">
-          <Link href="/" aria-label="The Fine Artist Community, home">
-            <Image
-              src="/images/tfa-logo-mark.png"
-              alt="The Fine Artist Community logo"
-              width={240}
-              height={133}
-              priority
-              className="h-8 w-auto"
-            />
-          </Link>
-          <button
-            type="button"
-            onClick={logOut}
-            disabled={loggingOut || loading}
-            className="rounded-full border-[1.5px] border-crimson px-5 py-2 text-sm font-bold text-crimson transition hover:bg-crimson hover:text-cream disabled:opacity-50"
-          >
-            {loggingOut ? "Logging out..." : "Log out"}
-          </button>
-        </div>
-      </header>
+      <Navbar />
 
-      <main className="mx-auto max-w-4xl px-5 py-10 sm:px-8 sm:py-14">
+      <main className="mx-auto max-w-4xl px-5 pb-14 pt-28 sm:px-8 md:pt-32">
         {loading && <p className="text-center text-muted">Loading your profile...</p>}
 
         {failed && (
@@ -358,6 +336,18 @@ export default function AccountPage() {
                   </p>
                 )}
               </div>
+            </div>
+
+            {/* Log out */}
+            <div className="mt-8 flex justify-center sm:justify-start">
+              <button
+                type="button"
+                onClick={logOut}
+                disabled={loggingOut}
+                className="rounded-full border-[1.5px] border-crimson px-5 py-2 text-sm font-bold text-crimson transition hover:bg-crimson hover:text-cream disabled:opacity-50"
+              >
+                {loggingOut ? "Logging out..." : "Log out"}
+              </button>
             </div>
 
             {/* Artwork grid */}

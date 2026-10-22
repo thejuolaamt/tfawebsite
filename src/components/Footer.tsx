@@ -1,6 +1,7 @@
 ﻿import Image from "next/image";
 import Link from "next/link";
 import { JOIN_URL, WHATSAPP_URL } from "@/lib/links";
+import { VisitorOnly, MemberOnly } from "@/components/AuthGate";
 
 const EMAIL = "officialthefineartist@gmail.com";
 
@@ -20,9 +21,12 @@ const EXPLORE = [
   { label: "Community Blog", href: "/blog" },
 ];
 
-const MEMBERS = [
+const VISITOR_LINKS = [
   { label: "Become a member", href: JOIN_URL },
   { label: "Member login", href: "/login" },
+];
+
+const MEMBER_LINKS = [
   { label: "My account", href: "/account" },
   { label: "Donate materials", href: "/materials/donate" },
 ];
@@ -113,12 +117,12 @@ export default function Footer() {
               and grow together.
             </p>
 
-            <Link
+            <VisitorOnly><Link
               href={JOIN_URL}
               className="mt-7 inline-flex min-h-12 items-center justify-center rounded-full bg-crimson px-6 text-sm font-bold text-cream transition hover:bg-crimson-deep"
             >
               Become a Member
-            </Link>
+            </Link></VisitorOnly>
 
             <ul className="mt-8 flex flex-wrap gap-3">
               {socials.map((s) => (
@@ -141,7 +145,12 @@ export default function Footer() {
           {/* Links */}
           <div className="grid grid-cols-2 gap-8 lg:col-span-5 lg:col-start-8">
             <LinkColumn title="Explore" links={EXPLORE} />
-            <LinkColumn title="Members" links={MEMBERS} />
+            <VisitorOnly>
+              <LinkColumn title="Members" links={VISITOR_LINKS} />
+            </VisitorOnly>
+            <MemberOnly>
+              <LinkColumn title="Members" links={MEMBER_LINKS} />
+            </MemberOnly>
           </div>
         </div>
 

@@ -32,6 +32,7 @@ function readTime(body: string) {
 export default function BlogPage() {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [selected, setSelected] = useState<BlogPost | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [status, setStatus] = useState<"loading" | "signedOut" | "ready" | "error">("loading");
 
   useEffect(() => {
@@ -54,6 +55,8 @@ export default function BlogPage() {
         return;
       }
       setPosts((data ?? []) as BlogPost[]);
+      const admin = await supabase.rpc("is_admin");
+      setIsAdmin(admin.data === true);
       setStatus("ready");
     }
     load();
@@ -68,6 +71,15 @@ export default function BlogPage() {
           <h1 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
             Stories &amp; reflections from our community.
           </h1>
+
+          {isAdmin && (
+            <Link
+              href="/blog/manage"
+              className="mt-6 inline-block rounded-full bg-ink px-6 py-3 text-sm font-bold text-cream transition hover:bg-crimson"
+            >
+              Write or manage posts
+            </Link>
+          )}
 
           {status === "loading" && (
             <p className="mt-10 text-muted">Loading...</p>

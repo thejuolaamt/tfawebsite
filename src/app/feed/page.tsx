@@ -215,14 +215,14 @@ export default function FeedPage() {
                         className="w-full transition duration-300 hover:scale-[1.03]"
                       />
                     </button>
-                    <div className="mt-2 flex items-center gap-2 px-1">
+                    <Link href={"/artist/" + art.user_id} className="mt-2 flex items-center gap-2 px-1 hover:text-crimson">
                       <Avatar
                         src={art.profile?.avatar_url}
                         name={artistName(art)}
                         className="size-6 text-[11px]"
                       />
                       <span className="truncate text-[13px] font-semibold">{artistName(art)}</span>
-                    </div>
+                    </Link>
                   </article>
                 ))}
               </div>
@@ -262,7 +262,7 @@ export default function FeedPage() {
               alt={selected.title ?? "Artwork"}
               className="max-h-[60vh] w-full rounded-2xl object-contain"
             />
-            <div className="mt-4 flex items-center gap-3">
+            <Link href={"/artist/" + selected.user_id} className="mt-4 flex items-center gap-3 hover:text-crimson">
               <Avatar
                 src={selected.profile?.avatar_url}
                 name={artistName(selected)}
@@ -272,7 +272,7 @@ export default function FeedPage() {
                 <p className="truncate text-sm font-bold">{artistName(selected)}</p>
                 <p className="text-xs text-muted">{formatDate(selected.created_at)}</p>
               </div>
-            </div>
+            </Link>
             {selected.title && (
               <h3 className="mt-4 text-xl font-extrabold">{selected.title}</h3>
             )}

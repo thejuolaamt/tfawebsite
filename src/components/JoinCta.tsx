@@ -23,14 +23,9 @@ export default function JoinCta() {
               Become a Member
             </Link>
             {WORKSHOP.open ? (
-              <a
-                href={WORKSHOP.registerUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-13 items-center justify-center rounded-full border-[1.5px] border-crimson px-7 text-base font-bold text-crimson transition hover:bg-crimson hover:text-cream"
+              <Link href="/workshop" className="inline-flex min-h-13 items-center justify-center rounded-full border-[1.5px] border-crimson px-7 text-base font-bold text-crimson transition hover:bg-crimson hover:text-cream"
               >
-                Register for Workshop
-              </a>
+                Register for Workshop</Link>
             ) : (
               <Link
                 href="/events"

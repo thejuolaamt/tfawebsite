@@ -104,7 +104,7 @@ export default function EventsPage() {
               </>
             )}
 
-            {WORKSHOP.open ? (<a href={WORKSHOP.registerUrl} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex min-h-13 items-center justify-center rounded-full bg-cream px-7 text-base font-bold text-crimson transition hover:bg-paper">Register for Workshop</a>) : (<p className="mt-8 max-w-xl rounded-[28px] border border-paper/25 p-5 text-[15px] leading-relaxed text-cream/85">Registration is closed for now. The workshop happens once a year. <VisitorOnly><Link href={JOIN_URL} className="font-bold text-cream underline underline-offset-4">Become a member</Link> to hear first when the next one opens.</VisitorOnly><MemberOnly>We will share the next date here.</MemberOnly></p>)}
+            {WORKSHOP.open ? (<Link href="/workshop" className="mt-8 inline-flex min-h-13 items-center justify-center rounded-full bg-cream px-7 text-base font-bold text-crimson transition hover:bg-paper">Register for Workshop</Link>) : (<p className="mt-8 max-w-xl rounded-[28px] border border-paper/25 p-5 text-[15px] leading-relaxed text-cream/85">Registration is closed for now. The workshop happens once a year. <VisitorOnly><Link href={JOIN_URL} className="font-bold text-cream underline underline-offset-4">Become a member</Link> to hear first when the next one opens.</VisitorOnly><MemberOnly>We will share the next date here.</MemberOnly></p>)}
           </div>
         </div>
 

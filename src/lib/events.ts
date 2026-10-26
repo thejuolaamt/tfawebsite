@@ -5,13 +5,21 @@
 
 export const WORKSHOP = {
   title: "The Fine Artist Workshop",
-  summary: "Another hands-on session for our members.",
+  summary: "An online, hands-on drawing session for artists, taught by Emmanuel Okolieze.",
   details: [
-    { label: "Date", value: "" },
-    { label: "Time", value: "" },
-    { label: "Format", value: "" },
-    { label: "Price", value: "" },
+    { label: "Date", value: "Saturday, 14 November 2026" },
+    { label: "Time", value: "4:00 PM, Nigeria time" },
+    { label: "Format", value: "Online" },
+    { label: "Price", value: "\u20A625,000" },
   ],
+  // Shown under the Price row for visitors who are not members yet
+  memberNote: "Free for members",
+  tutor: {
+    name: "Emmanuel Okolieze",
+    role: "Tutor",
+    bio: "Professional artist and Community Steward at TFA.",
+    image: "/images/team/emmanuel-okolieze.jpeg",
+  },
   learn: [] as string[],
   registerUrl: WORKSHOP_URL,
   // true = show the "Register for Workshop" buttons. false = registration closed.
@@ -78,3 +86,5 @@ export const PAST: EventItem[] = [
     text: "Our first physical meet, and members connecting face to face at exhibitions.",
   },
 ];
+
+

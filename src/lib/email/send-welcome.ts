@@ -34,12 +34,12 @@ export async function sendWelcome(
   if (!apiKey) return { status: "failed", detail: "Missing RESEND_API_KEY" };
 
   // Only welcome members who have finished signing up
-  const { data: profile } = await db
+  const { data: profile, error: profileError } = await db
     .from("profiles")
     .select("full_name, onboarded")
     .eq("id", userId)
     .maybeSingle();
-  if (!profile || !profile.onboarded) {
+  if (profileError) { return { status: "failed", detail: "Profile lookup failed: " + profileError.message }; } if (!profile || !profile.onboarded) {
     return { status: "skipped", detail: "Not onboarded yet" };
   }
 

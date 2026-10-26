@@ -92,7 +92,7 @@ export default function Numbers() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 md:col-span-2 md:gap-4">
+          <div className="grid grid-cols-2 gap-3 md:col-span-2 md:row-span-2 md:grid-cols-1 md:grid-rows-2 md:gap-4">
             <div className="rounded-[28px] bg-ink p-5 text-cream md:p-7">
               <div className="font-display text-[68px] font-extrabold leading-[0.9] tracking-[-0.03em] md:text-8xl">
                 8K+
@@ -104,32 +104,6 @@ export default function Numbers() {
                 5
               </div>
               <div className="mt-2 text-sm md:text-base">seminars and art talks</div>
-            </div>
-          </div>
-
-          {/* Core leaders */}
-          <div className="flex items-center justify-between gap-5 rounded-[32px] bg-crimson-deep p-6 text-cream md:col-span-2 md:gap-8 md:p-10">
-            <div className="font-display text-[clamp(88px,30vw,128px)] font-extrabold leading-[0.9] tracking-[-0.03em] md:text-[clamp(128px,12vw,176px)]">
-              7
-            </div>
-            <div className="flex flex-col items-end text-right md:items-start md:text-left">
-              <div className="text-lg font-bold leading-tight md:text-2xl">
-                core
-                <br />
-                leaders
-              </div>
-              <div className="mt-4 flex md:mt-5" aria-hidden="true">
-                {AVATARS.map((src, index) => (
-                  <Photo
-                    key={src}
-                    src={src}
-                    alt=""
-                    tone="dark"
-                    sizes="44px"
-                    className={`size-9 shrink-0 aspect-square rounded-full !p-0 md:size-11 ${index > 0 ? "-ml-2.5" : ""}`}
-                  />
-                ))}
-              </div>
             </div>
           </div>
         </div>

@@ -3,9 +3,10 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Photo from "@/components/Photo";
+import UpcomingEvents from "@/components/UpcomingEvents";
 import { JOIN_URL } from "@/lib/links";
-import { VisitorOnly, MemberOnly } from "@/components/AuthGate";
-import { WORKSHOP, COMING_UP, ACTIVITIES, PAST, type EventItem } from "@/lib/events";
+import { VisitorOnly } from "@/components/AuthGate";
+import { WORKSHOP, ACTIVITIES, PAST, type EventItem } from "@/lib/events";
 
 export const metadata: Metadata = {
   title: "Events & Activities",
@@ -51,75 +52,49 @@ export default function EventsPage() {
     <>
       <Navbar />
       <main className="text-ink">
-        {/* Top of the page */}
-        <div className="bg-cream px-6 pb-12 pt-28 md:pb-16 md:pt-36">
+        {/* Page title (hidden, for search engines and screen readers) */}
+        <h1 className="sr-only">Events and activities</h1>
+
+        {/* Flyers posted from /events/manage. First thing on the page. */}
+        <div className="bg-cream pt-14 md:pt-12">
+          <UpcomingEvents />
+        </div>
+
+        {/* Workshop (the full details live on /workshop) */}
+        <div id="workshop" className="bg-crimson-deep px-6 py-10 text-cream md:py-14">
+          <div className="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div>
+              <p className="eyebrow text-blush">Workshop</p>
+              <h2 className="mt-2 text-3xl font-extrabold leading-tight md:text-4xl">
+                {WORKSHOP.title}
+              </h2>
+              <p className="mt-2 text-[15px] text-cream/85 md:text-base">
+                {WORKSHOP.details
+                  .filter((d) => d.label !== "Price" && d.value)
+                  .map((d) => d.value)
+                  .join(" | ")}
+              </p>
+            </div>
+            <Link
+              href="/workshop"
+              className="inline-flex min-h-13 items-center justify-center rounded-full bg-cream px-7 text-base font-bold text-crimson transition hover:bg-paper"
+            >
+              {WORKSHOP.open ? "Register for Workshop" : "Workshop details"}
+            </Link>
+          </div>
+        </div>
+
+        {/* Other events, past and present */}
+        <div className="bg-cream px-6 py-14 md:py-20">
           <div className="mx-auto max-w-6xl">
-            <p className="eyebrow text-crimson">Events &amp; activities</p>
-            <h1 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
-              Where artists meet, learn and grow.
-            </h1>
+            <p className="eyebrow text-crimson">Other events, past and present</p>
+            <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
+              Learn and grow with us.
+            </h2>
             <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted md:text-lg">
               Workshops, weekly challenges, interviews and meet-ups. Everything TFA is doing,
               in one place.
             </p>
-          </div>
-        </div>
-
-        {/* Featured workshop */}
-        <div id="workshop" className="bg-crimson-deep px-6 py-14 text-cream md:py-24">
-          <div className="mx-auto max-w-6xl">
-            <p className="eyebrow text-blush">Workshop</p>
-            <h2 className="mt-3 max-w-3xl text-4xl font-extrabold leading-[1.05] md:text-6xl">
-              {WORKSHOP.title}
-            </h2>
-            {WORKSHOP.summary && (
-              <p className="mt-4 max-w-2xl text-base text-cream/85 md:text-lg">
-                {WORKSHOP.summary}
-              </p>
-            )}
-
-            <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
-              {WORKSHOP.details.map((detail) => (
-                <div key={detail.label} className="rounded-[28px] border border-paper/25 p-5">
-                  <p className="eyebrow text-blush">{detail.label}</p>
-                  <p
-                    className={`mt-2 font-display text-xl font-bold leading-tight ${
-                      detail.value ? "" : "text-cream/60"
-                    }`}
-                  >
-                    {detail.value || "Coming soon"}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {WORKSHOP.learn.length > 0 && (
-              <>
-                <p className="eyebrow mt-8 text-blush">What you will learn</p>
-                <ul className="mt-2 space-y-2 text-cream/85">
-                  {WORKSHOP.learn.map((item, index) => (
-                    <li key={index}>&bull; {item}</li>
-                  ))}
-                </ul>
-              </>
-            )}
-
-            {WORKSHOP.open ? (<Link href="/workshop" className="mt-8 inline-flex min-h-13 items-center justify-center rounded-full bg-cream px-7 text-base font-bold text-crimson transition hover:bg-paper">Register for Workshop</Link>) : (<p className="mt-8 max-w-xl rounded-[28px] border border-paper/25 p-5 text-[15px] leading-relaxed text-cream/85">Registration is closed for now. The workshop happens once a year. <VisitorOnly><Link href={JOIN_URL} className="font-bold text-cream underline underline-offset-4">Become a member</Link> to hear first when the next one opens.</VisitorOnly><MemberOnly>We will share the next date here.</MemberOnly></p>)}
-          </div>
-        </div>
-
-        {/* Coming up */}
-        <div id="coming-up" className="bg-cream px-6 py-14 md:py-24">
-          <div className="mx-auto max-w-6xl">
-            <p className="eyebrow text-crimson">Coming up</p>
-            <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-5xl">
-              Where we are headed.
-            </h2>
-            <div className="mt-7 grid gap-3 sm:grid-cols-2 md:mt-12 md:gap-4 lg:grid-cols-4">
-              {COMING_UP.map((item) => (
-                <Card key={item.title} item={item} />
-              ))}
-            </div>
           </div>
         </div>
 

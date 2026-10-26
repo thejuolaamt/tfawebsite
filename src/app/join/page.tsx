@@ -589,7 +589,7 @@ export default function JoinPage() {
           </Link>
           <Link
             href="/"
-            className="hidden text-sm font-medium text-muted transition hover:text-crimson lg:block"
+            className="text-sm font-medium text-muted transition hover:text-crimson"
           >
             &larr; Back to home
           </Link>

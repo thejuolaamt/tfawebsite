@@ -99,7 +99,7 @@ function sections(input: WelcomeInput): Section[] {
       topic: "Your career",
       paras: [
         "I'm Emmanuel. A career in art is never built alone. It grows when your work is seen, when you learn from people a few steps ahead of you, and when you meet the people who open doors. That's exactly what TFA gives you: workshops, meet-ups, and a portfolio that speaks for you when you're not in the room.",
-        "Registration for The Fine Artist Workshop opens Monday 26 October at 12:00 AM. Be early. And put your first artwork on your portfolio today, so that when someone goes looking for you, there's something worth finding.",
+        "Registration for the Community Workshop is now open. Be early. And put your first artwork on your portfolio today, so that when someone goes looking for you, there's something worth finding.",
         "Work that is shown deserves a home that protects it. Valeria will tell you how we do that.",
       ],
       buttons: [

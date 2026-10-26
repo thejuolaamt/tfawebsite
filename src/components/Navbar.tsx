@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { JOIN_URL } from "@/lib/links";
@@ -9,7 +9,7 @@ import Avatar from "./Avatar";
 
 // What visitors (not logged in) see
 const visitorLinks = [
-  { label: "About", href: "/#about" },
+  { label: "Home", href: "/" }, { label: "About", href: "/#about" },
   { label: "Team", href: "/#team" },
   { label: "Events", href: "/events" },
 ];
@@ -25,14 +25,49 @@ const memberLinks = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  // true = the header is slid out of view (after scrolling down)
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
   const member = useMember();
 
   const loading = member.status === "loading";
   const loggedIn = member.status === "in";
   const links = loggedIn ? memberLinks : visitorLinks;
 
+  // Hide when scrolling down, show again when scrolling up
+  useEffect(() => {
+    lastY.current = window.scrollY;
+
+    function onScroll() {
+      const y = window.scrollY;
+      const diff = y - lastY.current;
+
+      if (y < 80) {
+        setHidden(false);
+        lastY.current = y;
+        return;
+      }
+      // Ignore tiny movements so it does not flicker
+      if (Math.abs(diff) < 8) return;
+
+      setHidden(diff > 0);
+      lastY.current = y;
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Never hide while the menu is open
+  const slideAway = hidden && !open;
+
   return (
-    <header className="fixed top-0 left-0 z-50 w-full border-b border-line bg-cream/95 lg:backdrop-blur">
+    <header
+      onFocusCapture={() => setHidden(false)}
+      className={`fixed top-0 left-0 z-50 w-full border-b border-line bg-cream/95 transition-transform duration-300 motion-reduce:transition-none lg:backdrop-blur ${
+        slideAway ? "-translate-y-full" : "translate-y-0"
+      }`}
+    >
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         <Link href="/" aria-label="The Fine Artist Community, home" className="flex items-center">
           <Image

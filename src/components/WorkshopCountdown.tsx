@@ -43,7 +43,7 @@ export default function WorkshopCountdown() {
           Registration is open.
         </p>
         <p className="mt-3 max-w-xl text-base text-cream/85 md:text-lg">
-          Your seat is waiting. Tap below to register for The Fine Artist Workshop.
+          Your seat is waiting. Tap below to register for the Community Workshop.
         </p>
         <a
           href={WORKSHOP_URL}

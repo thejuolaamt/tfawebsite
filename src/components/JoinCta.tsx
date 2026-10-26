@@ -1,6 +1,5 @@
 ﻿import Link from "next/link";
 import { JOIN_URL } from "@/lib/links";
-import { WORKSHOP } from "@/lib/events";
 import { VisitorOnly, MemberOnly } from "@/components/AuthGate";
 
 export default function JoinCta() {
@@ -22,18 +21,6 @@ export default function JoinCta() {
             >
               Become a Member
             </Link>
-            {WORKSHOP.open ? (
-              <Link href="/workshop" className="inline-flex min-h-13 items-center justify-center rounded-full border-[1.5px] border-crimson px-7 text-base font-bold text-crimson transition hover:bg-crimson hover:text-cream"
-              >
-                Register for Workshop</Link>
-            ) : (
-              <Link
-                href="/events"
-                className="inline-flex min-h-13 items-center justify-center rounded-full border-[1.5px] border-crimson px-7 text-base font-bold text-crimson transition hover:bg-crimson hover:text-cream"
-              >
-                See events
-              </Link>
-            )}
           </div>
         </VisitorOnly>
 

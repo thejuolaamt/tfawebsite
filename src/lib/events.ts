@@ -4,7 +4,7 @@
 // Anything left empty ("") shows "Coming soon" on the workshop card.
 
 export const WORKSHOP = {
-  title: "The Fine Artist Workshop",
+  title: "Community Workshop",
   summary: "An online, hands-on drawing session for artists, taught by Emmanuel Okolieze.",
   details: [
     { label: "Date", value: "Saturday, 14 November 2026" },
@@ -34,13 +34,6 @@ export type EventItem = {
   href?: string;
   linkLabel?: string;
 };
-
-export const COMING_UP: EventItem[] = [
-  { tag: "Planned", title: "Free art studio", text: "A free place to work for artists in Ondo." },
-  { tag: "Members", title: "Cheaper art materials", text: "Art materials at lower prices for TFA members." },
-  { tag: "2027", title: "Artist meets", text: "In-person gatherings for artists to connect." },
-  { tag: "2027", title: "TFA exhibition", text: "A public showcase of our members' work." },
-];
 
 export const ACTIVITIES: EventItem[] = [
   {
@@ -86,5 +79,3 @@ export const PAST: EventItem[] = [
     text: "Our first physical meet, and members connecting face to face at exhibitions.",
   },
 ];
-
-

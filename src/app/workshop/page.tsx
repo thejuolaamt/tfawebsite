@@ -11,7 +11,7 @@ import { WORKSHOP } from "@/lib/events";
 export const metadata: Metadata = {
   title: "Workshop Registration",
   description:
-    "Details and registration for The Fine Artist Workshop, a hands-on drawing session from The Fine Artist Community.",
+    "Details and registration for the TFA Community Workshop, a hands-on drawing session from The Fine Artist Community.",
   alternates: { canonical: "/workshop" },
 };
 

@@ -1,11 +1,11 @@
 ﻿// Welcome email for new TFA members.
-// One story: Judah opens the door, and each Steward hands the member to the next.
-// A cursive thread (an image) links every Steward's circle to the next.
-// The Steward lines are DRAFTS until each person has approved their own section.
-// To change words: edit the text in sections() below. Nothing else needs to change.
+// One story: Judah opens the door, then hands the member from one pair of
+// Stewards to the next. A cursive thread (an image) links each step.
+// To change words: edit the text in welcomeEmail() at the bottom of this file.
+
+import { WORKSHOP } from "@/lib/events";
 
 const SITE = "https://www.thefineartist.org";
-const TFA_EMAIL = "officialthefineartist@gmail.com";
 
 const C = {
   crimson: "#9C0001",
@@ -27,22 +27,25 @@ export type WelcomeInput = {
 type Person = {
   key: string; // photo file: /images/email/<key>.png
   name: string;
-  title: string;
   detail: string;
 };
 
-type Btn = { label: string; href: string };
-type Section = { person: Person; topic: string; paras: string[]; buttons: Btn[] };
+const JUDAH: Person = { key: "judah", name: "Judah", detail: "Art historian \u00B7 Nigeria" };
+const OYIN: Person = { key: "oyin", name: "Oyin", detail: "Sculptor \u00B7 Nigeria" };
+const TAIWO: Person = { key: "taiwo", name: "Taiwo", detail: "Vector illustrator \u00B7 Nigeria" };
+const EMMANUEL: Person = { key: "emmanuel", name: "Emmanuel", detail: "Portrait artist \u00B7 Nigeria" };
+const PAMILERIN: Person = { key: "pamilerin", name: "Pamilerin", detail: "Portrait artist \u00B7 Nigeria" };
+const VALERIA: Person = { key: "valeria", name: "Valeria", detail: "Sculptor \u00B7 Mexico" };
+const PROMISE: Person = { key: "promise", name: "Promise", detail: "Painter \u00B7 Nigeria" };
 
-const JUDAH: Person = { key: "judah", name: "Judah", title: "Founder, TFA", detail: "Art historian · Nigeria" };
-const OYIN: Person = { key: "oyin", name: "Oyin", title: "Community Steward", detail: "Sculptor · Nigeria" };
-const TAIWO: Person = { key: "taiwo", name: "Taiwo", title: "Community Steward", detail: "Vector illustrator · Nigeria" };
-const EMMANUEL: Person = { key: "emmanuel", name: "Emmanuel", title: "Community Steward", detail: "Portrait artist · Nigeria" };
-const VALERIA: Person = { key: "valeria", name: "Valeria", title: "Community Steward", detail: "Sculptor · Mexico" };
-const PROMISE: Person = { key: "promise", name: "Promise", title: "Community Steward", detail: "Painter · Nigeria" };
-const PAMILERIN: Person = { key: "pamilerin", name: "Pamilerin", title: "Community Steward", detail: "Portrait artist · Nigeria" };
+const EVERYONE = [JUDAH, OYIN, TAIWO, EMMANUEL, PAMILERIN, VALERIA, PROMISE];
 
-const EVERYONE = [JUDAH, OYIN, TAIWO, EMMANUEL, VALERIA, PROMISE, PAMILERIN];
+const SOCIAL = [
+  { label: "Instagram", href: "https://instagram.com/thefineartistig" },
+  { label: "Facebook", href: "https://facebook.com/thefineartistfacebook" },
+  { label: "WhatsApp group", href: "https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q" },
+  { label: "Community blog", href: `${SITE}/blog` },
+];
 
 function esc(s: string) {
   return s
@@ -59,145 +62,104 @@ function goalPhrase(goals?: string[]) {
   return picked.join(" and ");
 }
 
-function sections(input: WelcomeInput): Section[] {
-  const name = input.firstName;
-  const goal = goalPhrase(input.goals);
-
-  return [
-    {
-      person: JUDAH,
-      topic: "Welcome",
-      paras: [
-        `You're member #${input.memberNumber} of The Fine Artist Community.`,
-        "Art history is full of artists who grew because they found each other. That's what this house is for.",
-        goal
-          ? `You told us you want to ${goal}, so let me show you around. I'll walk you from room to room, and first, Oyin will tell you why we built this place.`
-          : "Let me show you around. I'll walk you from room to room, and first, Oyin will tell you why we built this place.",
-      ],
-      buttons: [{ label: "Step inside", href: `${SITE}/feed` }],
-    },
-    {
-      person: OYIN,
-      topic: "Why we exist",
-      paras: [
-        `Hi ${name}, I'm Oyin. We built TFA as a home of creative inclusiveness: free to join and open to artists of every level, because every artist deserves a place to belong.`,
-        "Weekly drawing tasks, career guidance for students, artists helping artists. But a home is more than a promise, so let Taiwo show you what we've already built.",
-      ],
-      buttons: [{ label: "Read our story", href: `${SITE}/#about` }],
-    },
-    {
-      person: TAIWO,
-      topic: "What we've built",
-      paras: [
-        "I'm Taiwo, and here's the proof. We've held an online practical workshop, our first physical meet, and a career guidance seminar at Saint Louis Secondary School in July. Our TFA Art Store is registered with CAC. Now there's this website, with portfolios and materials sharing, and more is on the way.",
-        "Next up: a free art studio in Ondo, cheaper materials for members, and a TFA exhibition in 2027. Places like that are where careers begin, so I'll let Emmanuel pick it up from here.",
-      ],
-      buttons: [{ label: "See what's coming", href: `${SITE}/events#coming-up` }],
-    },
-    {
-      person: EMMANUEL,
-      topic: "Your career",
-      paras: [
-        "I'm Emmanuel. A career in art is never built alone. It grows when your work is seen, when you learn from people a few steps ahead of you, and when you meet the people who open doors. That's exactly what TFA gives you: workshops, meet-ups, and a portfolio that speaks for you when you're not in the room.",
-        "Registration for the Community Workshop is now open. Be early. And put your first artwork on your portfolio today, so that when someone goes looking for you, there's something worth finding.",
-        "Work that is shown deserves a home that protects it. Valeria will tell you how we do that.",
-      ],
-      buttons: [
-        { label: "Watch the countdown", href: `${SITE}/workshop` },
-        { label: "Add your first artwork", href: `${SITE}/account` },
-      ],
-    },
-    {
-      person: VALERIA,
-      topic: "How we care for you",
-      paras: [
-        `Hola ${name}, I'm Valeria. Yes, our home reaches all the way to Mexico, and it's still growing: more artists, more countries, more to come.`,
-        "As it grows, we keep it well ordered. We have clear rules, careful moderation, and a real passion for your privacy and your security. Your personal details are yours, and we treat them that way.",
-        "Order keeps a house safe, but people keep it warm. Promise is the person to look for.",
-      ],
-      buttons: [{ label: "Read our Privacy Policy", href: `${SITE}/privacy` }],
-    },
-    {
-      person: PROMISE,
-      topic: "Your go-to person",
-      paras: [
-        "I'm Promise. Every house needs someone to knock on. If something feels off, or you have a question about your account or a materials pickup, just reply to this email and it will reach us. Anything that breaks our rules comes down.",
-        "And when you want to keep up with us outside this house, Pamilerin has it all.",
-      ],
-      buttons: [
-        {
-          label: "Reply to this email",
-          href: `mailto:${TFA_EMAIL}?subject=${encodeURIComponent("A question for TFA")}`,
-        },
-      ],
-    },
-    {
-      person: PAMILERIN,
-      topic: "Stay connected",
-      paras: [
-        `I'm Pamilerin, and I look after what we share with the world. Follow us, join the WhatsApp group, read the community blog, or write to us any time at ${TFA_EMAIL}. Everything we do shows up in those places first.`,
-      ],
-      buttons: [
-        { label: "Instagram", href: "https://instagram.com/thefineartistig" },
-        { label: "Facebook", href: "https://facebook.com/thefineartistfacebook" },
-        { label: "WhatsApp group", href: "https://chat.whatsapp.com/FXquwaYSgCXLQDmqYPYl8q" },
-        { label: "Community blog", href: `${SITE}/blog` },
-      ],
-    },
-  ];
-}
-
 /* ---------- HTML pieces ---------- */
 
 function avatar(person: Person, size: number) {
   return `<img src="${SITE}/images/email/${person.key}.png" width="${size}" height="${size}" alt="${esc(person.name)}" style="display:block;margin:0 auto;width:${size}px;height:${size}px;border:0;border-radius:50%;">`;
 }
 
-function button(btn: Btn, filled: boolean) {
-  const style = filled
-    ? `background:${C.crimson};color:${C.cream};border:1.5px solid ${C.crimson};`
-    : `background:transparent;color:${C.crimson};border:1.5px solid ${C.crimson};`;
-  return `<a class="btn" href="${esc(btn.href)}" style="display:inline-block;margin:0 4px 10px 4px;padding:13px 24px;border-radius:999px;font-family:${SANS};font-size:15px;font-weight:700;text-decoration:none;${style}">${esc(btn.label)}</a>`;
+function button(label: string, href: string) {
+  return `<a class="btn" href="${esc(href)}" style="display:inline-block;padding:13px 28px;border-radius:999px;font-family:${SANS};font-size:15px;font-weight:700;text-decoration:none;background:${C.crimson};color:${C.cream};border:1.5px solid ${C.crimson};">${esc(label)}</a>`;
 }
 
-function sectionHtml(s: Section, index: number) {
-  const thread =
-    index === 0
-      ? ""
-      : `<tr><td class="px" style="padding:0 32px;line-height:0;font-size:0;"><img src="${SITE}/images/email/${index % 2 === 1 ? "thread-a" : "thread-b"}.png" width="536" alt="" style="display:block;width:100%;max-width:536px;height:auto;border:0;"></td></tr>`;
+function para(text: string) {
+  return `<p class="body" style="margin:0 0 15px 0;font-family:${SERIF};font-size:17px;line-height:1.7;color:${C.ink};">${esc(text)}</p>`;
+}
 
-  const paras = s.paras
-    .map(
-      (p) =>
-        `<p class="body" style="margin:0 0 15px 0;font-family:${SERIF};font-size:17px;line-height:1.7;color:${C.ink};">${esc(p)}</p>`
-    )
-    .join("");
-  const buttons = s.buttons.map((b, i) => button(b, i === 0)).join("");
+// A closing line that hands the reader to the next people: before + names + after
+function handoff(before: string, names: string, after: string) {
+  return `<p class="body" style="margin:0 0 15px 0;font-family:${SERIF};font-size:17px;line-height:1.7;color:${C.ink};">${esc(before)}<strong style="color:${C.crimson};">${esc(names)}</strong>${esc(after)}</p>`;
+}
 
-  return `
-${thread}
-<tr><td class="px" align="center" style="padding:${index === 0 ? 36 : 0}px 32px 0 32px;">
-  ${avatar(s.person, 88)}
-  <div class="name" style="margin-top:12px;font-family:${SERIF};font-size:26px;font-weight:700;color:${C.ink};">${esc(s.person.name)}</div>
-  <div style="margin-top:4px;font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:${C.crimson};">${esc(s.person.title)}</div>
-  <div style="margin-top:3px;font-family:${SANS};font-size:13px;color:${C.muted};">${esc(s.person.detail)}</div>
-</td></tr>
-<tr><td class="px" style="padding:22px 32px 0 32px;">
-  <div style="margin-bottom:12px;text-align:center;font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:${C.muted};">&mdash; ${esc(s.topic)} &mdash;</div>
-  ${paras}
-  <div style="padding:6px 0 24px 0;text-align:center;">${buttons}</div>
-</td></tr>`;
+function textLinks(items: { label: string; href: string }[]) {
+  const list = items
+    .map((l) => `<a href="${esc(l.href)}" style="color:${C.crimson};font-weight:700;text-decoration:underline;">${esc(l.label)}</a>`)
+    .join(" &nbsp;&middot;&nbsp; ");
+  return `<div style="margin:0 0 20px 0;text-align:center;font-family:${SANS};font-size:14px;line-height:1.9;">${list}</div>`;
+}
+
+function thread(kind: "a" | "b" | "end") {
+  const file = kind === "end" ? "thread-end" : `thread-${kind}`;
+  return `<tr><td class="px" style="padding:0 32px;line-height:0;font-size:0;"><img src="${SITE}/images/email/${file}.png" width="536" alt="" style="display:block;width:100%;max-width:536px;height:auto;border:0;"></td></tr>`;
+}
+
+function pair(a: Person, b: Person) {
+  const cell = (p: Person) => `<td width="50%" align="center" valign="top" style="padding:0 6px;">
+    ${avatar(p, 76)}
+    <div style="margin-top:10px;font-family:${SERIF};font-size:22px;font-weight:700;color:${C.ink};">${esc(p.name)}</div>
+    <div style="margin-top:3px;font-family:${SANS};font-size:13px;color:${C.muted};">${esc(p.detail)}</div>
+  </td>`;
+  return `<div style="margin-bottom:14px;text-align:center;font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.crimson};">Community Stewards</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>${cell(a)}${cell(b)}</tr></table>`;
+}
+
+// Two people, then what they say to the member
+function team(a: Person, b: Person, content: string) {
+  return `<tr><td class="px" align="center" style="padding:0 32px;">${pair(a, b)}</td></tr>
+<tr><td class="px" style="padding:20px 32px 6px 32px;">${content}</td></tr>`;
+}
+
+// Shown only while workshop registration is open (WORKSHOP.open in src/lib/events.ts)
+function workshopStrip() {
+  if (!WORKSHOP.open) return "";
+  const when = WORKSHOP.details
+    .filter((d) => ["Date", "Time", "Format"].includes(d.label) && d.value)
+    .map((d) => d.value)
+    .join(" | ");
+  return `<div style="margin:4px 0 24px 0;padding:22px 18px;border:1.5px solid ${C.crimson};border-radius:20px;text-align:center;">
+    <div style="font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${C.crimson};">Happening soon</div>
+    <div style="margin-top:8px;font-family:${SERIF};font-size:24px;font-weight:700;color:${C.ink};">${esc(WORKSHOP.title)}</div>
+    ${when ? `<div style="margin-top:6px;font-family:${SANS};font-size:14px;color:${C.muted};">${esc(when)}</div>` : ""}
+    <div style="margin-top:10px;font-family:${SERIF};font-size:16px;color:${C.ink};">${esc(WORKSHOP.memberNote ? WORKSHOP.memberNote + ". " : "")}Your seat is waiting.</div>
+    <div style="margin-top:16px;">${button("Reserve your seat", `${SITE}/workshop`)}</div>
+  </div>`;
 }
 
 export function welcomeEmail(input: WelcomeInput) {
   const name = input.firstName.trim() || "friend";
-  const list = sections({ ...input, firstName: name });
+  const goal = goalPhrase(input.goals);
   const subject = `Welcome home, ${name}`;
-  const preheader = `You're member #${input.memberNumber}. Come in, we'll show you around.`;
+  const preheader = `You're member #${input.memberNumber}. You're not visiting anymore.`;
 
-  const circles = EVERYONE.map(
-    (p) => `<td style="padding:0 2px;">${avatar(p, 34)}</td>`
-  ).join("");
+  /* ----- The words. Edit here. ----- */
+
+  const letter = [
+    `${name}, welcome. Before anything else, you should know why this place exists.`,
+    "Maybe you've stood in a room full of artists and still felt like a stranger, as if everyone else already belonged and you were only visiting. Some circles run on class and cliques, on who you know and where you started. Not everyone gets a seat.",
+    "TFA is different. We didn't build a club. We built a home, so that every artist, at every level, can walk in and feel they belong.",
+    goal
+      ? `You told us you want to ${goal}. Start here, ${name}. You're not visiting anymore.`
+      : `Start here, ${name}. You're not visiting anymore.`,
+  ];
+
+  const oyinTaiwo = [
+    "We built TFA to be free and open to artists of every level, because every artist deserves a place to belong. And we've already started: a workshop, our first physical meet, and a career seminar in July. Next comes a free studio in Ondo, cheaper materials and a 2027 exhibition.",
+  ];
+
+  const emmanuelPamilerin = [
+    "A career in art is never built alone, and it only grows when your work is seen. Put your first artwork on your portfolio today, so that when someone goes looking for you, there's something worth finding.",
+  ];
+  const stayClose =
+    "Then stay close. Everything we do shows up first on Instagram, Facebook, the WhatsApp group and the community blog.";
+
+  const valeriaPromise = [
+    "Hola! Yes, our home reaches all the way to Mexico, and it keeps growing. We keep it safe with clear rules, careful moderation and real care for your privacy.",
+    "Every house needs someone to knock on. If you have a question, or something feels off, just reply to this email. It reaches us.",
+  ];
+
+  /* ----- The layout ----- */
+
+  const circles = EVERYONE.map((p) => `<td style="padding:0 2px;">${avatar(p, 34)}</td>`).join("");
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -213,9 +175,7 @@ export function welcomeEmail(input: WelcomeInput) {
     .box { border-radius: 0 !important; }
     .px { padding-left: 20px !important; padding-right: 20px !important; }
     .h1 { font-size: 32px !important; line-height: 1.12 !important; }
-    .name { font-size: 23px !important; }
     .body { font-size: 16px !important; }
-    .btn { display: block !important; margin: 0 0 10px 0 !important; text-align: center !important; }
   }
 </style>
 </head>
@@ -229,17 +189,41 @@ export function welcomeEmail(input: WelcomeInput) {
       <img src="${SITE}/images/email/logo-circle.png" width="96" height="96" alt="TFA" style="display:block;margin:0 auto;width:96px;height:96px;border:0;border-radius:50%;">
       <div style="margin-top:24px;font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:0.26em;text-transform:uppercase;color:${C.blush};">The Fine Artist Community</div>
       <div class="h1" style="margin-top:12px;font-family:${SERIF};font-size:42px;line-height:1.08;font-weight:700;color:${C.cream};">Welcome home, ${esc(name)}.</div>
+      <div style="margin-top:12px;font-family:${SANS};font-size:14px;color:${C.blush};">You're member #${input.memberNumber}.</div>
     </td></tr>
 
-    ${list.map(sectionHtml).join("")}
+    <tr><td class="px" align="center" style="padding:36px 32px 0 32px;">
+      ${avatar(JUDAH, 88)}
+      <div style="margin-top:12px;font-family:${SERIF};font-size:26px;font-weight:700;color:${C.ink};">Judah</div>
+      <div style="margin-top:4px;font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:${C.crimson};">Founder, TFA</div>
+      <div style="margin-top:3px;font-family:${SANS};font-size:13px;color:${C.muted};">${esc(JUDAH.detail)}</div>
+    </td></tr>
+    <tr><td class="px" style="padding:22px 32px 0 32px;">
+      ${letter.map(para).join("")}
+      ${handoff("", "Oyin and Taiwo", " will show you how it all began.")}
+      <div style="padding:6px 0 24px 0;text-align:center;">${button("Step inside", `${SITE}/feed`)}</div>
+    </td></tr>
 
-    <tr><td class="px" style="padding:0 32px;line-height:0;font-size:0;"><img src="${SITE}/images/email/thread-end.png" width="536" alt="" style="display:block;width:100%;max-width:536px;height:auto;border:0;"></td></tr>
+    ${thread("a")}
+    ${team(OYIN, TAIWO, `${oyinTaiwo.map(para).join("")}${handoff("A home is about where you're going, so ", "Emmanuel and Pamilerin", " will show you how to get your work seen.")}`)}
+
+    ${thread("b")}
+    ${team(
+      EMMANUEL,
+      PAMILERIN,
+      `${emmanuelPamilerin.map(para).join("")}${textLinks([{ label: "Add your first artwork", href: `${SITE}/account` }])}${para(stayClose)}${textLinks(SOCIAL)}${workshopStrip()}${handoff("And while you grow, ", "Valeria and Promise", " will make sure you're looked after.")}`
+    )}
+
+    ${thread("a")}
+    ${team(VALERIA, PROMISE, valeriaPromise.map(para).join(""))}
+
+    ${thread("end")}
 
     <tr><td class="px" align="center" style="background:${C.crimson};padding:34px 16px 38px 16px;">
       <div class="h1" style="font-family:${SERIF};font-size:30px;line-height:1.15;font-weight:700;color:${C.cream};">That's the house, ${esc(name)}.</div>
       <div style="margin-top:8px;font-family:${SERIF};font-size:17px;font-style:italic;color:${C.blush};">The door is always open.</div>
       <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:24px auto 0 auto;"><tr>${circles}</tr></table>
-      <div style="margin-top:22px;font-family:${SERIF};font-size:16px;line-height:1.6;color:${C.cream};">With love from Judah, your Stewards,<br>and the whole TFA community.</div>
+      <div style="margin-top:22px;font-family:${SERIF};font-size:16px;line-height:1.6;color:${C.cream};">With love, Judah and your Stewards.</div>
     </td></tr>
 
     <tr><td class="px" align="center" style="padding:26px 32px 30px 32px;">
@@ -258,17 +242,39 @@ export function welcomeEmail(input: WelcomeInput) {
 </body>
 </html>`;
 
+  const when = WORKSHOP.details
+    .filter((d) => ["Date", "Time", "Format"].includes(d.label) && d.value)
+    .map((d) => d.value)
+    .join(" | ");
+
   const text = [
     `Welcome home, ${name}.`,
+    `You're member #${input.memberNumber}.`,
     "",
-    ...list.flatMap((s) => [
-      `${s.person.name} (${s.person.title}, ${s.person.detail})`,
-      ...s.paras,
-      ...s.buttons.map((b) => `${b.label}: ${b.href}`),
-      "",
-    ]),
+    "JUDAH (Founder, TFA)",
+    ...letter,
+    "Oyin and Taiwo will show you how it all began.",
+    `Step inside: ${SITE}/feed`,
+    "",
+    "OYIN AND TAIWO (Community Stewards)",
+    ...oyinTaiwo,
+    "A home is about where you're going, so Emmanuel and Pamilerin will show you how to get your work seen.",
+    "",
+    "EMMANUEL AND PAMILERIN (Community Stewards)",
+    ...emmanuelPamilerin,
+    `Add your first artwork: ${SITE}/account`,
+    stayClose,
+    ...SOCIAL.map((l) => `${l.label}: ${l.href}`),
+    ...(WORKSHOP.open
+      ? ["", `${WORKSHOP.title}: ${when}`, `${WORKSHOP.memberNote || "Your seat is waiting"}. Reserve your seat: ${SITE}/workshop`, ""]
+      : [""]),
+    "And while you grow, Valeria and Promise will make sure you're looked after.",
+    "",
+    "VALERIA AND PROMISE (Community Stewards)",
+    ...valeriaPromise,
+    "",
     `That's the house, ${name}. The door is always open.`,
-    "With love from Judah, your Stewards, and the whole TFA community.",
+    "With love, Judah and your Stewards.",
     "",
     "Questions, or want fewer community emails? Just reply to this message.",
     `Privacy Policy: ${SITE}/privacy`,

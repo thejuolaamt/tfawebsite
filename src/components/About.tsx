@@ -1,17 +1,20 @@
-﻿import Photo from "./Photo";
-
-// Put a photo path here later, for example "/images/story/founder.jpg"
-const storyPhoto: string | undefined = "/images/story/our-story.png";
+﻿// About section: the studio video plays on its own (silent, looping).
+// To change the video, replace the file in public/videos and keep the same name.
 
 export default function About() {
   return (
     <section id="about" className="bg-paper py-14 text-ink md:py-24">
       {/* Who we are */}
       <div className="mx-auto grid max-w-6xl items-center gap-8 px-6 md:grid-cols-2 md:gap-16">
-        <Photo
-          src={storyPhoto}
-          alt="TFA admins and team leaders"
-          className="aspect-square w-full rounded-[28px]"
+        <video
+          src="/videos/tfa_community_about_us_video.mp4"
+          aria-label="Artists at work in a busy art studio"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          className="aspect-square w-full rounded-[28px] bg-ink object-cover"
         />
 
         <div>

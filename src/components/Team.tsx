@@ -1,13 +1,15 @@
 ﻿import Photo from "./Photo";
 import Carousel from "./Carousel";
+import { SHOW_VALERIA } from "@/lib/team-visibility";
 
 // Titles show who a person is to TFA, not a task.
-// Founder: "Founder". The six Stewards share one title: "Community Steward".
+// Founder: "Founder". The Stewards share one title: "Community Steward".
 // Paid roles keep their function title (e.g. Assistant Content Manager).
 // To add a real photo to a card, add:  image: "/images/team/your-file.jpg"
 // A card with no image shows a placeholder.
 // Socials: paste the full profile link, e.g. facebook: "https://facebook.com/name".
 // Left empty (""), the button is hidden and does nothing.
+// hidden: true means the card is paused and does not show on the website.
 const team: {
   role: string;
   name: string;
@@ -17,6 +19,7 @@ const team: {
   facebook: string;
   instagram: string;
   loading?: "lazy" | "eager";
+  hidden?: boolean;
 }[] = [
   {
     role: "Founder, TFA",
@@ -66,12 +69,13 @@ const team: {
   },
   {
     role: "Community Steward, TFA",
-    name: "Valeria Lopez",
+    name: "Valeria Ximena Lopez",
     text: "Fine artist.",
-    label: "Photo: Valeria Lopez",
+    label: "Photo: Valeria Ximena Lopez",
     image: "/images/team/valeria-ximena-lopez.jpg",
     facebook: "",
     instagram: "https://www.instagram.com/charcoal.val",
+    hidden: !SHOW_VALERIA,
   },
   {
     role: "Assistant Content Manager, TFA",
@@ -83,6 +87,8 @@ const team: {
     instagram: "https://www.instagram.com/leryn_art",
   },
 ];
+
+const visibleTeam = team.filter((m) => !m.hidden);
 
 const tones = ["bg-crimson", "bg-ink", "bg-crimson-deep"];
 
@@ -123,7 +129,7 @@ export default function Team() {
         </h2>
 
         <Carousel label="TFA core leaders">
-          {team.map((m, i) => (
+          {visibleTeam.map((m, i) => (
             <div
               key={m.name}
               className={`w-[280px] shrink-0 overflow-hidden rounded-[24px] text-cream shadow-sm sm:w-[320px] md:w-[340px] md:rounded-[28px] ${tones[i % tones.length]}`}

@@ -2,8 +2,10 @@
 // One story: Judah opens the door, then hands the member from one pair of
 // Stewards to the next. A cursive thread (an image) links each step.
 // To change words: edit the text in welcomeEmail() at the bottom of this file.
+// Valeria is paused while SHOW_VALERIA is false (see src/lib/team-visibility.ts).
 
 import { WORKSHOP } from "@/lib/events";
+import { SHOW_VALERIA } from "@/lib/team-visibility";
 
 const SITE = "https://www.thefineartist.org";
 
@@ -38,7 +40,16 @@ const PAMILERIN: Person = { key: "pamilerin", name: "Pamilerin", detail: "Portra
 const VALERIA: Person = { key: "valeria", name: "Valeria", detail: "Sculptor \u00B7 Mexico" };
 const PROMISE: Person = { key: "promise", name: "Promise", detail: "Painter \u00B7 Nigeria" };
 
-const EVERYONE = [JUDAH, OYIN, TAIWO, EMMANUEL, PAMILERIN, VALERIA, PROMISE];
+// Valeria only appears here while SHOW_VALERIA is true
+const EVERYONE = [
+  JUDAH,
+  OYIN,
+  TAIWO,
+  EMMANUEL,
+  PAMILERIN,
+  ...(SHOW_VALERIA ? [VALERIA] : []),
+  PROMISE,
+];
 
 const SOCIAL = [
   { label: "Instagram", href: "https://instagram.com/thefineartistig" },
@@ -103,9 +114,25 @@ function pair(a: Person, b: Person) {
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>${cell(a)}${cell(b)}</tr></table>`;
 }
 
+// One person alone (used while a Steward is paused)
+function solo(p: Person) {
+  return `<div style="margin-bottom:14px;text-align:center;font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${C.crimson};">Community Steward</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" valign="top" style="padding:0 6px;">
+    ${avatar(p, 76)}
+    <div style="margin-top:10px;font-family:${SERIF};font-size:22px;font-weight:700;color:${C.ink};">${esc(p.name)}</div>
+    <div style="margin-top:3px;font-family:${SANS};font-size:13px;color:${C.muted};">${esc(p.detail)}</div>
+  </td></tr></table>`;
+}
+
 // Two people, then what they say to the member
 function team(a: Person, b: Person, content: string) {
   return `<tr><td class="px" align="center" style="padding:0 32px;">${pair(a, b)}</td></tr>
+<tr><td class="px" style="padding:20px 32px 6px 32px;">${content}</td></tr>`;
+}
+
+// One person, then what they say to the member
+function teamSolo(p: Person, content: string) {
+  return `<tr><td class="px" align="center" style="padding:0 32px;">${solo(p)}</td></tr>
 <tr><td class="px" style="padding:20px 32px 6px 32px;">${content}</td></tr>`;
 }
 
@@ -152,14 +179,28 @@ export function welcomeEmail(input: WelcomeInput) {
   const stayClose =
     "Then stay close. Everything we do shows up first on Instagram, Facebook, the WhatsApp group and the community blog.";
 
+  // Last stop of the story. With Valeria: she and Promise. Without her: Promise alone.
   const valeriaPromise = [
     "Hola! Yes, our home reaches all the way to Mexico, and it keeps growing. We keep it safe with clear rules, careful moderation and real care for your privacy.",
     "Every house needs someone to knock on. If you have a question, or something feels off, just reply to this email. It reaches us.",
   ];
+  const promiseOnly = [
+    "Our home keeps growing. We keep it safe with clear rules, careful moderation and real care for your privacy.",
+    "Every house needs someone to knock on. If you have a question, or something feels off, just reply to this email. It reaches us.",
+  ];
+  const lastLines = SHOW_VALERIA ? valeriaPromise : promiseOnly;
+  const lookedAfterBy = SHOW_VALERIA ? "Valeria and Promise" : "Promise";
+  const lastHeader = SHOW_VALERIA
+    ? "VALERIA AND PROMISE (Community Stewards)"
+    : "PROMISE (Community Steward)";
 
   /* ----- The layout ----- */
 
   const circles = EVERYONE.map((p) => `<td style="padding:0 2px;">${avatar(p, 34)}</td>`).join("");
+
+  const lastSection = SHOW_VALERIA
+    ? team(VALERIA, PROMISE, lastLines.map(para).join(""))
+    : teamSolo(PROMISE, lastLines.map(para).join(""));
 
   const html = `<!DOCTYPE html>
 <html lang="en">
@@ -211,11 +252,11 @@ export function welcomeEmail(input: WelcomeInput) {
     ${team(
       EMMANUEL,
       PAMILERIN,
-      `${emmanuelPamilerin.map(para).join("")}${textLinks([{ label: "Add your first artwork", href: `${SITE}/account` }])}${para(stayClose)}${textLinks(SOCIAL)}${workshopStrip()}${handoff("And while you grow, ", "Valeria and Promise", " will make sure you're looked after.")}`
+      `${emmanuelPamilerin.map(para).join("")}${textLinks([{ label: "Add your first artwork", href: `${SITE}/account` }])}${para(stayClose)}${textLinks(SOCIAL)}${workshopStrip()}${handoff("And while you grow, ", lookedAfterBy, " will make sure you're looked after.")}`
     )}
 
     ${thread("a")}
-    ${team(VALERIA, PROMISE, valeriaPromise.map(para).join(""))}
+    ${lastSection}
 
     ${thread("end")}
 
@@ -268,10 +309,10 @@ export function welcomeEmail(input: WelcomeInput) {
     ...(WORKSHOP.open
       ? ["", `${WORKSHOP.title}: ${when}`, `${WORKSHOP.memberNote || "Your seat is waiting"}. Reserve your seat: ${SITE}/workshop`, ""]
       : [""]),
-    "And while you grow, Valeria and Promise will make sure you're looked after.",
+    `And while you grow, ${lookedAfterBy} will make sure you're looked after.`,
     "",
-    "VALERIA AND PROMISE (Community Stewards)",
-    ...valeriaPromise,
+    lastHeader,
+    ...lastLines,
     "",
     `That's the house, ${name}. The door is always open.`,
     "With love, Judah and your Stewards.",

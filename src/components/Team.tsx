@@ -66,7 +66,7 @@ const team: {
   },
   {
     role: "Community Steward, TFA",
-    name: "Valeria Ximena Lopez",
+    name: "Valeria Lopez",
     text: "Fine artist.",
     label: "Photo: Valeria Lopez",
     image: "/images/team/valeria-ximena-lopez.jpg",

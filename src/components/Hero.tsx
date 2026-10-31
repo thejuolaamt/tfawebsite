@@ -3,6 +3,7 @@ import Link from "next/link";
 import { JOIN_URL } from "@/lib/links";
 import { VisitorOnly } from "@/components/AuthGate";
 import { WORKSHOP } from "@/lib/events";
+import HeroStage from "./HeroStage";
 
 const CREAM = "#F8F6DF";
 
@@ -106,15 +107,9 @@ export default function Hero() {
       <Shapes />
 
       <div className="hero-fade relative z-10 mx-auto max-w-4xl">
-        <p className="mb-4 text-[10px] uppercase tracking-[0.32em] text-cream/70 sm:text-xs md:mb-5 md:text-sm">
-          Welcome to
-        </p>
-        <h1 className="text-[2.5rem] font-bold leading-[0.9] tracking-[-0.06em] sm:text-5xl sm:leading-[0.94] md:text-7xl md:leading-[0.9]">
-          The Fine Artist Community
-        </h1>
-        <p className="mx-auto mt-5 max-w-xl text-sm text-cream/85 sm:text-base md:mt-8 md:text-xl">
-          Home of creative inclusiveness.
-        </p>
+        {/* The two slides (welcome, then "A home for ...") take turns here */}
+        <HeroStage />
+
         <div
           data-reveal
           style={{ "--d": "520ms" } as CSSProperties}
@@ -132,5 +127,3 @@ export default function Hero() {
     </section>
   );
 }
-
-

@@ -6,7 +6,7 @@ import Photo from "@/components/Photo";
 import UpcomingEvents from "@/components/UpcomingEvents";
 import { JOIN_URL } from "@/lib/links";
 import { VisitorOnly } from "@/components/AuthGate";
-import { ACTIVITIES, PAST, type EventItem } from "@/lib/events";
+import { PAST, type EventItem } from "@/lib/events";
 
 export const metadata: Metadata = {
   title: "Events & Activities",
@@ -15,28 +15,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "/events" },
 };
 
-function Card({ item, dark = false }: { item: EventItem; dark?: boolean }) {
+function Card({ item }: { item: EventItem }) {
   return (
-    <div
-      className={`flex flex-col rounded-[28px] p-5 md:p-6 ${
-        dark ? "bg-ink text-cream" : "border border-line bg-paper text-ink"
-      }`}
-    >
-      <p className={`eyebrow ${dark ? "text-blush" : "text-crimson"}`}>{item.tag}</p>
+    <div className="flex flex-col rounded-[28px] border border-line bg-paper p-5 text-ink md:p-6">
+      <p className="eyebrow text-crimson">{item.tag}</p>
       <h3 className="mt-2 text-xl font-bold leading-tight md:text-2xl">{item.title}</h3>
-      <p
-        className={`mt-2 text-[14px] leading-relaxed md:text-[15px] ${
-          dark ? "text-cream/80" : "text-muted"
-        }`}
-      >
-        {item.text}
-      </p>
+      <p className="mt-2 text-[14px] leading-relaxed text-muted md:text-[15px]">{item.text}</p>
       {item.href && (
         <Link
           href={item.href}
-          className={`mt-4 inline-block text-sm font-bold underline underline-offset-4 ${
-            dark ? "text-cream hover:text-paper" : "text-crimson hover:text-crimson-deep"
-          }`}
+          className="mt-4 inline-block text-sm font-bold text-crimson underline underline-offset-4 hover:text-crimson-deep"
         >
           {item.linkLabel ?? "Learn more"}
         </Link>
@@ -62,7 +50,7 @@ export default function EventsPage() {
         </div>
 
         {/* Other events, past and present */}
-        <div className="bg-cream px-6 py-14 md:py-20">
+        <div id="past" className="bg-cream px-6 py-14 md:py-24">
           <div className="mx-auto max-w-6xl">
             <p className="eyebrow text-crimson">Other events, past and present</p>
             <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
@@ -72,52 +60,29 @@ export default function EventsPage() {
               Workshops, weekly challenges, interviews and meet-ups. Everything TFA is doing,
               in one place.
             </p>
-          </div>
-        </div>
 
-        {/* Ongoing activities */}
-        <div id="activities" className="bg-paper px-6 py-14 md:py-24">
-          <div className="mx-auto max-w-6xl">
-            <p className="eyebrow text-crimson">Always on</p>
-            <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-5xl">
-              Activities you can join today.
-            </h2>
-            <div className="mt-7 grid gap-3 md:mt-12 md:grid-cols-3 md:gap-4">
-              {ACTIVITIES.map((item) => (
-                <Card key={item.title} item={item} dark />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Past events */}
-        <div id="past" className="bg-cream px-6 py-14 md:py-24">
-          <div className="mx-auto max-w-6xl">
-            <p className="eyebrow text-crimson">What we have done</p>
-            <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-5xl">
-              Built by artists, one step at a time.
-            </h2>
-
-            <div className="mt-7 overflow-hidden rounded-[32px] bg-crimson text-cream md:mt-12 md:grid md:grid-cols-2">
-              {featured.image && (
-                <Photo
-                  src={featured.image}
-                  alt={featured.title}
-                  tone="dark"
-                  sizes="(min-width: 768px) 560px, 100vw"
-                  className="h-56 w-full !rounded-none !border-0 md:h-full md:min-h-72 [&_img]:object-[50%_70%]"
-                />
-              )}
-              <div className="p-6 md:p-10">
-                <p className="eyebrow text-blush">{featured.tag}</p>
-                <h3 className="mt-3 text-[2rem] font-extrabold leading-[1.05] md:text-4xl">
-                  {featured.title}
-                </h3>
-                <p className="mt-4 max-w-xl text-base leading-relaxed text-cream/85 md:text-lg">
-                  {featured.text}
-                </p>
+            {featured && (
+              <div className="mt-7 overflow-hidden rounded-[32px] bg-crimson text-cream md:mt-12 md:grid md:grid-cols-2">
+                {featured.image && (
+                  <Photo
+                    src={featured.image}
+                    alt={featured.title}
+                    tone="dark"
+                    sizes="(min-width: 768px) 560px, 100vw"
+                    className="h-56 w-full !rounded-none !border-0 md:h-full md:min-h-72 [&_img]:object-[50%_70%]"
+                  />
+                )}
+                <div className="p-6 md:p-10">
+                  <p className="eyebrow text-blush">{featured.tag}</p>
+                  <h3 className="mt-3 text-[2rem] font-extrabold leading-[1.05] md:text-4xl">
+                    {featured.title}
+                  </h3>
+                  <p className="mt-4 max-w-xl text-base leading-relaxed text-cream/85 md:text-lg">
+                    {featured.text}
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="mt-3 grid gap-3 md:mt-4 md:grid-cols-3 md:gap-4">
               {restPast.map((item) => (

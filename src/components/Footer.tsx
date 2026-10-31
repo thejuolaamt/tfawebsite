@@ -1,5 +1,4 @@
-﻿import Image from "next/image";
-import Link from "next/link";
+﻿import Link from "next/link";
 import { JOIN_URL, WHATSAPP_URL } from "@/lib/links";
 import { VisitorOnly, MemberOnly } from "@/components/AuthGate";
 
@@ -100,29 +99,13 @@ export default function Footer() {
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
           {/* Brand */}
           <div className="lg:col-span-6">
-            <div className="inline-flex rounded-2xl bg-cream px-4 py-3">
-              <Image
-                src="/images/tfa-logo-mark.png"
-                alt="The Fine Artist Community logo"
-                width={240}
-                height={133}
-                className="h-10 w-auto"
-              />
-            </div>
-            <p className="mt-6 font-display text-2xl font-bold leading-tight md:text-3xl">
+            <p className="font-display text-2xl font-bold leading-tight md:text-3xl">
               Home of creative inclusiveness.
             </p>
             <p className="mt-3 max-w-md text-[15px] leading-relaxed text-cream/65">
               An art community in Nigeria where artists of every level belong, learn, exhibit
               and grow together.
             </p>
-
-            <VisitorOnly><Link
-              href={JOIN_URL}
-              className="mt-7 inline-flex min-h-12 items-center justify-center rounded-full bg-crimson px-6 text-sm font-bold text-cream transition hover:bg-crimson-deep"
-            >
-              Become a Member
-            </Link></VisitorOnly>
 
             <ul className="mt-8 flex flex-wrap gap-3">
               {socials.map((s) => (
@@ -165,8 +148,8 @@ export default function Footer() {
               Privacy Policy
             </Link>
             <a href={`mailto:${EMAIL}`} className="transition hover:text-cream">
-            {EMAIL}
-          </a>
+              {EMAIL}
+            </a>
           </div>
         </div>
       </div>

@@ -5,16 +5,15 @@ import Carousel from "./Carousel";
 // Founder: "Founder". The six Stewards share one title: "Community Steward".
 // Paid roles keep their function title (e.g. Assistant Content Manager).
 // To add a real photo to a card, add:  image: "/images/team/your-file.jpg"
-// A card with no image shows a placeholder (flag: "mexico" shows the Mexican flag).
+// A card with no image shows a placeholder.
 // Socials: paste the full profile link, e.g. facebook: "https://facebook.com/name".
-// Left empty (""), the button shows dimmed and does nothing.
+// Left empty (""), the button is hidden and does nothing.
 const team: {
   role: string;
   name: string;
   text: string;
   label: string;
   image?: string;
-  flag?: "mexico";
   facebook: string;
   instagram: string;
   loading?: "lazy" | "eager";
@@ -70,7 +69,7 @@ const team: {
     name: "Valeria Ximena Lopez",
     text: "Fine artist.",
     label: "Photo: Valeria Ximena Lopez",
-    flag: "mexico",
+    image: "/images/team/valeria-ximena-lopez.jpg",
     facebook: "",
     instagram: "",
   },
@@ -86,23 +85,6 @@ const team: {
 ];
 
 const tones = ["bg-crimson", "bg-ink", "bg-crimson-deep"];
-
-// Drawn as SVG because flag emojis do not show on Windows.
-function MexicoFlag() {
-  return (
-    <svg
-      viewBox="0 0 120 80"
-      className="w-28 rounded-lg shadow-md md:w-32"
-      aria-hidden="true"
-    >
-      <rect width="40" height="80" fill="#006847" />
-      <rect x="40" width="40" height="80" fill="#FFFFFF" />
-      <rect x="80" width="40" height="80" fill="#CE1126" />
-      <circle cx="60" cy="40" r="11" fill="#8B5A2B" fillOpacity="0.85" />
-      <circle cx="60" cy="40" r="7" fill="#006847" fillOpacity="0.8" />
-    </svg>
-  );
-}
 
 function SocialLink({
   label,
@@ -137,7 +119,7 @@ export default function Team() {
       <div className="mx-auto max-w-6xl px-0 sm:px-6">
         <p className="eyebrow text-crimson">Our team</p>
         <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-6xl">
-          Our core leaders.
+          Community Stewards
         </h2>
 
         <Carousel label="TFA core leaders">
@@ -146,25 +128,15 @@ export default function Team() {
               key={m.name}
               className={`w-[280px] shrink-0 overflow-hidden rounded-[24px] text-cream shadow-sm sm:w-[320px] md:w-[340px] md:rounded-[28px] ${tones[i % tones.length]}`}
             >
-              {m.flag === "mexico" && !m.image ? (
-                <div
-                  role="img"
-                  aria-label={`${m.name}, ${m.role}`}
-                  className="flex h-[260px] w-full items-center justify-center bg-paper/10 sm:h-[280px] md:h-56"
-                >
-                  <MexicoFlag />
-                </div>
-              ) : (
-                <Photo
-                  src={m.image}
-                  alt={`${m.name}, ${m.role}`}
-                  label={m.label}
-                  tone="dark"
-                  sizes="(min-width: 768px) 340px, 320px"
-                  loading={m.loading ?? "lazy"}
-                  className="h-[260px] w-full !rounded-none !border-0 sm:h-[280px] md:h-56"
-                />
-              )}
+              <Photo
+                src={m.image}
+                alt={`${m.name}, ${m.role}`}
+                label={m.label}
+                tone="dark"
+                sizes="(min-width: 768px) 340px, 320px"
+                loading={m.loading ?? "lazy"}
+                className="h-[260px] w-full !rounded-none !border-0 sm:h-[280px] md:h-56"
+              />
               <div className="p-5">
                 <p className="eyebrow text-blush">{m.role}</p>
                 <h3 className="mt-2 text-xl font-bold leading-tight sm:text-2xl">

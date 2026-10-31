@@ -6,7 +6,7 @@ import Photo from "@/components/Photo";
 import UpcomingEvents from "@/components/UpcomingEvents";
 import { JOIN_URL } from "@/lib/links";
 import { VisitorOnly } from "@/components/AuthGate";
-import { WORKSHOP, ACTIVITIES, PAST, type EventItem } from "@/lib/events";
+import { ACTIVITIES, PAST, type EventItem } from "@/lib/events";
 
 export const metadata: Metadata = {
   title: "Events & Activities",
@@ -55,33 +55,10 @@ export default function EventsPage() {
         {/* Page title (hidden, for search engines and screen readers) */}
         <h1 className="sr-only">Events and activities</h1>
 
-        {/* Flyers posted from /events/manage. First thing on the page. */}
-        <div className="bg-cream pt-14 md:pt-12">
+        {/* Flyers posted from /events/manage. First thing on the page.
+            The workshop shows here as a flyer, with its own register button. */}
+        <div id="workshop" className="bg-cream pt-14 md:pt-12">
           <UpcomingEvents />
-        </div>
-
-        {/* Workshop (the full details live on /workshop) */}
-        <div id="workshop" className="bg-crimson-deep px-6 py-10 text-cream md:py-14">
-          <div className="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="eyebrow text-blush">Workshop</p>
-              <h2 className="mt-2 text-3xl font-extrabold leading-tight md:text-4xl">
-                {WORKSHOP.title}
-              </h2>
-              <p className="mt-2 text-[15px] text-cream/85 md:text-base">
-                {WORKSHOP.details
-                  .filter((d) => d.label !== "Price" && d.value)
-                  .map((d) => d.value)
-                  .join(" | ")}
-              </p>
-            </div>
-            <Link
-              href="/workshop"
-              className="inline-flex min-h-13 items-center justify-center rounded-full bg-cream px-7 text-base font-bold text-crimson transition hover:bg-paper"
-            >
-              {WORKSHOP.open ? "Register for Workshop" : "Workshop details"}
-            </Link>
-          </div>
         </div>
 
         {/* Other events, past and present */}

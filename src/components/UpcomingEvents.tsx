@@ -2,6 +2,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { JOIN_URL } from "@/lib/links";
 import { VisitorOnly } from "@/components/AuthGate";
+import { WORKSHOP } from "@/lib/events";
 
 type UpcomingEvent = {
   id: string;
@@ -24,6 +25,8 @@ function formatDate(value: string) {
 
 // Shows the flyers posted from /events/manage. Past events hide themselves.
 // If there is nothing to show, a quiet "no events" message appears instead.
+// An event with "workshop" in its title and no register link of its own
+// gets a button that opens the /workshop page.
 export default async function UpcomingEvents() {
   const supabase = await createClient();
   const today = new Date().toLocaleDateString("en-CA", { timeZone: "Africa/Lagos" });
@@ -43,7 +46,7 @@ export default async function UpcomingEvents() {
         <div className="mx-auto max-w-6xl">
           <p className="eyebrow text-crimson">Upcoming</p>
           <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-5xl">
-            Grow with us.
+            Coming up.
           </h2>
 
           <div className="mt-7 rounded-[28px] border border-line bg-paper p-6 md:mt-12 md:p-8">
@@ -69,7 +72,7 @@ export default async function UpcomingEvents() {
       <div className="mx-auto max-w-6xl">
         <p className="eyebrow text-crimson">Upcoming</p>
         <h2 className="mt-3 max-w-3xl text-[2.1rem] font-extrabold leading-[1.05] sm:text-4xl md:text-5xl">
-          Grow with us.
+          Join us at our next event.
         </h2>
 
         <div className="mt-7 grid gap-5 sm:grid-cols-2 md:mt-12 lg:grid-cols-3">
@@ -101,7 +104,7 @@ export default async function UpcomingEvents() {
                 {ev.details && (
                   <p className="mt-2 text-[15px] leading-relaxed text-muted">{ev.details}</p>
                 )}
-                {ev.register_url && (
+                {ev.register_url ? (
                   <a
                     href={ev.register_url}
                     target="_blank"
@@ -110,7 +113,14 @@ export default async function UpcomingEvents() {
                   >
                     Register
                   </a>
-                )}
+                ) : /workshop/i.test(ev.title) ? (
+                  <Link
+                    href="/workshop"
+                    className="mt-5 inline-flex min-h-11 items-center justify-center self-start rounded-full bg-crimson px-6 text-sm font-bold text-cream transition hover:bg-crimson-deep"
+                  >
+                    {WORKSHOP.open ? "Register for Workshop" : "Workshop details"}
+                  </Link>
+                ) : null}
               </div>
             </article>
           ))}

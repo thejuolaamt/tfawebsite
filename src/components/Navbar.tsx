@@ -9,7 +9,8 @@ import Avatar from "./Avatar";
 
 // What visitors (not logged in) see
 const visitorLinks = [
-  { label: "Home", href: "/" }, { label: "About", href: "/#about" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/#about" },
   { label: "Team", href: "/#team" },
   { label: "Events", href: "/events" },
 ];
@@ -130,14 +131,31 @@ export default function Navbar() {
           )}
         </ul>
 
-        {/* Mobile and tablet toggle */}
+        {/* Mobile and tablet toggle: three lines that turn into an X */}
         <button
+          type="button"
           onClick={() => setOpen(!open)}
-          className="min-h-11 rounded-full border-[1.5px] border-ink px-5 text-[15px] font-bold text-ink lg:hidden"
-          aria-label="Toggle menu"
+          className="flex size-11 items-center justify-center rounded-full border-[1.5px] border-ink text-ink lg:hidden"
+          aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
         >
-          {open ? "Close" : "Menu"}
+          <span aria-hidden="true" className="relative block h-4 w-6">
+            <span
+              className={`absolute left-0 h-0.5 w-6 rounded-full bg-ink transition-all duration-300 motion-reduce:transition-none ${
+                open ? "top-[7px] rotate-45" : "top-0"
+              }`}
+            />
+            <span
+              className={`absolute left-0 top-[7px] h-0.5 w-6 rounded-full bg-ink transition-all duration-300 motion-reduce:transition-none ${
+                open ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute left-0 h-0.5 w-6 rounded-full bg-ink transition-all duration-300 motion-reduce:transition-none ${
+                open ? "top-[7px] -rotate-45" : "top-[14px]"
+              }`}
+            />
+          </span>
         </button>
       </nav>
 

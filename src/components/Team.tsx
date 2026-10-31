@@ -25,7 +25,7 @@ const team: {
     label: "Photo: Olayinka Judah",
     image: "/images/team/olayinka-judah.jpeg",
     facebook: "",
-    instagram: "",
+    instagram: "https://www.instagram.com/juola.art",
     loading: "eager",
   },
   {
@@ -35,7 +35,7 @@ const team: {
     label: "Photo: Oyinloluwa Akindele",
     image: "/images/team/oyinloluwa-akindele.jpeg",
     facebook: "",
-    instagram: "",
+    instagram: "https://www.instagram.com/oyinloluwaakindele",
   },
   {
     role: "Community Steward, TFA",
@@ -44,7 +44,7 @@ const team: {
     label: "Photo: Emmanuel Okolieze",
     image: "/images/team/emmanuel-okolieze.jpeg",
     facebook: "",
-    instagram: "",
+    instagram: "https://www.instagram.com/emmanuelokolieze",
   },
   {
     role: "Community Steward, TFA",
@@ -53,7 +53,7 @@ const team: {
     label: "Photo: Promise Oloruntobi",
     image: "/images/team/promise-oloruntobi.jpeg",
     facebook: "",
-    instagram: "",
+    instagram: "https://www.instagram.com/geeprhyme_arts",
   },
   {
     role: "Community Steward, TFA",
@@ -62,7 +62,7 @@ const team: {
     label: "Photo: Taiwo Oladele",
     image: "/images/team/taiwo-oladele.jpeg",
     facebook: "",
-    instagram: "",
+    instagram: "https://www.instagram.com/tijeesunimi",
   },
   {
     role: "Community Steward, TFA",
@@ -71,7 +71,7 @@ const team: {
     label: "Photo: Valeria Ximena Lopez",
     image: "/images/team/valeria-ximena-lopez.jpg",
     facebook: "",
-    instagram: "",
+    instagram: "https://www.instagram.com/charcoal.val",
   },
   {
     role: "Assistant Content Manager, TFA",
@@ -80,7 +80,7 @@ const team: {
     label: "Photo: Pamilerin Oluwasanmi",
     image: "/images/team/pamilerin-oluwasanmi.jpeg",
     facebook: "",
-    instagram: "",
+    instagram: "https://www.instagram.com/leryn_art",
   },
 ];
 
